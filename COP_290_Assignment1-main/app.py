@@ -140,12 +140,12 @@ def drawCurGraph():
     rangePlot.add_tools(rangeTool)
     rangePlot.toolbar.active_multi = 'auto'
     for symbolName in curGraphSelection:
-        print(symbolName)
+        #print(symbolName)
         curDict = curGraphSelection[symbolName]
         df = stockData.getDailyData(symbolName)
         curStockInfo = stockData.getInfo(symbolName)
-        print("After calling func stockData is:")
-        print(curStockInfo)
+        #print("After calling func stockData is:")
+        #print(curStockInfo)
         #time interval defiend here too
         #for daily one min interval in milli seconds
         timeInterval = 60*1000
@@ -178,12 +178,12 @@ def drawCurGraph():
     total = column(plot,rangePlot,sizing_mode="stretch_both")
     script,div = components(total)
         
-    print("original div was:")
-    print(div)
-    div = div[:-7] + ' class="GraphDiv" ></div>'
-    return (script,div)
-    print("original div was:")
-    print(div)
+    #print("original div was:")
+    #print(div)
+    #div = div[:-7] + ' class="GraphDiv" ></div>'
+    #return (script,div)
+    #print("original div was:")
+    #print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div)
 @app.route('/dashboard') 
@@ -237,7 +237,7 @@ def updateList():
 # }
 def stockselected ():
     stockName = request.form.get('selectedStock')
-    print(stockName + "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+    #print(stockName + "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
     # selectedStocksList.append(stockName)
     # curStockInfo.remove('SBIN')
     # curGraphSelection.clear()
