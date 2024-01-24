@@ -222,6 +222,7 @@ def updateList():
 
 @app.route('/selectStock',methods=['POST']) 
 def stockselected ():
+    global last_selected
     stockName = request.form.get('selectedStock')
 
     if stockName in curGraphSelection : 
@@ -231,8 +232,8 @@ def stockselected ():
             'graphDuration' :'1_day',
             'graphCont' : ['HIGH']
         }
-    if len(list(curGraphSelection.items)) >=1 : 
-        last_selected = list(curGraphSelection.items)[-1]
+    if len(list(curGraphSelection.keys())) >=1 : 
+        last_selected = list(curGraphSelection.keys())[-1]
     else :
         last_selected = ''
     return redirect(url_for('dashboard'))
