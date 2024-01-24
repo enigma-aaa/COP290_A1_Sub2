@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from bokeh.embed import components
 from bokeh.plotting import figure
-from bokeh.models import RangeTool
+from bokeh.models import RangeTool,PanTool,WheelZoomTool
 from bokeh.layouts import column,layout
 import pandas as pd
 import stockData
