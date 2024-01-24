@@ -16,7 +16,7 @@ app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-stockList = ["SBIN","ONGC","COAL"]
+stockList = ["SBIN","ONGC"]
 curStockInfo = {}
 selectedStocksList = []
 #should contain an array of dict's with each dict of the form
@@ -221,6 +221,7 @@ def logout():
 
 @app.route('/updateList',methods=['POST'])
 def updateList():
+    print("called updateList")
     stockName = request.form['search bar']
     if stockName not in stockList:
         stockList.append(stockName)
@@ -236,6 +237,7 @@ def updateList():
 #     }
 # }
 def stockselected ():
+    global curStockInfo
     stockName = request.form.get('selectedStock')
     #print(stockName + "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
     # selectedStocksList.append(stockName)
@@ -245,6 +247,8 @@ def stockselected ():
         'graphDuration' :['Daily'],
         'graphCont' : ['HIGH']
     }
+    curStockInfo = stockData.getInfo(stockName)
+    print("called stock selected")
     # print(curStockInfo)
     return redirect(url_for('dashboard'))
 

@@ -34,12 +34,22 @@ input[type="text"], input[type="password"] {
     box-sizing: border-box;
 }
 
-button {
+button.LoginButton {
     width: 100%;
     padding: 10px;
     border: none;
     background-color: #007bff;
-
+}
+button.StockButton{
+    width: 100%;
+    padding: 10px;
+    margin: auto;
+    background-color: white;
+    text-align: left;
+    border-bottom: 5px grey;
+}
+button.StockButton:hover{
+    background-color: rgb(223, 223, 223);
 }
     /* Add this to your existing style.css */
 
@@ -69,12 +79,26 @@ button {
 .logout-button:hover {
     background-color: #c82333;
 }
-
+th{
+    text-align: center;
+    width: 100%;
+    padding: 12px;
+}
+td{
+    padding: 8px;
+}
+table{
+    width: 100%;
+}
 div.StockListAndSearch{
     width: 20%;
     height:100%;
-    background-color: gray;
+    background-color: rgb(226, 225, 225);
     align-items:flex-start;
+}
+div.StockList{
+    width:100%;
+    position: relative;
 }
 div.GraphAndStockInfo{
     width:80%;
@@ -88,11 +112,12 @@ div.LoginInfo{
     font-size: 60px;
     text-align: right;
     color: white;
+    
 }
 div.GraphDiv{
     width:100%;
     height:100%;
-    background-color: turquoise;
+    background-color: cornsilk;
 }
 div.GraphContainer{
     width: 80%;
@@ -107,7 +132,9 @@ div.StockSearchDiv{
 div.StockInfo{
     width: 20%;
     height: 100%;
-    background-color: turquoise;
+    background-color: whitesmoke;
+    border: 15px red;
+    overflow-y: auto;
 }
 div.StockInfoAndGraph{
     position: relative;
@@ -119,13 +146,4 @@ input.SearchBar{
     padding: 10px;
     margin: 5px;
     width: 75%;
-}
-p.StockItem{
-    padding: 10px;
-    border-left: 5px solid red;
-    margin-left: 5px;
-    margin-right: 10px;
-    margin-top: 5px;
-    background-color: white;
-    border-radius: 5px;
 }

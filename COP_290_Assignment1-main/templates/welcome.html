@@ -32,10 +32,15 @@
         </div>
         <div class="StockList">
             <form action="/selectStock" method="POST">
+                <table>
+                    
                 {% for stock in stockList %}
-                    <button type="submit" name="selectedStock" value="{{stock}}">{{stock}}</button>    
-                <!-- <p class ="StockItem">{{stock}}</p>             -->
+                    <tr>
+                    <button type="submit" class ="StockButton" name="selectedStock" value="{{stock}}">{{stock}}</button>    
+                    </tr>
+                    <!-- <p class ="StockItem">{{stock}}</p>             -->
                 {% endfor%}
+                </table>
             </form>
         </div>
         <div class = "debug">
@@ -56,17 +61,24 @@
             <div class = "StockInfo">
               <table>
                 <tr><th>{{ curStockInfo['longName'] }}</th></tr>
-                <tr><th> Daily Summary</th></tr>
+              </table>
+              <table>
+                <tr><th class="text-align:center;" > Daily Summary</th></tr>
+              </table>
+              <table>  
                 <tr><td>Opening Price</td><td>{{ curStockInfo['open']  }}</td></tr>
                 <tr><td>Previous Close</td><td>{{ curStockInfo['previousClose'] }}</td></tr>
                 <tr><td>Current Price</td><td>{{ curStockInfo['currentPrice'] }}</td></tr>
                 <tr><td>High</td><td>{{ curStockInfo['dayHigh'] }}</td></tr>
-                <tr><td>Low</td><td>{{ curStockInfo['dayLow'] }}</td></tr>
-                
+                <tr><td>Low</td> <td>{{ curStockInfo['dayLow'] }}</td></tr>
+              </table>    
+              <table>
                 <tr><th>Yearly Summary</th></tr>
+              </table>
+              <table>  
                 <tr><td>Yearly Low</td><td>{{ curStockInfo['fiftyTwoWeekLow'] }}</td></tr>
                 <tr><td>Yearly High</td><td>{{ curStockInfo['fiftyTwoWeekHigh']}}</td></tr>
-
+                
                 <tr><td>Trailing PE</td><td>{{ curStockInfo['trailingPE'] }}</td></tr>
                 <tr><td>Forward PE</td><td>{{ curStockInfo['forwardPE']}}</td></tr>
                 <tr><td></td></tr>
@@ -76,7 +88,7 @@
                 <tr><td>Trailing Eps</td><td>{{ curStockInfo['trailingEps'] }}</td></tr>
                 <tr><td></td></tr>
                 
-                <tr><td>Book value</td><td>{{ curStockInfo['bookValue'] }}/td></td></tr>
+                <tr><td>Book value</td><td>{{ curStockInfo['bookValue'] }}</td></tr>
                 <tr><td>Div Yield</td><td>{{ curStockInfo['dividendYield'] }}</td></tr>
                 <tr><td>ROE</td><td>{{ curStockInfo['returnOnEquity'] }}</td></tr>
                 <tr><td></td></tr>
