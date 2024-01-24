@@ -70,5 +70,62 @@ button {
     background-color: #c82333;
 }
 
-
-
+div.StockListAndSearch{
+    width: 20%;
+    height:100%;
+    background-color: gray;
+    align-items:flex-start;
+}
+div.GraphAndStockInfo{
+    width:80%;
+    height:100%;
+    background-color: rebeccapurple;
+}
+div.LoginInfo{
+    width:100%;
+    height:10%;
+    background-color: black;
+    font-size: 60px;
+    text-align: right;
+    color: white;
+}
+div.GraphDiv{
+    width:100%;
+    height:100%;
+    background-color: turquoise;
+}
+div.GraphContainer{
+    width: 80%;
+    height: 100%;
+}
+div.StockSearchDiv{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+div.StockInfo{
+    width: 20%;
+    height: 100%;
+    background-color: turquoise;
+}
+div.StockInfoAndGraph{
+    position: relative;
+    height: 90%;
+    display: flex;
+}
+input.SearchBar{
+    font-size: 32px;
+    padding: 10px;
+    margin: 5px;
+    width: 75%;
+}
+p.StockItem{
+    padding: 10px;
+    border-left: 5px solid red;
+    margin-left: 5px;
+    margin-right: 10px;
+    margin-top: 5px;
+    background-color: white;
+    border-radius: 5px;
+}
