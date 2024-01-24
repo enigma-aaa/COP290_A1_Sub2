@@ -18,7 +18,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 stockList = ["SBIN","ONGC","COAL"]
 curStockInfo = {}
-
+selectedStocksList = []
 #should contain an array of dict's with each dict of the form
 #{
 #    'SBIN':{
@@ -29,7 +29,7 @@ curStockInfo = {}
 curGraphSelection = {
     'SBIN':{
         'graphDuration':['DAILY'],
-        'graphCont':['COMBINED']
+        'graphCont':['HIGH']
     }
 }
 
@@ -140,6 +140,7 @@ def drawCurGraph():
     rangePlot.add_tools(rangeTool)
     rangePlot.toolbar.active_multi = 'auto'
     for symbolName in curGraphSelection:
+        print(symbolName)
         curDict = curGraphSelection[symbolName]
         df = stockData.getDailyData(symbolName)
         curStockInfo = stockData.getInfo(symbolName)
@@ -181,6 +182,10 @@ def drawCurGraph():
     print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div)
+    print("original div was:")
+    print(div)
+    div = div[:-7] + ' class="GraphDiv" ></div>'
+    return (script,div)
 @app.route('/dashboard') 
 def dashboard():
     if 'user_id' in session:
@@ -211,6 +216,9 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
+
+
+
 @app.route('/updateList',methods=['POST'])
 def updateList():
     stockName = request.form['search bar']
@@ -218,6 +226,27 @@ def updateList():
         stockList.append(stockName)
     return redirect(url_for('dashboard'))
 
+@app.route('/selectStock',methods=['POST']) 
+
+# def stockselected : 
+# curGraphSelection = {
+#     'SBIN':{
+#         'graphDuration':['DAILY'],
+#         'graphCont':['COMBINED']
+#     }
+# }
+def stockselected ():
+    stockName = request.form.get('selectedStock')
+    print(stockName + "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+    # selectedStocksList.append(stockName)
+    # curStockInfo.remove('SBIN')
+    # curGraphSelection.clear()
+    curGraphSelection[stockName] = {
+        'graphDuration' :['Daily'],
+        'graphCont' : ['HIGH']
+    }
+    # print(curStockInfo)
+    return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code
