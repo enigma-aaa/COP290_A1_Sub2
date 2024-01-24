@@ -121,6 +121,24 @@ def drawCombinedGraph(symbolName,plot,df,timeInterval):
 #}
 def drawCurGraph():
     global curStockInfo
+    panTool = PanTool(dimensions = 'width')
+    wheelZoomTool = WheelZoomTool()
+    tools = [panTool,wheelZoomTool]
+    plot = figure(x_axis_label="Date Time",y_axis_label="Price",
+                x_axis_type="datetime",toolbar_location="right",
+                tools= tools)
+    plot.sizing_mode = "stretch_both"
+
+    rangePlot = figure(height=100,x_axis_type="datetime",
+                        y_axis_type=None,toolbar_location=None,
+                        background_fill_color="#efefef")
+    rangePlot.sizing_mode = "stretch_width"
+        
+    rangeTool = RangeTool(x_range=plot.x_range)
+    rangeTool.overlay.fill_color = "navy"
+    rangeTool.overlay.fill_alpha = 0.2
+    rangePlot.add_tools(rangeTool)
+    rangePlot.toolbar.active_multi = 'auto'
     for symbolName in curGraphSelection:
         curDict = curGraphSelection[symbolName]
         df = stockData.getDailyData(symbolName)
@@ -132,25 +150,6 @@ def drawCurGraph():
         timeInterval = 60*1000
         timePeriod = curDict['graphDuration']
         graphCont = curDict['graphCont']
-        
-        panTool = PanTool(dimensions = 'width')
-        wheelZoomTool = WheelZoomTool()
-        tools = [panTool,wheelZoomTool]
-
-        plot = figure(x_axis_label="Date Time",y_axis_label="Price",
-                    x_axis_type="datetime",toolbar_location="right",
-                    tools= tools)
-        plot.sizing_mode = "stretch_both"
-
-        rangePlot = figure(height=100,x_axis_type="datetime",
-                            y_axis_type=None,toolbar_location=None,
-                            background_fill_color="#efefef")
-        rangePlot.sizing_mode = "stretch_width"
-        
-        rangeTool = RangeTool(x_range=plot.x_range)
-        rangeTool.overlay.fill_color = "navy"
-        rangeTool.overlay.fill_alpha = 0.2
-
         
         #rangePlot.toolbar.active_multi = rangeTool
 
@@ -171,19 +170,17 @@ def drawCurGraph():
                 case 'COMBINED':
                     drawCombinedGraph(symbolName,plot,df,timeInterval)
                     drawCombinedGraph(symbolName,rangePlot,df,timeInterval)
-        rangePlot.add_tools(rangeTool)
-        rangePlot.toolbar.active_multi = 'auto'
 
         #print("help is")
         #print(help(rangePlot.toolbar))
 
-        total = column(plot,rangePlot,sizing_mode="stretch_both")
-        script,div = components(total)
+    total = column(plot,rangePlot,sizing_mode="stretch_both")
+    script,div = components(total)
         
-        print("original div was:")
-        print(div)
-        div = div[:-7] + ' class="GraphDiv" ></div>'
-        return (script,div)
+    print("original div was:")
+    print(div)
+    div = div[:-7] + ' class="GraphDiv" ></div>'
+    return (script,div)
 @app.route('/dashboard') 
 def dashboard():
     if 'user_id' in session:
