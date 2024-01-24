@@ -197,7 +197,7 @@ def dashboard():
         print("curStockInfo is:")
         print(curStockInfo)
         return render_template('welcome.html', username=session['username'],
-        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo)
+        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection)
     else:
         return redirect(url_for('index'))
 
@@ -228,7 +228,6 @@ def stockselected ():
             'graphDuration' :['Daily'],
             'graphCont' : ['HIGH']
         }
-    # print(curStockInfo)
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':

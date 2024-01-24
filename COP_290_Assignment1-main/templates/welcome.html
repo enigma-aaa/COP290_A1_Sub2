@@ -33,7 +33,11 @@
         <div class="StockList">
             <form action="/selectStock" method="POST">
                 {% for stock in stockList %}
-                    <button type="submit" name="selectedStock" value="{{stock}}">{{stock}}</button>    
+                {% if stock in curGraphSelection %}
+                <button type="submit" name="selectedStock" value="{{stock}}" style="background-color: #4CAF50; color: white;">{{stock}}</button>    
+                {% else %}
+                <button type="submit" name="selectedStock" value="{{stock}}" color = #>{{stock}}</button>    
+                {% endif %}
                 <!-- <p class ="StockItem">{{stock}}</p>             -->
                 {% endfor%}
             </form>
