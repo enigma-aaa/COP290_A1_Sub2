@@ -28,7 +28,7 @@ selectedStocksList = []
 #}
 curGraphSelection = {
     'SBIN':{
-        'graphDuration':['DAILY'],
+        'graphDuration':'1_day' ,
         'graphCont':['HIGH']
     }
 }
@@ -132,7 +132,9 @@ def drawCurGraph():
     for symbolName in curGraphSelection:
         print(symbolName)
         curDict = curGraphSelection[symbolName]
-        df = stockData.getDailyData(symbolName)
+        duration_req = curDict['graphDuration']
+        print(duration_req + "hhhhhhhhhhhhhh")
+        df = stockData.controltime(symbolName,duration_req)
         curStockInfo = stockData.getInfo(symbolName)
         print("After calling func stockData is:")
         print(curStockInfo)
@@ -197,7 +199,7 @@ def dashboard():
         print("curStockInfo is:")
         print(curStockInfo)
         return render_template('welcome.html', username=session['username'],
-        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection)
+        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection )
     else:
         return redirect(url_for('index'))
 
@@ -208,8 +210,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-
-
 @app.route('/updateList',methods=['POST'])
 def updateList():
     stockName = request.form['search bar']
@@ -218,17 +218,25 @@ def updateList():
     return redirect(url_for('dashboard'))
 
 @app.route('/selectStock',methods=['POST']) 
-
 def stockselected ():
     stockName = request.form.get('selectedStock')
     if stockName in curGraphSelection : 
         del curGraphSelection[stockName]
     else : 
         curGraphSelection[stockName] = {
-            'graphDuration' :['Daily'],
+            'graphDuration' :'1_day',
             'graphCont' : ['HIGH']
         }
     return redirect(url_for('dashboard'))
+@app.route('/process_duration' , methods = ['POST'])
+def process_duration_fun() :
+    selected_dur = request.form.get('duration')
+    # print(selected_dur + 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+    print(selected_dur+"aaaaaaaaaaaaaa")
+    for x in curGraphSelection :
+        curGraphSelection[x]['graphDuration'] = selected_dur
+    return redirect(url_for('dashboard'))
+
 
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code
