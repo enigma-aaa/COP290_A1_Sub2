@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Welcome</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.3.3.min.js"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.3.3.min.js"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.3.3.min.js"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.3.3.min.js"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.3.3.min.js"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.3.3.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.3.3.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.3.3.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.3.3.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.3.3.min.js" crossorigin="anonymous"></script>
+
 <body class="StockList">
     <!--
     <div class="welcome-container">
@@ -23,9 +20,9 @@
     </div>
     -->
     <div class="StockListAndSearch">
-        <div class = "StockSearchDiv">
+        <div class="StockSearchDiv">
             <form action="/updateList" method="POST">
-                <input type ="search" name="search bar" class="SearchBar">
+                <input type="search" name="search bar" class="SearchBar">
                 <button type="submit">Submit</button>
 
             </form>
@@ -34,14 +31,19 @@
 <<<<<<< HEAD
             <form action="/selectStock" method="POST">
                 {% for stock in stockList %}
-                    <button type="submit" name="selectedStock" value="{{stock}}">{{stock}}</button>    
+                {% if stock in curGraphSelection %}
+                <button type="submit" name="selectedStock" value="{{stock}}"
+                    style="background-color: #4CAF50; color: white;">{{stock}}</button>
+                {% else %}
+                <button type="submit" name="selectedStock" value="{{stock}}" color=#>{{stock}}</button>
+                {% endif %}
                 <!-- <p class ="StockItem">{{stock}}</p>             -->
                 {% endfor%}
             </form>
         </div>
-        <div class = "debug">
+        <div class="debug">
             {% for stock in selectedStockList %}
-                <p>{{stock}}</p>
+            <p>{{stock}}</p>
             {% endfor %}
 
 =======
@@ -55,39 +57,126 @@
         <div class="LoginInfo">
             {{ username }}
         </div>
-        <div class = "StockInfoAndGraph">
-            <div class = "GraphContainer">
-                {{ div    | safe}}
+        <div class="StockInfoAndGraph">
+            <div class="GraphContainer">
+                {{ div | safe}}
                 {{ script | safe}}
             </div>
-            <div class = "StockInfo">
-              <table>
-                <tr><th>{{ curStockInfo['longName'] }}</th></tr>
-                <tr><th> Daily Summary</th></tr>
-                <tr><td>Opening Price</td><td>{{ curStockInfo['open']  }}</td></tr>
-                <tr><td>Previous Close</td><td>{{ curStockInfo['previousClose'] }}</td></tr>
-                <tr><td>Current Price</td><td>{{ curStockInfo['currentPrice'] }}</td></tr>
-                <tr><td>High</td><td>{{ curStockInfo['dayHigh'] }}</td></tr>
-                <tr><td>Low</td><td>{{ curStockInfo['dayLow'] }}</td></tr>
-                
-                <tr><th>Yearly Summary</th></tr>
-                <tr><td>Yearly Low</td><td>{{ curStockInfo['fiftyTwoWeekLow'] }}</td></tr>
-                <tr><td>Yearly High</td><td>{{ curStockInfo['fiftyTwoWeekHigh']}}</td></tr>
+            <div class="StockInfo">
+                <table>
+                    <tr>
+                        <th>{{ curStockInfo['longName'] }}</th>
+                    </tr>
+                    <tr>
+                        <th> Daily Summary</th>
+                    </tr>
+                    <tr>
+                        <td>Opening Price</td>
+                        <td>{{ curStockInfo['open'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Previous Close</td>
+                        <td>{{ curStockInfo['previousClose'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Current Price</td>
+                        <td>{{ curStockInfo['currentPrice'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>High</td>
+                        <td>{{ curStockInfo['dayHigh'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Low</td>
+                        <td>{{ curStockInfo['dayLow'] }}</td>
+                    </tr>
 
-                <tr><td>Trailing PE</td><td>{{ curStockInfo['trailingPE'] }}</td></tr>
-                <tr><td>Forward PE</td><td>{{ curStockInfo['forwardPE']}}</td></tr>
-                <tr><td></td></tr>
-                
-                <tr><td>Market Cap</td><td>{{ curStockInfo['marketCap'] }}</td></tr>
-                <tr><td>Forward Eps</td><td>{{ curStockInfo['forwardEps'] }}</td></tr>
-                <tr><td>Trailing Eps</td><td>{{ curStockInfo['trailingEps'] }}</td></tr>
-                <tr><td></td></tr>
-                
-                <tr><td>Book value</td><td>{{ curStockInfo['bookValue'] }}/td></td></tr>
-                <tr><td>Div Yield</td><td>{{ curStockInfo['dividendYield'] }}</td></tr>
-                <tr><td>ROE</td><td>{{ curStockInfo['returnOnEquity'] }}</td></tr>
-                <tr><td></td></tr>
-            </table>  
+                    <tr>
+                        <th>Yearly Summary</th>
+                    </tr>
+                    <tr>
+                        <td>Yearly Low</td>
+                        <td>{{ curStockInfo['fiftyTwoWeekLow'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Yearly High</td>
+                        <td>{{ curStockInfo['fiftyTwoWeekHigh']}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Trailing PE</td>
+                        <td>{{ curStockInfo['trailingPE'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Forward PE</td>
+                        <td>{{ curStockInfo['forwardPE']}}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Market Cap</td>
+                        <td>{{ curStockInfo['marketCap'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Forward Eps</td>
+                        <td>{{ curStockInfo['forwardEps'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Trailing Eps</td>
+                        <td>{{ curStockInfo['trailingEps'] }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td>Book value</td>
+                        <td>{{ curStockInfo['bookValue'] }}/td></td>
+                    </tr>
+                    <tr>
+                        <td>Div Yield</td>
+                        <td>{{ curStockInfo['dividendYield'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>ROE</td>
+                        <td>{{ curStockInfo['returnOnEquity'] }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
+                <div class="Choose Duration">
+                    <form action="/process_duration" method="POST">
+                        <label for="duration">Select Data Duration:</label>
+                        <select name="duration" id="duration">
+                            <option value="1_day" {% if selected_duration == '1_day' %} selected {% endif %}>1 Day</option>
+                            <option value="1_week" {% if selected_duration == '1_week' %} selected {% endif %}>1 Week</option>
+                            <option value="1_month" {% if selected_duration == '1_month' %} selected {% endif %}>1 Month</option>
+                            <option value="1_year" {% if selected_duration == '1_year' %} selected {% endif %}>1 Year</option>
+                            <option value="5_year" {% if selected_duration == '5_year' %} selected {% endif %}>5 Year</option>
+                            <option value="All" {% if selected_duration == 'All' %} selected {% endif %}>All</option>
+                        </select>
+
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="Choose Graph Type">
+                    <form action="/process_graph_options" method="POST">
+                        <label>Select Graph Types:</label><br>
+                    
+                        <input type="checkbox" name="graph_options[]" value="OPEN"> Open<br>
+                        <input type="checkbox" name="graph_options[]" value="CLOSE"> Close<br>
+                        <input type="checkbox" name="graph_options[]" value="LOW"> Low<br>
+                        <input type="checkbox" name="graph_options[]" value="HIGH"> High<br>
+                        <input type="checkbox" name="graph_options[]" value="COMBINED"> Combined<br>
+                        <!-- <input type="checkbox" name="graph_options[]" value="radar_chart"> Radar Chart<br> -->
+                    
+                        <button type="submit">Submit</button>
+                    </form>
+                    
+                </div>
             </div>
         </div>
     </div>

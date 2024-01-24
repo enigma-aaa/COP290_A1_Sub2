@@ -16,9 +16,11 @@ app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-stockList = ["SBIN","ONGC","COAL"]
+stockList = ["SBIN","ONGC","TATASTEEL"]
 curStockInfo = {}
 selectedStocksList = []
+selected_duration = '1_day'
+last_selected = 'SBIN'
 #should contain an array of dict's with each dict of the form
 #{
 #    'SBIN':{
@@ -28,7 +30,7 @@ selectedStocksList = []
 #}
 curGraphSelection = {
     'SBIN':{
-        'graphDuration':['DAILY'],
+        'graphDuration':'1_day' ,
         'graphCont':['HIGH']
     }
 }
@@ -142,7 +144,9 @@ def drawCurGraph():
     for symbolName in curGraphSelection:
         print(symbolName)
         curDict = curGraphSelection[symbolName]
-        df = stockData.getDailyData(symbolName)
+        duration_req = curDict['graphDuration']
+        # print(duration_req + "hhhhhhhhhhhhhh")
+        df = stockData.controltime(symbolName,duration_req)
         curStockInfo = stockData.getInfo(symbolName)
         print("After calling func stockData is:")
         print(curStockInfo)
@@ -153,7 +157,8 @@ def drawCurGraph():
         graphCont = curDict['graphCont']
         
         #rangePlot.toolbar.active_multi = rangeTool
-
+        print(graphCont)
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         for elm in graphCont:
             match elm:
                 case 'OPEN':
@@ -206,7 +211,7 @@ def dashboard():
         print("curStockInfo is:")
         print(curStockInfo)
         return render_template('welcome.html', username=session['username'],
-        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo)
+        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection ,selected_duration = selected_duration )
     else:
         return redirect(url_for('index'))
 
@@ -217,8 +222,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-
-
 @app.route('/updateList',methods=['POST'])
 def updateList():
     stockName = request.form['search bar']
@@ -227,25 +230,39 @@ def updateList():
     return redirect(url_for('dashboard'))
 
 @app.route('/selectStock',methods=['POST']) 
-
-# def stockselected : 
-# curGraphSelection = {
-#     'SBIN':{
-#         'graphDuration':['DAILY'],
-#         'graphCont':['COMBINED']
-#     }
-# }
 def stockselected ():
     stockName = request.form.get('selectedStock')
-    print(stockName + "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
-    # selectedStocksList.append(stockName)
-    # curStockInfo.remove('SBIN')
-    # curGraphSelection.clear()
-    curGraphSelection[stockName] = {
-        'graphDuration' :['Daily'],
-        'graphCont' : ['HIGH']
-    }
-    # print(curStockInfo)
+
+    if stockName in curGraphSelection : 
+        del curGraphSelection[stockName]
+    else : 
+        curGraphSelection[stockName] = {
+            'graphDuration' :'1_day',
+            'graphCont' : ['HIGH']
+        }
+    if len(list(curGraphSelection.items)) >=1 : 
+        last_selected = list(curGraphSelection.items)[-1]
+    else :
+        last_selected = ''
+    return redirect(url_for('dashboard'))
+@app.route('/process_duration' , methods = ['POST'])
+def process_duration_fun() :
+    selected_duration = request.form.get('duration','1_day')
+    # print(selected_dur + 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+    # print(selected_dur+"aaaaaaaaaaaaaa")
+    for x in curGraphSelection :
+        curGraphSelection[x]['graphDuration'] = selected_duration
+    return redirect(url_for('dashboard'))
+
+
+@app.route('/process_graph_options' ,methods = ['POST'])
+def process_graph_options() :
+    list_of_graphs = request.form.getlist('graph_options[]')
+    print(list_of_graphs)
+    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+    print(last_selected)
+    curGraphSelection[last_selected]['graphCont'] = list_of_graphs
+    print(curGraphSelection)
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
