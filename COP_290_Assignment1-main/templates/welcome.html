@@ -31,7 +31,6 @@
             </form>
         </div>
         <div class="StockList">
-<<<<<<< HEAD
             <form action="/selectStock" method="POST">
                 {% for stock in stockList %}
                     <button type="submit" name="selectedStock" value="{{stock}}">{{stock}}</button>    
@@ -43,12 +42,6 @@
             {% for stock in selectedStockList %}
                 <p>{{stock}}</p>
             {% endfor %}
-
-=======
-            {% for stock in stockList %}
-                <p class ="StockItem">{{stock}}</p>            
-            {% endfor%}
->>>>>>> origin/main
         </div>
     </div>
     <div class="GraphAndStockInfo">
