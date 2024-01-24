@@ -19,6 +19,8 @@ db = SQLAlchemy(app)
 stockList = ["SBIN","ONGC","TATASTEEL"]
 curStockInfo = {}
 selectedStocksList = []
+selected_duration = '1_day'
+last_selected = 'SBIN'
 #should contain an array of dict's with each dict of the form
 #{
 #    'SBIN':{
@@ -133,7 +135,7 @@ def drawCurGraph():
         print(symbolName)
         curDict = curGraphSelection[symbolName]
         duration_req = curDict['graphDuration']
-        print(duration_req + "hhhhhhhhhhhhhh")
+        # print(duration_req + "hhhhhhhhhhhhhh")
         df = stockData.controltime(symbolName,duration_req)
         curStockInfo = stockData.getInfo(symbolName)
         print("After calling func stockData is:")
@@ -151,7 +153,8 @@ def drawCurGraph():
 
         
         #rangePlot.toolbar.active_multi = rangeTool
-
+        print(graphCont)
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         for elm in graphCont:
             match elm:
                 case 'OPEN':
@@ -199,7 +202,7 @@ def dashboard():
         print("curStockInfo is:")
         print(curStockInfo)
         return render_template('welcome.html', username=session['username'],
-        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection )
+        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection ,selected_duration = selected_duration )
     else:
         return redirect(url_for('index'))
 
@@ -220,6 +223,7 @@ def updateList():
 @app.route('/selectStock',methods=['POST']) 
 def stockselected ():
     stockName = request.form.get('selectedStock')
+
     if stockName in curGraphSelection : 
         del curGraphSelection[stockName]
     else : 
@@ -227,16 +231,30 @@ def stockselected ():
             'graphDuration' :'1_day',
             'graphCont' : ['HIGH']
         }
+    if len(list(curGraphSelection.items)) >=1 : 
+        last_selected = list(curGraphSelection.items)[-1]
+    else :
+        last_selected = ''
     return redirect(url_for('dashboard'))
 @app.route('/process_duration' , methods = ['POST'])
 def process_duration_fun() :
-    selected_dur = request.form.get('duration')
+    selected_duration = request.form.get('duration','1_day')
     # print(selected_dur + 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
-    print(selected_dur+"aaaaaaaaaaaaaa")
+    # print(selected_dur+"aaaaaaaaaaaaaa")
     for x in curGraphSelection :
-        curGraphSelection[x]['graphDuration'] = selected_dur
+        curGraphSelection[x]['graphDuration'] = selected_duration
     return redirect(url_for('dashboard'))
 
+
+@app.route('/process_graph_options' ,methods = ['POST'])
+def process_graph_options() :
+    list_of_graphs = request.form.getlist('graph_options[]')
+    print(list_of_graphs)
+    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+    print(last_selected)
+    curGraphSelection[last_selected]['graphCont'] = list_of_graphs
+    print(curGraphSelection)
+    return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code

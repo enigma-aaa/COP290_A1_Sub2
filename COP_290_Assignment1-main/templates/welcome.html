@@ -145,16 +145,31 @@
                     <form action="/process_duration" method="POST">
                         <label for="duration">Select Data Duration:</label>
                         <select name="duration" id="duration">
-                            <option value="1_day">1 Day</option>
-                            <option value="1_week">1 Week</option>
-                            <option value="1_month">1 Month</option>
-                            <option value="1_year">1 Year</option>
-                            <option value="5_year">5 Year</option>
-                            <option value="All">All</option>
+                            <option value="1_day" {% if selected_duration == '1_day' %} selected {% endif %}>1 Day</option>
+                            <option value="1_week" {% if selected_duration == '1_week' %} selected {% endif %}>1 Week</option>
+                            <option value="1_month" {% if selected_duration == '1_month' %} selected {% endif %}>1 Month</option>
+                            <option value="1_year" {% if selected_duration == '1_year' %} selected {% endif %}>1 Year</option>
+                            <option value="5_year" {% if selected_duration == '5_year' %} selected {% endif %}>5 Year</option>
+                            <option value="All" {% if selected_duration == 'All' %} selected {% endif %}>All</option>
                         </select>
 
                         <button type="submit">Submit</button>
                     </form>
+                </div>
+                <div class="Choose Graph Type">
+                    <form action="/process_graph_options" method="POST">
+                        <label>Select Graph Types:</label><br>
+                    
+                        <input type="checkbox" name="graph_options[]" value="OPEN"> Open<br>
+                        <input type="checkbox" name="graph_options[]" value="CLOSE"> Close<br>
+                        <input type="checkbox" name="graph_options[]" value="LOW"> Low<br>
+                        <input type="checkbox" name="graph_options[]" value="HIGH"> High<br>
+                        <input type="checkbox" name="graph_options[]" value="COMBINED"> Combined<br>
+                        <!-- <input type="checkbox" name="graph_options[]" value="radar_chart"> Radar Chart<br> -->
+                    
+                        <button type="submit">Submit</button>
+                    </form>
+                    
                 </div>
             </div>
         </div>
