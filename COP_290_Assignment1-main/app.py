@@ -199,12 +199,12 @@ def dashboard():
         #p1.line(df['DATE'],df['CLOSE'],legend_label="Stock Close",line_width=2)
         #p1.line(df['DATE'],df['HIGH'],legend_label="Stock High",line_width=2)
         script1,div1 = drawCurGraph()
-        print("Script is:")
-        print(script1)
-        print("div is:")
-        print(div1)
-        print("curStockInfo is:")
-        print(curStockInfo)
+        #print("Script is:")
+        #print(script1)
+        #print("div is:")
+        #print(div1)
+        #print("curStockInfo is:")
+        #print(curStockInfo)
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo)
     else:

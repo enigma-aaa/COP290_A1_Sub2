@@ -10,11 +10,11 @@ def getData(symbolName,period,interval):
     symbolTicker = yf.Ticker(symbolName)
     symbolHistory  = symbolTicker.history(period=period,interval=interval)
     symbolHistory.reset_index(inplace=True) 
-    print("Columns in df are:")
-    for col in symbolHistory:
-        print("col is:",col)
-    print("df is:")
-    print(symbolHistory)
+    #print("Columns in df are:")
+    #for col in symbolHistory:
+        #print("col is:",col)
+    #print("df is:")
+    #print(symbolHistory)
     symbolHistory['Datetime'] = pd.to_datetime(symbolHistory['Datetime'])
     return symbolHistory
 def getDailyData(symbolName):
