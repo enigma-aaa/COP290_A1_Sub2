@@ -16,7 +16,7 @@ app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-stockList = ["SBIN","ONGC","COAL"]
+stockList = ["SBIN","ONGC","TATASTEEL"]
 curStockInfo = {}
 selectedStocksList = []
 #should contain an array of dict's with each dict of the form
@@ -219,23 +219,15 @@ def updateList():
 
 @app.route('/selectStock',methods=['POST']) 
 
-# def stockselected : 
-# curGraphSelection = {
-#     'SBIN':{
-#         'graphDuration':['DAILY'],
-#         'graphCont':['COMBINED']
-#     }
-# }
 def stockselected ():
     stockName = request.form.get('selectedStock')
-    print(stockName + "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
-    # selectedStocksList.append(stockName)
-    # curStockInfo.remove('SBIN')
-    # curGraphSelection.clear()
-    curGraphSelection[stockName] = {
-        'graphDuration' :['Daily'],
-        'graphCont' : ['HIGH']
-    }
+    if stockName in curGraphSelection : 
+        del curGraphSelection[stockName]
+    else : 
+        curGraphSelection[stockName] = {
+            'graphDuration' :['Daily'],
+            'graphCont' : ['HIGH']
+        }
     # print(curStockInfo)
     return redirect(url_for('dashboard'))
 
