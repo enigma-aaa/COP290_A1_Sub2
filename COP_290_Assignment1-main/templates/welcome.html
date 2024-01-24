@@ -4,11 +4,79 @@
     <title>Welcome</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.3.3.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.3.3.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.3.3.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.3.3.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.3.3.min.js"
+        crossorigin="anonymous"></script>
+<body class="StockList">
+    <!--
     <div class="welcome-container">
         <h1>Welcome, {{ username }}!</h1>
         <p>This is your dashboard.</p>
         <a href="/logout" class="logout-button">Logout</a>
     </div>
+    -->
+    <div class="StockListAndSearch">
+        <div class = "StockSearchDiv">
+            <form action="/updateList" method="POST">
+                <input type ="search" name="search bar" class="SearchBar">
+                <button type="submit">Submit</button>
+
+            </form>
+        </div>
+        <div class="StockList">
+            {% for stock in stockList %}
+                <p class ="StockItem">{{stock}}</p>            
+            {% endfor%}
+        </div>
+    </div>
+    <div class="GraphAndStockInfo">
+        <div class="LoginInfo">
+            {{ username }}
+        </div>
+        <div class = "StockInfoAndGraph">
+            <div class = "GraphContainer">
+                {{ div    | safe}}
+                {{ script | safe}}
+            </div>
+            <div class = "StockInfo">
+              <table>
+                <tr><th>{{ curStockInfo['longName'] }}</th></tr>
+                <tr><th> Daily Summary</th></tr>
+                <tr><td>Opening Price</td><td>{{ curStockInfo['open']  }}</td></tr>
+                <tr><td>Previous Close</td><td>{{ curStockInfo['previousClose'] }}</td></tr>
+                <tr><td>Current Price</td><td>{{ curStockInfo['currentPrice'] }}</td></tr>
+                <tr><td>High</td><td>{{ curStockInfo['dayHigh'] }}</td></tr>
+                <tr><td>Low</td><td>{{ curStockInfo['dayLow'] }}</td></tr>
+                
+                <tr><th>Yearly Summary</th></tr>
+                <tr><td>Yearly Low</td><td>{{ curStockInfo['fiftyTwoWeekLow'] }}</td></tr>
+                <tr><td>Yearly High</td><td>{{ curStockInfo['fiftyTwoWeekHigh']}}</td></tr>
+
+                <tr><td>Trailing PE</td><td>{{ curStockInfo['trailingPE'] }}</td></tr>
+                <tr><td>Forward PE</td><td>{{ curStockInfo['forwardPE']}}</td></tr>
+                <tr><td></td></tr>
+                
+                <tr><td>Market Cap</td><td>{{ curStockInfo['marketCap'] }}</td></tr>
+                <tr><td>Forward Eps</td><td>{{ curStockInfo['forwardEps'] }}</td></tr>
+                <tr><td>Trailing Eps</td><td>{{ curStockInfo['trailingEps'] }}</td></tr>
+                <tr><td></td></tr>
+                
+                <tr><td>Book value</td><td>{{ curStockInfo['bookValue'] }}/td></td></tr>
+                <tr><td>Div Yield</td><td>{{ curStockInfo['dividendYield'] }}</td></tr>
+                <tr><td>ROE</td><td>{{ curStockInfo['returnOnEquity'] }}</td></tr>
+                <tr><td></td></tr>
+            </table>  
+            </div>
+        </div>
+    </div>
 </body>
+
+
 </html>
