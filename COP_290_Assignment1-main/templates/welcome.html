@@ -48,7 +48,7 @@
             <div class="StockList">
                 <form action="/selectStock" method="POST">
                     {% for stock in stockList %}
-                    {% if stock in curGraphSelection %}
+                    {% if stock == currentlySelected %}
                     <button type="submit" name="selectedStock" value="{{stock}}"
                         style="background-color: #4CAF50; color: white;">{{stock}}</button>
                     {% else %}
@@ -165,6 +165,7 @@
                     <form action="/process_duration" method="POST">
                         <label for="duration">Select Data Duration:</label>
                         <select name="duration" id="duration" onchange="this.form.submit()">
+                            
                             <option value="1_day" {% if selected_duration=='1_day' %} selected {% endif %}>1 Day
                             </option>
                             <option value="1_week" {% if selected_duration=='1_week' %} selected {% endif %}>1 Week
@@ -176,6 +177,7 @@
                             <option value="5_year" {% if selected_duration=='5_year' %} selected {% endif %}>5 Year
                             </option>
                             <option value="All" {% if selected_duration=='All' %} selected {% endif %}>All</option>
+                            
                         </select>
 
                         <!-- <button type="submit">Submit</button> -->

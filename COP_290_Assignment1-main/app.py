@@ -38,6 +38,7 @@ selected_graphs = {
     "COMBINED" : False
 }
 last_selected = 'SBIN'
+currentlySelected = "SBIN"
 curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
@@ -119,7 +120,7 @@ def drawLowGraph(symbolName,plot,df):
 #the blocks represent opening and closing prices
 def drawCombinedGraph(symbolName,plot,df,timeInterval):
     #this draws the segemnt from the opening to the closing price
-    plot.segment(df.Datetime,df.High,df.Datetime,df.Low,color="black")
+    plot.segment(df.Datetime,df.High,df.Datetime,df.Low,color="black",legend_label=symbolName+" Combined")
     #different plots for open price above close price and 
     #close price above open price
     #boolean arrs to show whether opening price is above or below closing price
@@ -135,13 +136,11 @@ def drawCombinedGraph(symbolName,plot,df,timeInterval):
 #is supposed to get the data corresponding to the data frames and all the time frames
 #like daily monthly and store it in the dataFrameDict which is refrenced in the render_tempalte() function
 def getStockDataFrameInfo():
-    global curStockInfo
     dataFrameDict = {}
     for symbolName in curGraphSelection:
         curDict = curGraphSelection[symbolName]
         duration_req = curDict['graphDuration']
         df = stockData.controltime(symbolName,duration_req)
-        curStockInfo = stockData.getInfo(symbolName)
         dataFrameDict[symbolName] = df
     return dataFrameDict
 
@@ -149,7 +148,6 @@ def getStockDataFrameInfo():
 #the corresponding graphs of the symbolName such as HIGH,LOW,COMBINED
 #requested for SBIN then draws that
 def drawCurGraphAndTable(dataFrameDict):
-    global curStockInfo
     #creating the panTool and wheel zoom tool which is available to 
     #naigate across the graph
     panTool = PanTool(dimensions = 'width')
@@ -184,7 +182,6 @@ def drawCurGraphAndTable(dataFrameDict):
         duration_req = curDict['graphDuration']
 
         df = dataFrameDict[symbolName]
-        curStockInfo = stockData.getInfo(symbolName)
         timeInterval = 60*1000 
         #time interval corresponding to one min in miili seconds 
         #this is used to find the width of the bar graph 
@@ -230,7 +227,8 @@ def dashboard():
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
-        selected_duration = selected_duration,dataFrameDict=dataFrameDict , selected_graphs=selected_graphs )
+        selected_duration = selected_duration,dataFrameDict=dataFrameDict , selected_graphs=selected_graphs,
+        currentlySelected = currentlySelected)
     else:
         return redirect(url_for('index'))
 
@@ -252,10 +250,16 @@ def updateList():
 #select stock function adds the stock symbol currently selected to the dictionary of graphs we want to draw
 def stockselected ():
     global last_selected
+    global curStockInfo
+    global currentlySelected
     stockName = request.form.get('selectedStock')
-
     #in our current assumption when we clicked a selected stock we deselect it and 
     #remove it fromt the list of graphs we are drawing
+    
+    if stockName != currentlySelected:
+        currentlySelected = stockName
+        curStockInfo = stockData.getInfo(stockName)
+
     if stockName in curGraphSelection : 
         del curGraphSelection[stockName]
     else : 
