@@ -101,6 +101,8 @@ div.GraphContainer{
 table.StockDataTable{
     border-collapse: collapse;
     border: 1px solid;
+    width: 100%;
+    text-align: center;
 }
 th.StockDataTable{
     border: 1px solid;
@@ -116,6 +118,8 @@ tr.StockDataTable:nth-child(even){
 }
 td.StockDataTable{
     border: 1px solid;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 td.TableHeading{
     font-size: 32px;
