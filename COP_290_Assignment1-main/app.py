@@ -227,7 +227,6 @@ def dashboard():
     if 'user_id' in session:
         dataFrameDict = getStockDataFrameInfo()
         script1,div1 = drawCurGraphAndTable(dataFrameDict)
-
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
