@@ -308,6 +308,15 @@ def process_graph_options() :
         graphTypeDict[elm] = True
     return redirect(url_for('dashboard'))
 
+
+@app.route('/process_mode_change' , methods=['POST'])
+def process_mode_change() :
+    global mode
+    mode = request.form.get('graph-mode')
+    print("came here")
+    print(mode)
+    return redirect(url_for('dashboard'))
+
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code
     app.run(debug=True)
