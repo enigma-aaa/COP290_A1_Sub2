@@ -1,14 +1,11 @@
 /* style.css */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f2f2f2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
 
+.column{
+    flex : 1 ;
+    /* padding: 20px; */
+    border: 1px solid #ddd;
+    /* box-sizing: border-box; */
+}
 .login-container {
     background-color: white;
     padding: 40px;
@@ -39,9 +36,9 @@ button {
     padding: 10px;
     border: none;
     background-color: #007bff;
-
+    
 }
-    /* Add this to your existing style.css */
+/* Add this to your existing style.css */
 
 .welcome-container {
     text-align: center;
@@ -49,7 +46,7 @@ button {
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    /* width: 300px; */
     margin: auto;
 }
 
@@ -70,17 +67,6 @@ button {
     background-color: #c82333;
 }
 
-div.StockListAndSearch{
-    width: 20%;
-    height:100%;
-    background-color: gray;
-    align-items:flex-start;
-}
-div.GraphAndStockInfo{
-    width:80%;
-    height:100%;
-    background-color: rebeccapurple;
-}
 div.LoginInfo{
     width:100%;
     height:10%;
@@ -89,14 +75,93 @@ div.LoginInfo{
     text-align: right;
     color: white;
 }
-div.GraphDiv{
-    width:100%;
-    height:100%;
-    background-color: turquoise;
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* height: 100vh; */
+    margin: 0;
+    padding: 0;
+}
+header{
+    /* width : 100% ;
+     */
+     padding : 10px;
+     text-align: center;
+     height : 40% ;
+    /* position : relative */
+}
+.navbar{
+    list-style-type: none;
+    margin : 0;
+    padding : 0 ;
+    /* width : 100%; */
+}
+nav{
+    height : 100% ;
+}
+
+nav ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li{
+    display: inline;
+    margin-right: 15px;
+}
+
+main
+{
+    display: flex;
+    /* flex-wrap: wrap;
+     */
+     justify-content: space-between;
+     /* padding: 20px; */
+     height: 100vh;
+}
+div.StockListAndSearch{
+    /* width: 20%; */
+    /* height:80%; */
+    background-color: gray;
+    align-items:flex-start;
+    flex :20 ;
+    /* display: ; */
+}
+/* div.GraphDiv{
+    /* width:100%; */
+    /* height:100%; */
+    /* background-color: turquoise; */
+    /* } */ 
+div.Graph{
+    /* width:80%; */
+    /* height:100%; */
+    /* width : 60% ; */
+    background-color: rebeccapurple;
+    align-items: flex-start;
+    flex : 60 ;
+     
 }
 div.GraphContainer{
-    width: 80%;
-    height: 100%;
+    /* width: 80%; */
+    align-items: flex-start;
+    /* display: ; */
+    /* height : auto ; */
+    height: 95%;
+    width: 100%;
+    color: white;
+}
+
+.buttons-over-graph{
+    position: absolute;
+    top: 15%;
+    left: 35%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    text-align: center;
 }
 table.StockDataTable{
     border-collapse: collapse;
@@ -148,15 +213,16 @@ div.IndividualTable{
     margin-top: 30px;
 }
 div.StockSearchDiv{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    /* display: flex; */
+    /* justify-content: space-between; */
+    /* width: 100%; */
     align-items: center;
 }
 div.StockInfo{
-    width: 20%;
-    height: 100%;
+    /* width: 20%; */
+    /* height: 100%; */
     background-color: turquoise;
+    flex : 20 ;
 }
 div.StockInfoAndGraph{
     position: relative;
@@ -165,9 +231,10 @@ div.StockInfoAndGraph{
 }
 input.SearchBar{
     font-size: 32px;
-    padding: 10px;
-    margin: 5px;
-    width: 75%;
+    /* padding: 10px; */
+    /* margin: 5px; */
+    /* width : 100% ; */
+    /* width: 75%; */
 }
 p.StockItem{
     padding: 10px;
