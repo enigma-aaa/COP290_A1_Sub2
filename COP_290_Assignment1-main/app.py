@@ -7,7 +7,7 @@ from bokeh.models import RangeTool,PanTool,WheelZoomTool
 from bokeh.layouts import column,layout
 import pandas as pd
 import stockData
-print("It came hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+
 initial = 1
 app = Flask(__name__)
 #change secret key later
@@ -32,11 +32,11 @@ curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
         'graphCont':{
-        "HIGH" : True ,
-        "LOW" : False,
-        "OPEN" : False ,
-        "CLOSE" : False ,
-        "COMBINED" : False
+    "HIGH" : True ,
+    "LOW" : False,
+    "OPEN" : False ,
+    "CLOSE" : False ,
+    "COMBINED" : False
         }
     }
 }
@@ -264,7 +264,15 @@ def stockselected ():
     else : 
         curGraphSelection[stockName] = {
             'graphDuration' :'1_day',
-            'graphCont' : ['HIGH']
+            'graphCont' : {
+
+    "HIGH" : True ,
+    "LOW" : False,
+    "OPEN" : False ,
+    "CLOSE" : False ,
+    "COMBINED" : False
+        
+            }
         }
     if len(list(curGraphSelection.keys())) >=1 : 
         last_selected = list(curGraphSelection.keys())[-1]
@@ -313,7 +321,11 @@ def process_graph_options() :
     # print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
     print(last_selected)
     print("printing graph selection from process_gaph_options")
-    curGraphSelection[last_selected]['graphCont'] = selected_graphs
+    if last_selected == '' : 
+        for x in selected_graphs :
+            selected_graphs[x] = False 
+    else :
+        curGraphSelection[last_selected]['graphCont'] = selected_graphs
     print(curGraphSelection)
     return redirect(url_for('dashboard'))
 
