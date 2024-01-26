@@ -7,7 +7,8 @@ from bokeh.models import RangeTool,PanTool,WheelZoomTool
 from bokeh.layouts import column,layout
 import pandas as pd
 import stockData
-
+import colorsys
+import colorGenerator
 initial = 1
 app = Flask(__name__)
 #change secret key later
@@ -39,6 +40,13 @@ currentlySelected = "SBIN"
 curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
+        'color':{
+            "HIGH":colorGenerator.genColor(),
+            "LOW":colorGenerator.genColor(),
+            "OPEN":colorGenerator.genColor(),
+            "CLOSE":colorGenerator.genColor(),
+            "COMBINED":colorGenerator.genColor()
+        },
         'graphCont':{
             "HIGH" : True ,
             "LOW" : False,
@@ -49,6 +57,13 @@ curGraphSelection = {
     },
     'ONGC':{
         'graphDuration':'1_day',
+        'color':{
+            "HIGH":colorGenerator.genColor(),
+            "LOW":colorGenerator.genColor(),
+            "OPEN":colorGenerator.genColor(),
+            "CLOSE":colorGenerator.genColor(),
+            "COMBINED":colorGenerator.genColor()
+        },
         'graphCont':{
             "HIGH":True,
             "LOW":False,
@@ -59,6 +74,13 @@ curGraphSelection = {
     },
     'TATASTEEL':{
         'graphDuration':'1_day',
+        'color':{
+            "HIGH":colorGenerator.genColor(),
+            "LOW":colorGenerator.genColor(),
+            "OPEN":colorGenerator.genColor(),
+            "CLOSE":colorGenerator.genColor(),
+            "COMBINED":colorGenerator.genColor()
+        },
         'graphCont':{
             "HIGH":True,
             "LOW":False,
@@ -120,24 +142,29 @@ def login():
         flash('Invalid username or password')
         return redirect(url_for('index'))
 
-#code for drawing the open prices of the stock available in the dataframe
+
 def drawOpenGraph(symbolName,plot,df):
-    plot.line(df['Datetime'],df['Open'],legend_label=symbolName+" Open",line_width=2)
+    color = colorGenerator.genColor()
+    plot.line(df['Datetime'],df['Open'],legend_label=symbolName+" Open",line_width=2,color = color)
 #code for drawing the close prices of the stock available in the dataframe
 def drawCloseGraph(symbolName,plot,df):
-    plot.line(df['Datetime'],df['Close'],legend_label=symbolName+" Close",line_width=2)
+    color = colorGenerator.genColor()
+    plot.line(df['Datetime'],df['Close'],legend_label=symbolName+" Close",line_width=2,color=color)
 #code for drawing the high prices
 def drawHighGraph(symbolName,plot,df):
-    plot.line(df['Datetime'],df['High'],legend_label=symbolName+" High",line_width=2)
+    color = colorGenerator.genColor()
+    plot.line(df['Datetime'],df['High'],legend_label=symbolName+" High",line_width=2,color=color)
 #code for drawing the low prices
 def drawLowGraph(symbolName,plot,df):
-    plot.line(df['Datetime'],df['Low'],legend_label=symbolName+" Low",line_width=2)
+    color = colorGenerator.genColor()
+    plot.line(df['Datetime'],df['Low'],legend_label=symbolName+" Low",line_width=2,color=color)
 #code for drawing a combined candle stick graph to consisting of 
 #high low prices as segments
 #the blocks represent opening and closing prices
 def drawCombinedGraph(symbolName,plot,df,timeInterval):
     #this draws the segemnt from the opening to the closing price
-    plot.segment(df.Datetime,df.High,df.Datetime,df.Low,color="black",legend_label=symbolName+" Combined")
+    color = colorGenerator.genColor()
+    plot.segment(df.Datetime,df.High,df.Datetime,df.Low,color=color,legend_label=symbolName+" Combined")
     #different plots for open price above close price and 
     #close price above open price
     #boolean arrs to show whether opening price is above or below closing price
@@ -260,6 +287,13 @@ def updateList():
         stockList.append(stockName)
         curGraphSelection[stockName] = {
         'graphDuration':'1_day',
+        'color':{
+            "HIGH":colorGenerator.genColor(),
+            "LOW":colorGenerator.genColor(),
+            "OPEN":colorGenerator.genColor(),
+            "CLOSE":colorGenerator.genColor(),
+            "COMBINED":colorGenerator.genColor()
+        },
         'graphCont':{
                 "HIGH":True,
                 "LOW":False,
