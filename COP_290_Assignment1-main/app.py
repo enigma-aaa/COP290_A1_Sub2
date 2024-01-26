@@ -13,8 +13,6 @@ app = Flask(__name__)
 #change secret key later
 app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 
-# Database Configuration
-# if initial == 1 :
 selected_duration = '1_day'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -30,23 +28,16 @@ selected_graphs = {
     "COMBINED" : False
 }
 last_selected = 'SBIN'
-#should contain an array of dict's with each dict of the form
-#{
-#    'SBIN':{
-#        'graphDuration':['DAILY'],
-#        'graphCont':['OPEN','CLOSE','HIGH','LOW','COMBINED']
-#    }
-#}
 curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
         'graphCont':{
-    "HIGH" : True ,
-    "LOW" : False,
-    "OPEN" : False ,
-    "CLOSE" : False ,
-    "COMBINED" : False
-}
+        "HIGH" : True ,
+        "LOW" : False,
+        "OPEN" : False ,
+        "CLOSE" : False ,
+        "COMBINED" : False
+        }
     }
 }
 
