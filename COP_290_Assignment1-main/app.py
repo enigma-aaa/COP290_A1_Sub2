@@ -258,7 +258,7 @@ def logout():
 
 @app.route('/updateList',methods=['POST'])
 def updateList():
-    stockName = request.form['search bar']
+    stockName = request.form['search_bar']
     if stockName not in stockList:
         stockList.append(stockName)
     return redirect(url_for('dashboard'))
