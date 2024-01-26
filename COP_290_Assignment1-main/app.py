@@ -163,8 +163,8 @@ def drawCurGraph():
         # print(duration_req + "hhhhhhhhhhhhhh")
         df = stockData.controltime(symbolName,duration_req)
         curStockInfo = stockData.getInfo(symbolName)
-        print("After calling func stockData is:")
-        print(curStockInfo)
+        # print("After calling func stockData is:")
+        # print(curStockInfo)
         #time interval defiend here too
         #for daily one min interval in milli seconds
         timeInterval = 60*1000
@@ -172,8 +172,8 @@ def drawCurGraph():
         graphCont = curDict['graphCont']
         
         #rangePlot.toolbar.active_multi = rangeTool
-        print(graphCont)
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        # print(graphCont)
+        # print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         for elm in graphCont:
             if graphCont[elm] :
                 match elm:
@@ -199,12 +199,12 @@ def drawCurGraph():
     total = column(plot,rangePlot,sizing_mode="stretch_both")
     script,div = components(total)
         
-    print("original div was:")
-    print(div)
+    # print("original div was:")
+    # print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div)
-    print("original div was:")
-    print(div)
+    # print("original div was:")
+    # print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div)
 @app.route('/dashboard') 
@@ -220,13 +220,13 @@ def dashboard():
         #p1.line(df['DATE'],df['CLOSE'],legend_label="Stock Close",line_width=2)
         #p1.line(df['DATE'],df['HIGH'],legend_label="Stock High",line_width=2)
         script1,div1 = drawCurGraph()
-        print("Script is:")
-        print(script1)
-        print("div is:")
-        print(div1)
-        print("curStockInfo is:")
-        print(curStockInfo)
-        print(selected_duration + "ggggggggggggggggggggggggggggggggggggggggggggggg")
+        # print("Script is:")
+        # print(script1)
+        # print("div is:")
+        # print(div1)
+        # print("curStockInfo is:")
+        # print(curStockInfo)
+        # print(selected_duration + "ggggggggggggggggggggggggggggggggggggggggggggggg")
 
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection ,selected_duration = selected_duration , selected_graphs=selected_graphs )
@@ -280,11 +280,20 @@ def process_duration_fun() :
 @app.route('/process_graph_options' ,methods = ['POST'])
 def process_graph_options() :
     global selected_graphs 
-    graphs_selected_now = request.form.get('graph_selected')
-    if selected_graphs[graphs_selected_now] :
-        selected_graphs[graphs_selected_now] = False
-    else :
-        selected_graphs[graphs_selected_now] = True
+    global curGraphSelection
+    list_of_graphs = request.form.getlist("graph_options[]")
+
+    # print(graphs_selected_now + "llllllllllllllllllllllllllllllllllllllll")
+    # print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+    for x in selected_graphs :
+        if x in list_of_graphs:
+            selected_graphs[x] = True 
+        else :
+            selected_graphs[x] = False 
+    # if selected_graphs[graphs_selected_now] :
+    #     selected_graphs[graphs_selected_now] = False
+    # else :
+    #     selected_graphs[graphs_selected_now] = True
     # if(len(list_of_graphs) == 0) :
         # return redirect(url_for('dashboard'))
     # if(list_of_graphs[-1] in selected_graphs ) :
@@ -293,9 +302,10 @@ def process_graph_options() :
         # selected_graphs.append(list_of_graphs[-1])
     
     # selected_graphs[graphs_selected_now] = true 
-    print(list_of_graphs)
-    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+    # print(list_of_graphs)
+    # print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
     print(last_selected)
+    print("printing graph selection from process_gaph_options")
     curGraphSelection[last_selected]['graphCont'] = selected_graphs
     print(curGraphSelection)
     return redirect(url_for('dashboard'))
