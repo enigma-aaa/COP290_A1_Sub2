@@ -123,86 +123,88 @@
             {% endif %}
         </div>
         <div class="StockInfo" id="right-column">
-            <div class="StockInfo1">
-                <table>
+            <div class="StockInfoTableCont">
+                <table class ="StockTableHeading">
                     <tr>
-                        <th>{{ curStockInfo['longName'] }}</th>
+                        <th class="StockTableHeading">{{ curStockInfo['longName'] }}</th>
+                    </tr>
+                </table>
+                <table class ="StockInfoTable">
+                    <tr>
+                        <th class="StockInfoTable"> Daily Summary</th>
                     </tr>
                     <tr>
-                        <th> Daily Summary</th>
+                        <td class="StockInfoTable">Opening Price</td>
+                        <td class="StockInfoTable">{{ curStockInfo['open'] }}</td>
                     </tr>
                     <tr>
-                        <td>Opening Price</td>
-                        <td>{{ curStockInfo['open'] }}</td>
+                        <td class="StockInfoTable">Previous Close</td>
+                        <td class="StockInfoTable">{{ curStockInfo['previousClose'] }}</td>
                     </tr>
                     <tr>
-                        <td>Previous Close</td>
-                        <td>{{ curStockInfo['previousClose'] }}</td>
+                        <td class="StockInfoTable">Current Price</td>
+                        <td class="StockInfoTable">{{ curStockInfo['currentPrice'] }}</td>
+                    </tr> 
+                    <tr>
+                        <td class="StockInfoTable">High</td>
+                        <td class="StockInfoTable">{{ curStockInfo['dayHigh'] }}</td>
                     </tr>
                     <tr>
-                        <td>Current Price</td>
-                        <td>{{ curStockInfo['currentPrice'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>High</td>
-                        <td>{{ curStockInfo['dayHigh'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>Low</td>
-                        <td>{{ curStockInfo['dayLow'] }}</td>
-                    </tr>
-
-                    <tr>
-                        <th>Yearly Summary</th>
-                    </tr>
-                    <tr>
-                        <td>Yearly Low</td>
-                        <td>{{ curStockInfo['fiftyTwoWeekLow'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>Yearly High</td>
-                        <td>{{ curStockInfo['fiftyTwoWeekHigh']}}</td>
+                        <td class="StockInfoTable">Low</td>
+                        <td class="StockInfoTable">{{ curStockInfo['dayLow'] }}</td>
                     </tr>
 
                     <tr>
-                        <td>Trailing PE</td>
-                        <td>{{ curStockInfo['trailingPE'] }}</td>
+                        <th class="StockInfoTable">Yearly Summary</th>
                     </tr>
                     <tr>
-                        <td>Forward PE</td>
-                        <td>{{ curStockInfo['forwardPE']}}</td>
+                        <td class="StockInfoTable" >Yearly Low</td>
+                        <td class="StockInfoTable">{{ curStockInfo['fiftyTwoWeekLow'] }}</td>
                     </tr>
                     <tr>
-                        <td></td>
-                    </tr>
-
-                    <tr>
-                        <td>Market Cap</td>
-                        <td>{{ curStockInfo['marketCap'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>Forward Eps</td>
-                        <td>{{ curStockInfo['forwardEps'] }}</td>
-                    </tr>
-                    <tr>
-                        <td>Trailing Eps</td>
-                        <td>{{ curStockInfo['trailingEps'] }}</td>
-                    </tr>
-                    <tr>
-                        <td></td>
+                        <td class="StockInfoTable">Yearly High</td>
+                        <td class="StockInfoTable">{{ curStockInfo['fiftyTwoWeekHigh']}}</td>
                     </tr>
 
                     <tr>
-                        <td>Book value</td>
-                        <td>{{ curStockInfo['bookValue'] }}/td></td>
+                        <td class="StockInfoTable">Trailing PE</td>
+                        <td class="StockInfoTable">{{ curStockInfo['trailingPE'] }}</td>
                     </tr>
                     <tr>
-                        <td>Div Yield</td>
-                        <td>{{ curStockInfo['dividendYield'] }}</td>
+                        <td class="StockInfoTable">Forward PE</td>
+                        <td class="StockInfoTable">{{ curStockInfo['forwardPE']}}</td>
                     </tr>
                     <tr>
-                        <td>ROE</td>
-                        <td>{{ curStockInfo['returnOnEquity'] }}</td>
+                        <td class="StockInfoTable" ></td>
+                    </tr>
+
+                    <tr>
+                        <td class="StockInfoTable">Market Cap</td>
+                        <td class="StockInfoTable">{{ curStockInfo['marketCap'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="StockInfoTable">Forward Eps</td>
+                        <td class="StockInfoTable">{{ curStockInfo['forwardEps'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="StockInfoTable">Trailing Eps</td>
+                        <td class="StockInfoTable">{{ curStockInfo['trailingEps'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="StockInfoTable"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="StockInfoTable">Book value</td>
+                        <td class="StockInfoTable">{{ curStockInfo['bookValue'] }}/td></td>
+                    </tr>
+                    <tr>
+                        <td class="StockInfoTable">Div Yield</td>
+                        <td class="StockInfoTable">{{ curStockInfo['dividendYield'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="StockInfoTable">ROE</td>
+                        <td class="StockInfoTable">{{ curStockInfo['returnOnEquity'] }}</td>
                     </tr>
                     <tr>
                         <td></td>

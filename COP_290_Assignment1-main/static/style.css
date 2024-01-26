@@ -113,6 +113,21 @@ nav ul li{
     display: inline;
     margin-right: 15px;
 }
+th.StockInfoTable{
+
+    font-size: 18px;
+    /*! width: 100%; */
+    padding: 5px;
+}
+td.StockInfoTable{
+
+    padding: 5px;
+    font-size: 16px;
+}
+table.StockInfoTable{
+    
+    width: 100%;
+}
 
 main
 {
@@ -221,6 +236,7 @@ div.IndividualTable{
     padding: 20px;
     margin-top: 30px;
 }
+
 div.StockSearchDiv{
     /* display: flex; */
     /* justify-content: space-between; */
@@ -232,6 +248,19 @@ div.StockInfo{
     /* height: 100%; */
     background-color: turquoise;
     flex : 20 ;
+}
+div.StockInfoTableCont{
+    overflow: auto;
+}
+table.StockTableHeading{
+
+    width: 100%;
+    font-size: 24px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+th.StockTableHeading{
+
 }
 div.StockInfoAndGraph{
     position: relative;
