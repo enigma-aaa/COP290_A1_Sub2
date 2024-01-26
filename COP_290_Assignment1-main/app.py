@@ -13,12 +13,22 @@ app = Flask(__name__)
 #change secret key later
 app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 
+
 selected_duration = '1_day'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
 db = SQLAlchemy(app)
+#list of stocks currently displayed on the left side of the website
 stockList = ["SBIN","ONGC","TATASTEEL"]
 curStockInfo = {}
+#this shouldn't be a list currently as a list this is representing the lost of grpahs currently beong drawn
+#this information is implicitly stored in the curGraphSelection anyways if there graphCont dictionary has all 
+#false then we don't need to draw it 
+#what we want selectedStockList to be like last selected this should only show one selected stock
+#we will use htis to decide what information we are showing on the side
 selectedStocksList = []
 selected_graphs = {
     "HIGH" : True ,
@@ -32,11 +42,11 @@ curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
         'graphCont':{
-    "HIGH" : True ,
-    "LOW" : False,
-    "OPEN" : False ,
-    "CLOSE" : False ,
-    "COMBINED" : False
+            "HIGH" : True ,
+            "LOW" : False,
+            "OPEN" : False ,
+            "CLOSE" : False ,
+            "COMBINED" : False
         }
     }
 }
@@ -61,12 +71,12 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        #have to add check for unique password
         username = request.form['username']
         password = request.form['password']
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
         userExist = User.query.filter_by(username=username).first()
         if userExist:
+            #check to check if username already exists to fix it up
             flash('Username already exists choose different username')
             return redirect(url_for('register'))
         else:
@@ -92,27 +102,27 @@ def login():
         flash('Invalid username or password')
         return redirect(url_for('index'))
 
-#should contain an array of dict's with each dict of the form
-#{
-#    'SBIN':{
-#        'graphDuration':['DAILY'],
-#        'graphCont':['OPEN','CLOSE','HIGH','LOW','COMBINED']
-#    }
-#
+#code for drawing the open prices of the stock available in the dataframe
 def drawOpenGraph(symbolName,plot,df):
     plot.line(df['Datetime'],df['Open'],legend_label=symbolName+" Open",line_width=2)
+#code for drawing the close prices of the stock available in the dataframe
 def drawCloseGraph(symbolName,plot,df):
     plot.line(df['Datetime'],df['Close'],legend_label=symbolName+" Close",line_width=2)
+#code for drawing the high prices
 def drawHighGraph(symbolName,plot,df):
     plot.line(df['Datetime'],df['High'],legend_label=symbolName+" High",line_width=2)
+#code for drawing the low prices
 def drawLowGraph(symbolName,plot,df):
     plot.line(df['Datetime'],df['Low'],legend_label=symbolName+" Low",line_width=2)
+#code for drawing a combined candle stick graph to consisting of 
+#high low prices as segments
+#the blocks represent opening and closing prices
 def drawCombinedGraph(symbolName,plot,df,timeInterval):
+    #this draws the segemnt from the opening to the closing price
     plot.segment(df.Datetime,df.High,df.Datetime,df.Low,color="black")
-    #different plots for open above close and 
-    #close above open
-    #boolean arrs to show whether opening price
-    # is above or below closing price
+    #different plots for open price above close price and 
+    #close price above open price
+    #boolean arrs to show whether opening price is above or below closing price
     barWidth = timeInterval/2
     priceInc = df.Close > df.Open 
     priceDec = df.Open > df.Close 
@@ -120,65 +130,72 @@ def drawCombinedGraph(symbolName,plot,df,timeInterval):
     plot.vbar(df.Datetime[priceDec],barWidth,df.Open[priceDec],df.Close[priceDec],color="#eb3c40")
     plot.vbar(df.Datetime[priceInc],barWidth,df.Open[priceInc],df.Close[priceInc],color="#0000ff",
               line_color="00ffff",line_width=2)
-#should contain an array of dict's with each dict of the form
-#{
-#    'SBIN':{
-#        'graphDuration':['DAILY'],
-#        'graphCont':['OPEN','CLOSE','HIGH','LOW','COMBINED']
-#    }
-#}
-#draws the current graph and generates the data required for the table
+
+#helper function which looks at all the stock names in our curGraph selection dictionary and 
+#is supposed to get the data corresponding to the data frames and all the time frames
+#like daily monthly and store it in the dataFrameDict which is refrenced in the render_tempalte() function
 def getStockDataFrameInfo():
     global curStockInfo
     dataFrameDict = {}
     for symbolName in curGraphSelection:
         curDict = curGraphSelection[symbolName]
         duration_req = curDict['graphDuration']
-        # print(duration_req + "hhhhhhhhhhhhhh")
         df = stockData.controltime(symbolName,duration_req)
         curStockInfo = stockData.getInfo(symbolName)
         dataFrameDict[symbolName] = df
-    #print('data frame dict is:')
-    #print(dataFrameDict)
     return dataFrameDict
+
+#lloks at the requested data to draw in the data frmae dictionary and draws 
+#the corresponding graphs of the symbolName such as HIGH,LOW,COMBINED
+#requested for SBIN then draws that
 def drawCurGraphAndTable(dataFrameDict):
     global curStockInfo
+    #creating the panTool and wheel zoom tool which is available to 
+    #naigate across the graph
     panTool = PanTool(dimensions = 'width')
     wheelZoomTool = WheelZoomTool()
     tools = [panTool,wheelZoomTool]
+
+    #creating the figure in which the graph is actually drawn
     plot = figure(x_axis_label="Date Time",y_axis_label="Price",
                 x_axis_type="datetime",toolbar_location="right",
                 tools= tools)
+    #setting the main graph to stretch in both the x axis direction and y direction to 
+    #fill the space alloted
     plot.sizing_mode = "stretch_both"
 
+    #creating the mini graph available below the main graph which is
+    #used for zooming in and out of the graph
     rangePlot = figure(height=100,x_axis_type="datetime",
                         y_axis_type=None,toolbar_location=None,
                         background_fill_color="#efefef")
+    #setting the mini graph to only stretch in the x direction
     rangePlot.sizing_mode = "stretch_width"
         
     rangeTool = RangeTool(x_range=plot.x_range)
     rangeTool.overlay.fill_color = "navy"
     rangeTool.overlay.fill_alpha = 0.2
+    #adding the rangeTool which allows us to zoom in and out of the main graph to the mini graph
     rangePlot.add_tools(rangeTool)
     rangePlot.toolbar.active_multi = 'auto'
-    #dataFrameDict = {}
+
     for symbolName in curGraphSelection:
-        #print(symbolName)
         curDict = curGraphSelection[symbolName]
         duration_req = curDict['graphDuration']
-        # print(duration_req + "hhhhhhhhhhhhhh")
+
         df = dataFrameDict[symbolName]
         curStockInfo = stockData.getInfo(symbolName)
-        #time interval defiend here too
-        #for daily one min interval in milli seconds
-        timeInterval = 60*1000
+        timeInterval = 60*1000 
+        #time interval corresponding to one min in miili seconds 
+        #this is used to find the width of the bar graph 
+
+        #time period for which graph is drawn
         timePeriod = curDict['graphDuration']
         graphCont = curDict['graphCont']
-        
-        #rangePlot.toolbar.active_multi = rangeTool
-        #print(graphCont)
-        #print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+
         for elm in graphCont:
+            #not sure how this code is working as we have changed the format of our OPEN CLOSE HIGH LOW prices to 
+            #be booleans instead of a list have to figure this out
             if graphCont[elm] :
                 match elm:
                     case 'OPEN':
@@ -197,42 +214,19 @@ def drawCurGraphAndTable(dataFrameDict):
                         drawCombinedGraph(symbolName,plot,df,timeInterval)
                         drawCombinedGraph(symbolName,rangePlot,df,timeInterval)
 
-        #print("help is")
-        #print(help(rangePlot.toolbar))
-
     total = column(plot,rangePlot,sizing_mode="stretch_both")
     script,div = components(total)
         
-    # print("original div was:")
-    # print(div)
+    #modifying div generated by bokeh library so that we can add the styling from our css file
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div)
-    # print("original div was:")
-    # print(div)
-    div = div[:-7] + ' class="GraphDiv" ></div>'
-    return (script,div,dataFrameDict)
 
 @app.route('/dashboard') 
 def dashboard():
     if 'user_id' in session:
-        #x = [1,2,3,4,5]
-        #y = [6,7,2,4,5]
-        #df = pd.read_pickle('./Data_folder/SBIN.pkl')
-        #print("data frame is:")
-        #print(df)
-        #p1 = figure(title="Simple Example",x_axis_label='x',y_axis_label='y',x_axis_type="datetime",toolbar_location="right")
-        #df['DATE'] = pd.to_datetime(df['DATE'])
-        #p1.line(df['DATE'],df['CLOSE'],legend_label="Stock Close",line_width=2)
-        #p1.line(df['DATE'],df['HIGH'],legend_label="Stock High",line_width=2)
-
         dataFrameDict = getStockDataFrameInfo()
         script1,div1 = drawCurGraphAndTable(dataFrameDict)
-        #print("Script is:")
-        #print(script1)
-        #print("div is:")
-        #print(div1)
-        #print("curStockInfo is:")
-        #print(curStockInfo)
+
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
@@ -255,23 +249,24 @@ def updateList():
     return redirect(url_for('dashboard'))
 
 @app.route('/selectStock',methods=['POST']) 
+#select stock function adds the stock symbol currently selected to the dictionary of graphs we want to draw
 def stockselected ():
     global last_selected
     stockName = request.form.get('selectedStock')
 
+    #in our current assumption when we clicked a selected stock we deselect it and 
+    #remove it fromt the list of graphs we are drawing
     if stockName in curGraphSelection : 
         del curGraphSelection[stockName]
     else : 
         curGraphSelection[stockName] = {
             'graphDuration' :'1_day',
             'graphCont' : {
-
-    "HIGH" : True ,
-    "LOW" : False,
-    "OPEN" : False ,
-    "CLOSE" : False ,
-    "COMBINED" : False
-        
+                "HIGH" : True ,
+                "LOW" : False,
+                "OPEN" : False ,
+                "CLOSE" : False ,
+                "COMBINED" : False
             }
         }
     if len(list(curGraphSelection.keys())) >=1 : 
@@ -279,14 +274,13 @@ def stockselected ():
     else :
         last_selected = ''
     return redirect(url_for('dashboard'))
+
 @app.route('/process_duration' , methods = ['POST'])
+#havent understood this one yet have to understand this one properly
 def process_duration_fun() :
-    # global initial
     global selected_duration
     initial = 0
     selected_duration = request.form.get('duration')
-    # print(selected_dur + 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
-    # print(selected_dur+"aaaaaaaaaaaaaa")
     for x in curGraphSelection :
         curGraphSelection[x]['graphDuration'] = selected_duration
     return redirect(url_for('dashboard'))
@@ -298,29 +292,11 @@ def process_graph_options() :
     global curGraphSelection
     list_of_graphs = request.form.getlist("graph_options[]")
 
-    # print(graphs_selected_now + "llllllllllllllllllllllllllllllllllllllll")
-    # print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
     for x in selected_graphs :
         if x in list_of_graphs:
             selected_graphs[x] = True 
         else :
             selected_graphs[x] = False 
-    # if selected_graphs[graphs_selected_now] :
-    #     selected_graphs[graphs_selected_now] = False
-    # else :
-    #     selected_graphs[graphs_selected_now] = True
-    # if(len(list_of_graphs) == 0) :
-        # return redirect(url_for('dashboard'))
-    # if(list_of_graphs[-1] in selected_graphs ) :
-        # selected_graphs.remove(list_of_graphs[-1])
-    # else :
-        # selected_graphs.append(list_of_graphs[-1])
-    
-    # selected_graphs[graphs_selected_now] = true 
-    # print(list_of_graphs)
-    # print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
-    print(last_selected)
-    print("printing graph selection from process_gaph_options")
     if last_selected == '' : 
         for x in selected_graphs :
             selected_graphs[x] = False 
