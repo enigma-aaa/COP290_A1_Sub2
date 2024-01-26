@@ -226,7 +226,9 @@ def dashboard():
         print("curStockInfo is:")
         print(curStockInfo)
         return render_template('welcome.html', username=session['username'],
-        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection ,selected_duration = selected_duration )
+        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
+        curGraphSelection=curGraphSelection ,
+        selected_duration = selected_duration,dataFrameDict=dataFrameDict )
     else:
         return redirect(url_for('index'))
 

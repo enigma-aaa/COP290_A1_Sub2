@@ -47,9 +47,31 @@
             {{ username }}
         </div>
         <div class="StockInfoAndGraph">
+            <!--
             <div class="GraphContainer">
                 {{ div | safe}}
                 {{ script | safe}}
+            </div>-->
+            <div class="TableContainer">
+            {% for symbolName in dataFrameDict %}
+                {%set df = dataFrameDict[symbolName]%}
+                <div class="IndividualTable">
+                    <table>
+                        <tr>
+                        {%for key in df %}
+                            <th> {{key}}</th>
+                        {%endfor%}
+                        </tr>
+                        {%for index,row in df.iterrows()%}
+                            <tr>
+                                {%for elm in row%}
+                                    <td>{{elm}}</td>
+                                {%endfor%}
+                            </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+            {% endfor%}
             </div>
             <div class="StockInfo">
                 <table>
