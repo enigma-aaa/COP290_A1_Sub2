@@ -12,7 +12,7 @@ initial = 1
 app = Flask(__name__)
 #change secret key later
 app.secret_key = 'your_secret_key'  # Replace with your actual secret key
-
+mode = 'Mode1'
 
 selected_duration = '1_day'
 
@@ -232,7 +232,7 @@ def dashboard():
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
         selected_duration = selected_duration,dataFrameDict=dataFrameDict , selected_graphs=selected_graphs,
-        currentlySelected = currentlySelected)
+        currentlySelected = currentlySelected , mode=mode)
     else:
         return redirect(url_for('index'))
 
@@ -310,7 +310,15 @@ def process_graph_options() :
             selected_graphs[x] = False 
     else :
         curGraphSelection[last_selected]['graphCont'] = selected_graphs
-    print(curGraphSelection)
+
+    return redirect(url_for('dashboard'))
+
+@app.route('/process_mode_change' , methods=['POST'])
+def process_mode_change() :
+    global mode
+    mode = request.form.get('graph-mode')
+    print("came here")
+    print(mode)
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':

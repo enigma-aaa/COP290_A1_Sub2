@@ -14,10 +14,10 @@
 
 
 
-<body >
+<body>
     <header>
 
-        <nav >
+        <nav>
             <ul>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Home</a></li>
@@ -37,7 +37,7 @@
     -->
     <main>
 
-        <div class="StockListAndSearch column" id = "left-column">
+        <div class="StockListAndSearch column" id="left-column">
             <div class="StockSearchDiv">
                 <form action="/updateList" method="POST">
                     <input type="search" name="search_bar" class="SearchBar">
@@ -60,61 +60,69 @@
             </div>
 
         </div>
-        <div class="Graph column" id = "center-column">
-            <!-- <div class="LoginInfo">
-            {{ username }}
-        </div> -->
+        <div class="Graph column" id="center-column">
+
+            <div class="buttons-over-graph" id="modes-container">
+                <form action="/process_mode_change" method="POST">
+                    <input type="submit" name="graph-mode" value="Mode1">
+                    <br>
+                    <input type="submit" name="graph-mode" value="Mode2">
+                    <br>
+                    <input type="submit" name="graph-mode" value="Mode3">
+                </form>
+            </div>
+            {% if mode == 'Mode1' %}
             <div class="GraphContainer">
                 {{ div | safe}}
                 {{ script | safe}}
             </div>
-            <div class="buttons-over-graph">
-                <button id="mode1">Mode 1</button>
-                <button id="mode2">Mode 2</button>
-                <button id="mode3">Mode 2</button>
-
-            </div>
-            <!-- <div class="TableContainer">
-            {% for symbolName in dataFrameDict %}
+            {% endif %}
+            {% if mode == 'Mode2' %}
+            <div class="TableContainer">
+                {% for symbolName in dataFrameDict %}
                 {%set df = dataFrameDict[symbolName]%}
                 <div class="IndividualTable">
                     <div class="HeadingContainer">
                         <table class="TableHeading">
-                            <tr><td class="TableHeading">{{symbolName}}</td></tr>
+                            <tr>
+                                <td class="TableHeading">{{symbolName}}</td>
+                            </tr>
                         </table>
                     </div>
                     <table class="StockDataTable">
                         <tr class="StockDataTable">
-                        {%for key in df %}
-                            <th class = "StockDataTable" > {{key}}</th>
-                        {%endfor%}
+                            {%for key in df %}
+                            <th class="StockDataTable"> {{key}}</th>
+                            {%endfor%}
                         </tr>
                         {%for index,row in df.iterrows()%}
-                            <tr class="StockDataTable">
-                                {%set Datetime = row['Datetime']%}
-                                    <td class = "StockDataTable">{{Datetime}}</td>
-                                {%set Open = row['Open']%}
-                                    <td class = "StockDataTable">{{"%.2f"|format(Open)}}</td>
-                                {%set High = row['High']%}
-                                    <td class = "StockDataTable">{{"%.2f"|format(High)}}</td>
-                                {%set Low = row['Low']%}
-                                    <td class = "StockDataTable">{{"%.2f"|format(Low)}}</td>
-                                {%set Close = row['Close']%}
-                                    <td class = "StockDataTable">{{"%.2f"|format(Close)}}</td>
-                                {%set Volume = row['Volume']%}
-                                    <td class = "StockDataTable">{{Volume}}</td>
-                                {%set Dividend = row['Dividends']%}
-                                    <td class = "StockDataTable">{{"%.2f"|format(Dividend)}}</td>
-                                {%set StockSplits = row['Stock Splits']%}    
-                                    <td class = "StockDataTable">{{"%.2f"|format(StockSplits)}}</td>
-                            </tr>
+                        <tr class="StockDataTable">
+                            {%set Datetime = row['Datetime']%}
+                            <td class="StockDataTable">{{Datetime}}</td>
+                            {%set Open = row['Open']%}
+                            <td class="StockDataTable">{{"%.2f"|format(Open)}}</td>
+                            {%set High = row['High']%}
+                            <td class="StockDataTable">{{"%.2f"|format(High)}}</td>
+                            {%set Low = row['Low']%}
+                            <td class="StockDataTable">{{"%.2f"|format(Low)}}</td>
+                            {%set Close = row['Close']%}
+                            <td class="StockDataTable">{{"%.2f"|format(Close)}}</td>
+                            {%set Volume = row['Volume']%}
+                            <td class="StockDataTable">{{Volume}}</td>
+                            {%set Dividend = row['Dividends']%}
+                            <td class="StockDataTable">{{"%.2f"|format(Dividend)}}</td>
+                            {%set StockSplits = row['Stock Splits']%}
+                            <td class="StockDataTable">{{"%.2f"|format(StockSplits)}}</td>
+                        </tr>
                         {%endfor%}
                     </table>
                 </div>
-            {% endfor%}
-            </div> -->
+                {% endfor%}
+            </div>
+
+            {% endif %}
         </div>
-        <div class="StockInfo" id = "right-column">
+        <div class="StockInfo" id="right-column">
             <div class="StockInfo1">
                 <table>
                     <tr>
@@ -204,7 +212,7 @@
                     <form action="/process_duration" method="POST">
                         <label for="duration">Select Data Duration:</label>
                         <select name="duration" id="duration" onchange="this.form.submit()">
-                            
+
                             <option value="1_day" {% if selected_duration=='1_day' %} selected {% endif %}>1 Day
                             </option>
                             <option value="1_week" {% if selected_duration=='1_week' %} selected {% endif %}>1 Week
@@ -216,7 +224,7 @@
                             <option value="5_year" {% if selected_duration=='5_year' %} selected {% endif %}>5 Year
                             </option>
                             <option value="All" {% if selected_duration=='All' %} selected {% endif %}>All</option>
-                            
+
                         </select>
 
                         <!-- <button type="submit">Submit</button> -->
@@ -226,11 +234,16 @@
                     <form action="/process_graph_options" method="POST">
                         <label>Select Graph Types:</label><br>
 
-                        <input type="checkbox" name="graph_options[]" value="HIGH" onchange="this.form.submit()" {% if selected_graphs["HIGH"] == True %} checked {% endif %}>High<br>
-                        <input type="checkbox" name="graph_options[]" value="LOW" onchange="this.form.submit()" {% if selected_graphs["LOW"] == True %} checked {% endif %}>Low<br>
-                        <input type="checkbox" name="graph_options[]" value="OPEN" onchange="this.form.submit()"  {% if selected_graphs["OPEN"] == True %} checked {% endif %}>Open<br>
-                        <input type="checkbox" name="graph_options[]" value="CLOSE" onchange="this.form.submit()" {% if selected_graphs["CLOSE"] == True %} checked {% endif %}>Close<br>
-                        <input type="checkbox" name="graph_options[]" value="COMBINED" onchange="this.form.submit()" {% if selected_graphs["COMBINED"] == True %} checked {% endif %}>Combined<br>
+                        <input type="checkbox" name="graph_options[]" value="HIGH" onchange="this.form.submit()" {% if
+                            selected_graphs["HIGH"]==True %} checked {% endif %}>High<br>
+                        <input type="checkbox" name="graph_options[]" value="LOW" onchange="this.form.submit()" {% if
+                            selected_graphs["LOW"]==True %} checked {% endif %}>Low<br>
+                        <input type="checkbox" name="graph_options[]" value="OPEN" onchange="this.form.submit()" {% if
+                            selected_graphs["OPEN"]==True %} checked {% endif %}>Open<br>
+                        <input type="checkbox" name="graph_options[]" value="CLOSE" onchange="this.form.submit()" {% if
+                            selected_graphs["CLOSE"]==True %} checked {% endif %}>Close<br>
+                        <input type="checkbox" name="graph_options[]" value="COMBINED" onchange="this.form.submit()" {%
+                            if selected_graphs["COMBINED"]==True %} checked {% endif %}>Combined<br>
                         <!-- <input type="checkbox" name="graph_options[]" value="radar_chart"> Radar Chart<br> -->
 
                         <!-- <button type="submit">Submit</button> -->
