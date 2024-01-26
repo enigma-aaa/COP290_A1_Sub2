@@ -212,12 +212,12 @@ def drawCurGraphAndTable(dataFrameDict):
     total = column(plot,rangePlot,sizing_mode="stretch_both")
     script,div = components(total)
         
-    #print("original div was:")
-    #print(div)
+    # print("original div was:")
+    # print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div)
-    #print("original div was:")
-    #print(div)
+    # print("original div was:")
+    # print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div,dataFrameDict)
 
@@ -296,11 +296,20 @@ def process_duration_fun() :
 @app.route('/process_graph_options' ,methods = ['POST'])
 def process_graph_options() :
     global selected_graphs 
-    graphs_selected_now = request.form.get('graph_selected')
-    if selected_graphs[graphs_selected_now] :
-        selected_graphs[graphs_selected_now] = False
-    else :
-        selected_graphs[graphs_selected_now] = True
+    global curGraphSelection
+    list_of_graphs = request.form.getlist("graph_options[]")
+
+    # print(graphs_selected_now + "llllllllllllllllllllllllllllllllllllllll")
+    # print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+    for x in selected_graphs :
+        if x in list_of_graphs:
+            selected_graphs[x] = True 
+        else :
+            selected_graphs[x] = False 
+    # if selected_graphs[graphs_selected_now] :
+    #     selected_graphs[graphs_selected_now] = False
+    # else :
+    #     selected_graphs[graphs_selected_now] = True
     # if(len(list_of_graphs) == 0) :
         # return redirect(url_for('dashboard'))
     # if(list_of_graphs[-1] in selected_graphs ) :
@@ -309,9 +318,10 @@ def process_graph_options() :
         # selected_graphs.append(list_of_graphs[-1])
     
     # selected_graphs[graphs_selected_now] = true 
-    print(list_of_graphs)
-    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+    # print(list_of_graphs)
+    # print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
     print(last_selected)
+    print("printing graph selection from process_gaph_options")
     curGraphSelection[last_selected]['graphCont'] = selected_graphs
     print(curGraphSelection)
     return redirect(url_for('dashboard'))
