@@ -98,6 +98,10 @@ div.GraphContainer{
     width: 80%;
     height: 100%;
 }
+div.TableContainer{
+    width:80%;
+    height:100%;
+}
 div.StockSearchDiv{
     display: flex;
     justify-content: space-between;

@@ -121,7 +121,21 @@ def drawCombinedGraph(symbolName,plot,df,timeInterval):
 #        'graphCont':['OPEN','CLOSE','HIGH','LOW','COMBINED']
 #    }
 #}
-def drawCurGraph():
+#draws the current graph and generates the data required for the table
+def getStockDataFrameInfo():
+    global curStockInfo
+    dataFrameDict = {}
+    for symbolName in curGraphSelection:
+        curDict = curGraphSelection[symbolName]
+        duration_req = curDict['graphDuration']
+        # print(duration_req + "hhhhhhhhhhhhhh")
+        df = stockData.controltime(symbolName,duration_req)
+        curStockInfo = stockData.getInfo(symbolName)
+        dataFrameDict[symbolName] = df
+    print('data frame dict is:')
+    print(dataFrameDict)
+    return dataFrameDict
+def drawCurGraphAndTable(dataFrameDict):
     global curStockInfo
     panTool = PanTool(dimensions = 'width')
     wheelZoomTool = WheelZoomTool()
@@ -141,15 +155,14 @@ def drawCurGraph():
     rangeTool.overlay.fill_alpha = 0.2
     rangePlot.add_tools(rangeTool)
     rangePlot.toolbar.active_multi = 'auto'
+    #dataFrameDict = {}
     for symbolName in curGraphSelection:
-        print(symbolName)
+        #print(symbolName)
         curDict = curGraphSelection[symbolName]
         duration_req = curDict['graphDuration']
         # print(duration_req + "hhhhhhhhhhhhhh")
-        df = stockData.controltime(symbolName,duration_req)
+        df = dataFrameDict[symbolName]
         curStockInfo = stockData.getInfo(symbolName)
-        print("After calling func stockData is:")
-        print(curStockInfo)
         #time interval defiend here too
         #for daily one min interval in milli seconds
         timeInterval = 60*1000
@@ -190,7 +203,8 @@ def drawCurGraph():
     print("original div was:")
     print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
-    return (script,div)
+    return (script,div,dataFrameDict)
+
 @app.route('/dashboard') 
 def dashboard():
     if 'user_id' in session:
@@ -203,7 +217,8 @@ def dashboard():
         #df['DATE'] = pd.to_datetime(df['DATE'])
         #p1.line(df['DATE'],df['CLOSE'],legend_label="Stock Close",line_width=2)
         #p1.line(df['DATE'],df['HIGH'],legend_label="Stock High",line_width=2)
-        script1,div1 = drawCurGraph()
+        dataFrameDict = getStockDataFrameInfo()
+        script1,div1 = drawCurGraphAndTable(dataFrameDict)
         print("Script is:")
         print(script1)
         print("div is:")
