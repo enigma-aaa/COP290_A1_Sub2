@@ -164,7 +164,7 @@
                 <div class="StockInfo2">
                     <form action="/process_duration" method="POST">
                         <label for="duration">Select Data Duration:</label>
-                        <select name="duration" id="duration">
+                        <select name="duration" id="duration" onchange="this.form.submit()">
                             <option value="1_day" {% if selected_duration=='1_day' %} selected {% endif %}>1 Day
                             </option>
                             <option value="1_week" {% if selected_duration=='1_week' %} selected {% endif %}>1 Week
@@ -178,21 +178,21 @@
                             <option value="All" {% if selected_duration=='All' %} selected {% endif %}>All</option>
                         </select>
 
-                        <button type="submit">Submit</button>
+                        <!-- <button type="submit">Submit</button> -->
                     </form>
                 </div>
                 <div class="StockInfo3">
                     <form action="/process_graph_options" method="POST">
                         <label>Select Graph Types:</label><br>
 
-                        <input type="checkbox" name="graph_options[]" value="OPEN"> Open<br>
-                        <input type="checkbox" name="graph_options[]" value="CLOSE"> Close<br>
-                        <input type="checkbox" name="graph_options[]" value="LOW"> Low<br>
-                        <input type="checkbox" name="graph_options[]" value="HIGH"> High<br>
-                        <input type="checkbox" name="graph_options[]" value="COMBINED"> Combined<br>
+                        <input type="checkbox" name="graph_options[]" value="OPEN" onchange="this.form.submit()" {%selected_graphs["OPEN"] %} checked {% endif %}> Open<br>
+                        <input type="checkbox" name="graph_options[]" value="CLOSE" onchange="this.form.submit()"{% if "CLOSE" in selected_graphs %} checked {% endif %}> Close<br>
+                        <input type="checkbox" name="graph_options[]" value="LOW" onchange="this.form.submit()"{% if "LOW" in selected_graphs %} checked {% endif %}> Low<br>
+                        <input type="checkbox" name="graph_options[]" value="HIGH" onchange="this.form.submit()"{% if "HIGH" in selected_graphs %} checked {% endif %}> High<br>
+                        <input type="checkbox" name="graph_options[]" value="COMBINED" onchange="this.form.submit()"{% if "COMBINED" in selected_graphs %} checked {% endif %}> Combined<br>
                         <!-- <input type="checkbox" name="graph_options[]" value="radar_chart"> Radar Chart<br> -->
 
-                        <button type="submit">Submit</button>
+                        <!-- <button type="submit">Submit</button> -->
                     </form>
 
                 </div>

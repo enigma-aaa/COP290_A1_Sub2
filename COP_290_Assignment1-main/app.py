@@ -7,19 +7,28 @@ from bokeh.models import RangeTool,PanTool,WheelZoomTool
 from bokeh.layouts import column,layout
 import pandas as pd
 import stockData
-
+print("It came hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+initial = 1
 app = Flask(__name__)
 #change secret key later
 app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 
 # Database Configuration
+# if initial == 1 :
+selected_duration = '1_day'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 stockList = ["SBIN","ONGC","TATASTEEL"]
 curStockInfo = {}
 selectedStocksList = []
-selected_duration = '1_day'
+selected_graphs = {
+    "HIGH" : True ,
+    "LOW" : False,
+    "OPEN" : False ,
+    "CLOSE" : False ,
+    "COMBINED" : False
+}
 last_selected = 'SBIN'
 #should contain an array of dict's with each dict of the form
 #{
@@ -31,7 +40,13 @@ last_selected = 'SBIN'
 curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
-        'graphCont':['HIGH']
+        'graphCont':{
+    "HIGH" : True ,
+    "LOW" : False,
+    "OPEN" : False ,
+    "CLOSE" : False ,
+    "COMBINED" : False
+}
     }
 }
 
@@ -160,22 +175,23 @@ def drawCurGraph():
         print(graphCont)
         print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         for elm in graphCont:
-            match elm:
-                case 'OPEN':
-                    drawOpenGraph(symbolName,plot,df)
-                    drawOpenGraph(symbolName,rangePlot,df)
-                case 'CLOSE':
-                    drawCloseGraph(symbolName,plot,df)
-                    drawCloseGraph(symbolName,rangePlot,df)
-                case 'HIGH':
-                    drawHighGraph(symbolName,plot,df)
-                    drawHighGraph(symbolName,rangePlot,df)
-                case 'LOW':
-                    drawLowGraph(symbolName,plot,df)
-                    drawLowGraph(symbolName,rangePlot,df)
-                case 'COMBINED':
-                    drawCombinedGraph(symbolName,plot,df,timeInterval)
-                    drawCombinedGraph(symbolName,rangePlot,df,timeInterval)
+            if graphCont[elm] :
+                match elm:
+                    case 'OPEN':
+                        drawOpenGraph(symbolName,plot,df)
+                        drawOpenGraph(symbolName,rangePlot,df)
+                    case 'CLOSE':
+                        drawCloseGraph(symbolName,plot,df)
+                        drawCloseGraph(symbolName,rangePlot,df)
+                    case 'HIGH':
+                        drawHighGraph(symbolName,plot,df)
+                        drawHighGraph(symbolName,rangePlot,df)
+                    case 'LOW':
+                        drawLowGraph(symbolName,plot,df)
+                        drawLowGraph(symbolName,rangePlot,df)
+                    case 'COMBINED':
+                        drawCombinedGraph(symbolName,plot,df,timeInterval)
+                        drawCombinedGraph(symbolName,rangePlot,df,timeInterval)
 
         #print("help is")
         #print(help(rangePlot.toolbar))
@@ -210,8 +226,10 @@ def dashboard():
         print(div1)
         print("curStockInfo is:")
         print(curStockInfo)
+        print(selected_duration + "ggggggggggggggggggggggggggggggggggggggggggggggg")
+
         return render_template('welcome.html', username=session['username'],
-        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection ,selected_duration = selected_duration )
+        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection ,selected_duration = selected_duration , selected_graphs=selected_graphs )
     else:
         return redirect(url_for('index'))
 
@@ -248,7 +266,10 @@ def stockselected ():
     return redirect(url_for('dashboard'))
 @app.route('/process_duration' , methods = ['POST'])
 def process_duration_fun() :
-    selected_duration = request.form.get('duration','1_day')
+    # global initial
+    global selected_duration
+    initial = 0
+    selected_duration = request.form.get('duration')
     # print(selected_dur + 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
     # print(selected_dur+"aaaaaaaaaaaaaa")
     for x in curGraphSelection :
@@ -258,11 +279,24 @@ def process_duration_fun() :
 
 @app.route('/process_graph_options' ,methods = ['POST'])
 def process_graph_options() :
-    list_of_graphs = request.form.getlist('graph_options[]')
+    global selected_graphs 
+    graphs_selected_now = request.form.get('graph_selected')
+    if selected_graphs[graphs_selected_now] :
+        selected_graphs[graphs_selected_now] = False
+    else :
+        selected_graphs[graphs_selected_now] = True
+    # if(len(list_of_graphs) == 0) :
+        # return redirect(url_for('dashboard'))
+    # if(list_of_graphs[-1] in selected_graphs ) :
+        # selected_graphs.remove(list_of_graphs[-1])
+    # else :
+        # selected_graphs.append(list_of_graphs[-1])
+    
+    # selected_graphs[graphs_selected_now] = true 
     print(list_of_graphs)
     print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
     print(last_selected)
-    curGraphSelection[last_selected]['graphCont'] = list_of_graphs
+    curGraphSelection[last_selected]['graphCont'] = selected_graphs
     print(curGraphSelection)
     return redirect(url_for('dashboard'))
 
