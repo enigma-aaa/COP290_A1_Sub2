@@ -245,7 +245,7 @@ def dashboard():
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
-        selected_duration = selected_duration,dataFrameDict=dataFrameDict )
+        selected_duration = selected_duration,dataFrameDict=dataFrameDict , selected_graphs=selected_graphs )
     else:
         return redirect(url_for('index'))
 
