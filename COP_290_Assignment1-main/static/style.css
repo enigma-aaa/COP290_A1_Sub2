@@ -98,6 +98,25 @@ div.GraphContainer{
     width: 80%;
     height: 100%;
 }
+table.StockDataTable{
+    border-collapse: collapse;
+    border: 1px solid;
+}
+th.StockDataTable{
+    border: 1px solid;
+    background-color: #1a89ff;
+}
+tr.StockDataTable:nth-child(odd){
+    border: 1px solid;
+    background-color: #e9f5ff;
+}
+tr.StockDataTable:nth-child(even){
+    border: 1px solid;
+    background-color: #8accf5;
+}
+td.StockDataTable{
+    border: 1px solid;
+}
 div.TableContainer{
     width:80%;
     height:90%;

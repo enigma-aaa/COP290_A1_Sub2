@@ -132,8 +132,8 @@ def getStockDataFrameInfo():
         df = stockData.controltime(symbolName,duration_req)
         curStockInfo = stockData.getInfo(symbolName)
         dataFrameDict[symbolName] = df
-    print('data frame dict is:')
-    print(dataFrameDict)
+    #print('data frame dict is:')
+    #print(dataFrameDict)
     return dataFrameDict
 def drawCurGraphAndTable(dataFrameDict):
     global curStockInfo
@@ -170,8 +170,8 @@ def drawCurGraphAndTable(dataFrameDict):
         graphCont = curDict['graphCont']
         
         #rangePlot.toolbar.active_multi = rangeTool
-        print(graphCont)
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        #print(graphCont)
+        #print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         for elm in graphCont:
             match elm:
                 case 'OPEN':
@@ -196,12 +196,12 @@ def drawCurGraphAndTable(dataFrameDict):
     total = column(plot,rangePlot,sizing_mode="stretch_both")
     script,div = components(total)
         
-    print("original div was:")
-    print(div)
+    #print("original div was:")
+    #print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div)
-    print("original div was:")
-    print(div)
+    #print("original div was:")
+    #print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div,dataFrameDict)
 
@@ -219,12 +219,12 @@ def dashboard():
         #p1.line(df['DATE'],df['HIGH'],legend_label="Stock High",line_width=2)
         dataFrameDict = getStockDataFrameInfo()
         script1,div1 = drawCurGraphAndTable(dataFrameDict)
-        print("Script is:")
-        print(script1)
-        print("div is:")
-        print(div1)
-        print("curStockInfo is:")
-        print(curStockInfo)
+        #print("Script is:")
+        #print(script1)
+        #print("div is:")
+        #print(div1)
+        #print("curStockInfo is:")
+        #print(curStockInfo)
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
@@ -276,11 +276,11 @@ def process_duration_fun() :
 @app.route('/process_graph_options' ,methods = ['POST'])
 def process_graph_options() :
     list_of_graphs = request.form.getlist('graph_options[]')
-    print(list_of_graphs)
-    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
-    print(last_selected)
+    #print(list_of_graphs)
+    #print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+    #print(last_selected)
     curGraphSelection[last_selected]['graphCont'] = list_of_graphs
-    print(curGraphSelection)
+    #print(curGraphSelection)
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
