@@ -107,7 +107,7 @@ def login():
 #        'graphDuration':['DAILY'],
 #        'graphCont':['OPEN','CLOSE','HIGH','LOW','COMBINED']
 #    }
-#}
+#
 def drawOpenGraph(symbolName,plot,df):
     plot.line(df['Datetime'],df['Open'],legend_label=symbolName+" Open",line_width=2)
 def drawCloseGraph(symbolName,plot,df):
@@ -136,7 +136,21 @@ def drawCombinedGraph(symbolName,plot,df,timeInterval):
 #        'graphCont':['OPEN','CLOSE','HIGH','LOW','COMBINED']
 #    }
 #}
-def drawCurGraph():
+#draws the current graph and generates the data required for the table
+def getStockDataFrameInfo():
+    global curStockInfo
+    dataFrameDict = {}
+    for symbolName in curGraphSelection:
+        curDict = curGraphSelection[symbolName]
+        duration_req = curDict['graphDuration']
+        # print(duration_req + "hhhhhhhhhhhhhh")
+        df = stockData.controltime(symbolName,duration_req)
+        curStockInfo = stockData.getInfo(symbolName)
+        dataFrameDict[symbolName] = df
+    #print('data frame dict is:')
+    #print(dataFrameDict)
+    return dataFrameDict
+def drawCurGraphAndTable(dataFrameDict):
     global curStockInfo
     panTool = PanTool(dimensions = 'width')
     wheelZoomTool = WheelZoomTool()
@@ -156,15 +170,14 @@ def drawCurGraph():
     rangeTool.overlay.fill_alpha = 0.2
     rangePlot.add_tools(rangeTool)
     rangePlot.toolbar.active_multi = 'auto'
+    #dataFrameDict = {}
     for symbolName in curGraphSelection:
-        print(symbolName)
+        #print(symbolName)
         curDict = curGraphSelection[symbolName]
         duration_req = curDict['graphDuration']
         # print(duration_req + "hhhhhhhhhhhhhh")
-        df = stockData.controltime(symbolName,duration_req)
+        df = dataFrameDict[symbolName]
         curStockInfo = stockData.getInfo(symbolName)
-        print("After calling func stockData is:")
-        print(curStockInfo)
         #time interval defiend here too
         #for daily one min interval in milli seconds
         timeInterval = 60*1000
@@ -172,8 +185,8 @@ def drawCurGraph():
         graphCont = curDict['graphCont']
         
         #rangePlot.toolbar.active_multi = rangeTool
-        print(graphCont)
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        #print(graphCont)
+        #print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         for elm in graphCont:
             if graphCont[elm] :
                 match elm:
@@ -199,14 +212,15 @@ def drawCurGraph():
     total = column(plot,rangePlot,sizing_mode="stretch_both")
     script,div = components(total)
         
-    print("original div was:")
-    print(div)
+    #print("original div was:")
+    #print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div)
-    print("original div was:")
-    print(div)
+    #print("original div was:")
+    #print(div)
     div = div[:-7] + ' class="GraphDiv" ></div>'
-    return (script,div)
+    return (script,div,dataFrameDict)
+
 @app.route('/dashboard') 
 def dashboard():
     if 'user_id' in session:
@@ -228,8 +242,18 @@ def dashboard():
         print(curStockInfo)
         print(selected_duration + "ggggggggggggggggggggggggggggggggggggggggggggggg")
 
+        dataFrameDict = getStockDataFrameInfo()
+        script1,div1 = drawCurGraphAndTable(dataFrameDict)
+        #print("Script is:")
+        #print(script1)
+        #print("div is:")
+        #print(div1)
+        #print("curStockInfo is:")
+        #print(curStockInfo)
         return render_template('welcome.html', username=session['username'],
-        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , curGraphSelection=curGraphSelection ,selected_duration = selected_duration , selected_graphs=selected_graphs )
+        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
+        curGraphSelection=curGraphSelection ,
+        selected_duration = selected_duration,dataFrameDict=dataFrameDict )
     else:
         return redirect(url_for('index'))
 

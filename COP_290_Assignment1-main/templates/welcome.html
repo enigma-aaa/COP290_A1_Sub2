@@ -63,10 +63,52 @@
         <div class="Graph column" id = "center-column">
             <!-- <div class="LoginInfo">
             {{ username }}
+        </div>
+        <div class="StockInfoAndGraph">
+            <!--
         </div> -->
             <div class="GraphContainer">
                 {{ div | safe}}
                 {{ script | safe}}
+            </div>-->
+            <div class="TableContainer">
+            {% for symbolName in dataFrameDict %}
+                {%set df = dataFrameDict[symbolName]%}
+                <div class="IndividualTable">
+                    <div class="HeadingContainer">
+                        <table class="TableHeading">
+                            <tr><td class="TableHeading">{{symbolName}}</td></tr>
+                        </table>
+                    </div>
+                    <table class="StockDataTable">
+                        <tr class="StockDataTable">
+                        {%for key in df %}
+                            <th class = "StockDataTable" > {{key}}</th>
+                        {%endfor%}
+                        </tr>
+                        {%for index,row in df.iterrows()%}
+                            <tr class="StockDataTable">
+                                {%set Datetime = row['Datetime']%}
+                                    <td class = "StockDataTable">{{Datetime}}</td>
+                                {%set Open = row['Open']%}
+                                    <td class = "StockDataTable">{{"%.2f"|format(Open)}}</td>
+                                {%set High = row['High']%}
+                                    <td class = "StockDataTable">{{"%.2f"|format(High)}}</td>
+                                {%set Low = row['Low']%}
+                                    <td class = "StockDataTable">{{"%.2f"|format(Low)}}</td>
+                                {%set Close = row['Close']%}
+                                    <td class = "StockDataTable">{{"%.2f"|format(Close)}}</td>
+                                {%set Volume = row['Volume']%}
+                                    <td class = "StockDataTable">{{Volume}}</td>
+                                {%set Dividend = row['Dividends']%}
+                                    <td class = "StockDataTable">{{"%.2f"|format(Dividend)}}</td>
+                                {%set StockSplits = row['Stock Splits']%}    
+                                    <td class = "StockDataTable">{{"%.2f"|format(StockSplits)}}</td>
+                            </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+            {% endfor%}
             </div>
             <div class="buttons-over-graph">
                 <button id="mode1">Mode 1</button>
