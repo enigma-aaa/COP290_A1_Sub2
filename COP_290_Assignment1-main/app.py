@@ -38,7 +38,11 @@ selected_graphs = {
     "COMBINED" : False
 }
 last_selected = 'SBIN'
+
+#keeps track of which stock is selected and only that one is green
 currentlySelected = "SBIN"
+
+
 curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
