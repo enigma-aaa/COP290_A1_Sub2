@@ -30,13 +30,6 @@ curStockInfo = {}
 #what we want selectedStockList to be like last selected this should only show one selected stock
 #we will use htis to decide what information we are showing on the side
 selectedStocksList = []
-selected_graphs = {
-    "HIGH" : True ,
-    "LOW" : False,
-    "OPEN" : False ,
-    "CLOSE" : False ,
-    "COMBINED" : False
-}
 last_selected = 'SBIN'
 
 #keeps track of which stock is selected and only that one is green
@@ -52,6 +45,26 @@ curGraphSelection = {
             "OPEN" : False ,
             "CLOSE" : False ,
             "COMBINED" : False
+        }
+    },
+    'ONGC':{
+        'graphDuration':'1_day',
+        'graphCont':{
+            "HIGH":True,
+            "LOW":False,
+            "OPEN":False,
+            "CLOSE":False,
+            "COMBINED":False
+        }
+    },
+    'TATASTEEL':{
+        'graphDuration':'1_day',
+        'graphCont':{
+            "HIGH":True,
+            "LOW":False,
+            "OPEN":False,
+            "CLOSE":False,
+            "COMBINED":False
         }
     }
 }
@@ -195,8 +208,6 @@ def drawCurGraphAndTable(dataFrameDict):
         graphCont = curDict['graphCont']
 
         for elm in graphCont:
-            #not sure how this code is working as we have changed the format of our OPEN CLOSE HIGH LOW prices to 
-            #be booleans instead of a list have to figure this out
             if graphCont[elm] :
                 match elm:
                     case 'OPEN':
@@ -230,7 +241,7 @@ def dashboard():
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
-        selected_duration = selected_duration,dataFrameDict=dataFrameDict , selected_graphs=selected_graphs,
+        selected_duration = selected_duration,dataFrameDict=dataFrameDict , 
         currentlySelected = currentlySelected)
     else:
         return redirect(url_for('index'))
@@ -263,23 +274,6 @@ def stockselected ():
         currentlySelected = stockName
         curStockInfo = stockData.getInfo(stockName)
 
-    if stockName in curGraphSelection : 
-        del curGraphSelection[stockName]
-    else : 
-        curGraphSelection[stockName] = {
-            'graphDuration' :'1_day',
-            'graphCont' : {
-                "HIGH" : True ,
-                "LOW" : False,
-                "OPEN" : False ,
-                "CLOSE" : False ,
-                "COMBINED" : False
-            }
-        }
-    if len(list(curGraphSelection.keys())) >=1 : 
-        last_selected = list(curGraphSelection.keys())[-1]
-    else :
-        last_selected = ''
     return redirect(url_for('dashboard'))
 
 @app.route('/process_duration' , methods = ['POST'])
@@ -295,21 +289,13 @@ def process_duration_fun() :
 
 @app.route('/process_graph_options' ,methods = ['POST'])
 def process_graph_options() :
-    global selected_graphs 
     global curGraphSelection
     list_of_graphs = request.form.getlist("graph_options[]")
-
-    for x in selected_graphs :
-        if x in list_of_graphs:
-            selected_graphs[x] = True 
-        else :
-            selected_graphs[x] = False 
-    if last_selected == '' : 
-        for x in selected_graphs :
-            selected_graphs[x] = False 
-    else :
-        curGraphSelection[last_selected]['graphCont'] = selected_graphs
-    print(curGraphSelection)
+    graphTypeDict = curGraphSelection[currentlySelected]['graphCont']
+    for key in graphTypeDict:
+        graphTypeDict[key] = False
+    for elm in list_of_graphs:
+        graphTypeDict[elm] = True
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
