@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from bokeh.embed import components
 from bokeh.plotting import figure
-from bokeh.models import RangeTool,PanTool,WheelZoomTool
+from bokeh.models import RangeTool,PanTool,WheelZoomTool,HoverTool
 from bokeh.layouts import column,layout
 import pandas as pd
 import stockData
@@ -196,7 +196,11 @@ def drawCurGraphAndTable(dataFrameDict):
     #naigate across the graph
     panTool = PanTool(dimensions = 'width')
     wheelZoomTool = WheelZoomTool()
-    tools = [panTool,wheelZoomTool]
+    hoverTool = HoverTool(
+        tooltips = [('date','$x{%F}'),('price','$y{(0.00 a)}')],
+        formatters={'$x':'datetime'}
+    )
+    tools = [panTool,wheelZoomTool,hoverTool]
 
     #creating the figure in which the graph is actually drawn
     plot = figure(x_axis_label="Date Time",y_axis_label="Price",
@@ -205,7 +209,7 @@ def drawCurGraphAndTable(dataFrameDict):
     #setting the main graph to stretch in both the x axis direction and y direction to 
     #fill the space alloted
     plot.sizing_mode = "stretch_both"
-
+    
     #creating the mini graph available below the main graph which is
     #used for zooming in and out of the graph
     rangePlot = figure(height=100,x_axis_type="datetime",
