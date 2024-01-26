@@ -194,12 +194,12 @@
                 <div class="Choose Graph Type">
                     <form action="/process_graph_options" method="POST">
                         <label>Select Graph Types:</label><br>
-                    
-                        <input type="checkbox" name="graph_options[]" value="OPEN"> Open<br>
-                        <input type="checkbox" name="graph_options[]" value="CLOSE"> Close<br>
-                        <input type="checkbox" name="graph_options[]" value="LOW"> Low<br>
-                        <input type="checkbox" name="graph_options[]" value="HIGH"> High<br>
-                        <input type="checkbox" name="graph_options[]" value="COMBINED"> Combined<br>
+
+                        <input type="checkbox" name="graph_options[]" value="HIGH" onchange="this.form.submit()" {% if selected_graphs["HIGH"] == True %} checked {% endif %}>High<br>
+                        <input type="checkbox" name="graph_options[]" value="LOW" onchange="this.form.submit()" {% if selected_graphs["LOW"] == True %} checked {% endif %}>Low<br>
+                        <input type="checkbox" name="graph_options[]" value="OPEN" onchange="this.form.submit()"  {% if selected_graphs["OPEN"] == True %} checked {% endif %}>Open<br>
+                        <input type="checkbox" name="graph_options[]" value="CLOSE" onchange="this.form.submit()" {% if selected_graphs["CLOSE"] == True %} checked {% endif %}>Close<br>
+                        <input type="checkbox" name="graph_options[]" value="COMBINED" onchange="this.form.submit()" {% if selected_graphs["COMBINED"] == True %} checked {% endif %}>Combined<br>
                         <!-- <input type="checkbox" name="graph_options[]" value="radar_chart"> Radar Chart<br> -->
                     
                         <button type="submit">Submit</button>
