@@ -258,6 +258,16 @@ def updateList():
     stockName = request.form['search_bar']
     if stockName not in stockList:
         stockList.append(stockName)
+        curGraphSelection[stockName] = {
+        'graphDuration':'1_day',
+        'graphCont':{
+                "HIGH":True,
+                "LOW":False,
+                "OPEN":False,
+                "CLOSE":False,
+                "COMBINED":False
+            }
+        }
     return redirect(url_for('dashboard'))
 
 @app.route('/selectStock',methods=['POST']) 
