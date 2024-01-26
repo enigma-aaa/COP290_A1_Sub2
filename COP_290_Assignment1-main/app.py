@@ -92,7 +92,7 @@ def login():
 #        'graphDuration':['DAILY'],
 #        'graphCont':['OPEN','CLOSE','HIGH','LOW','COMBINED']
 #    }
-#}
+#
 def drawOpenGraph(symbolName,plot,df):
     plot.line(df['Datetime'],df['Open'],legend_label=symbolName+" Open",line_width=2)
 def drawCloseGraph(symbolName,plot,df):
