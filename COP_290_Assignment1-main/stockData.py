@@ -56,3 +56,27 @@ def controltime(symbolName,duration_req) :
     elif(duration_req == 'All') :
         return getMaxData(symbolName)
     # return getDailyData(symbolName)
+def getAllInfos():
+    nseStockList = pd.read_csv('./Data_folder/NSE_Stock_List.csv')
+    sampleDict = getInfo('SBIN')
+    arrayDict = {}
+    columns = []
+    for key in sampleDict:
+        arrayDict[key] = []
+        columns.append(key)
+    i = 0
+    for symbol in nseStockList['Symbol']:
+        try:
+            curDict = getInfo(symbol)
+        except e:
+            continue
+        for key in curDict:
+            if key in arrayDict:
+                arrayDict[key].append(curDict[key])
+        i += 1
+        print(i)
+    totalData = []
+    for key in sampleDict:
+        totalData.append(arrayDict[key])
+    df = pd.DataFrame(totalData,columns=columns)
+    df.to_pickle('./Data_folder/allInfo.pkl')
