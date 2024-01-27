@@ -406,6 +406,16 @@ def process_mode_change() :
     print(mode)
     return redirect(url_for('dashboard'))
 
+@app.route('/closeStock' , methods=['POST'])
+def closeStock() :
+    to_close = request.form.get('closedStock')
+    global curGraphSelection
+    global stockList
+    del curGraphSelection[to_close]
+    stockList.remove(to_close)
+    print(*stockList)
+    print(to_close)
+    return redirect(url_for('dashboard'))
 # @app.route('/process_filters_market_cap' , methods=['POST'])
 # def process_filter() :
 #     global filter_market_cap
@@ -446,7 +456,6 @@ def process_filters() :
         i+=1 
     print(filter_lims)
     return(redirect(url_for('sort_page')))
-
 
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code
