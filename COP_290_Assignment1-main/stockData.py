@@ -40,7 +40,9 @@ def getMaxData(symbolName):
 def getInfo(symbolName):
     symbolName = symbolName + ".NS"
     symbolTicker = yf.Ticker(symbolName)
-    symbolInfo = symbolTicker.info 
+    symbolInfo = symbolTicker.info
+    # print(symbolInfo) 
+    # print(list(symbolInfo.keys()))
     return symbolInfo
 def controltime(symbolName,duration_req) :
     if(duration_req == '1_day') :
