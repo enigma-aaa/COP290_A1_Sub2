@@ -8,6 +8,7 @@ from bokeh.layouts import column,layout
 import pandas as pd
 import stockData
 import sys
+import colorGenerator
 inf = sys.maxsize
 excel_file_path = 'MCAP31122023.xlsx'
 all_stocks_df = pd.read_excel(excel_file_path)
