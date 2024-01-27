@@ -446,6 +446,8 @@ def process_filters() :
         i+=1 
     print(filter_lims)
     return(redirect(url_for('sort_page')))
+
+
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code
     app.run(debug=True)
