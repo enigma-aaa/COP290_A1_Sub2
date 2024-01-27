@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sort_style.css') }}">
+    <title>Stocks Page</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <form action="/process_filters_market_cap" method="POST">
+                <label for="sort">Market Cap:</label>
+                <select name="marketCap" id="sort" onchange="this.form.submit()">
+                    <option value="Any" {% if filter_market_cap=="Any" %} selected {% endif %}>Any</option>
+                    <option value="large" {% if filter_market_cap=="large" %} selected {% endif %} >Large Market Cap(Greater than 25000Cr)</option>
+                    <option value="mid" {% if filter_market_cap=="mid" %} selected {% endif %} >Mid Market Cap(Between 8500Cr to 25000Cr)</option>
+                    <option value="small" {% if filter_market_cap=="small" %} selected {% endif %} >Small Market Cap (Less than 8500 Cr)</option>
+                    <!-- Add more sorting options as needed -->
+                </select>
+            </form>
+            <form action="/process_filters_pe_rat" method="POST">
+                <label for="sort">P/E Ratio:</label>
+                <select name="pe_ratio" id="sort" onchange="this.form.submit()">
+                    <option value="Any" {% if filter_pe_rat=="Any" %} selected {% endif %}>Any</option>
+                    <option value="l5" {% if filter_pe_rat=="l5" %} selected {% endif %} >Less than 5</option>
+                    <option value="b_5_10" {% if filter_pe_rat=="b_5_10" %} selected {% endif %} >Between 5 and 10</option>
+                    <option value="b_10_20" {% if filter_pe_rat=="b_10_20" %} selected {% endif %} >Between 10 and 20</option>
+                    <option value="b_20_50" {% if filter_pe_rat=="b_20_50" %} selected {% endif %} >Between 20 and 50</option>
+                    <option value="g50" {% if filter_pe_rat=="g50" %} selected {% endif %} >Greater than 50</option>
+                    <!-- Add more sorting options as needed -->
+                </select>
+            </form>
+            <form action="/process_filters_vol" method="POST">
+                <label for="sort">Average Volume:</label>
+                <select name="vol" id="sort" onchange="this.form.submit()">
+                    <option value="Any" {% if filter_avg_vol=="Any" %} selected {% endif %}>Any</option>
+                    <option value="l1" {% if filter_avg_vol=="l5" %} selected {% endif %} >Less than 1 Lakh</option>
+                    <option value="b_1_10" {% if filter_avg_vol=="l5" %} selected {% endif %} >Between 1 lakh and 10 lakh</option>
+                    <option value="g10" {% if filter_avg_vol=="b_5_10" %} selected {% endif %} >More than 10 lakh shares per day</option>
+                </select>
+            </form>
+
+        </div>
+
+        <div class="content">
+            <!-- Display sorted stock list here -->
+            <ul id="sortedStockList">
+                <!-- Sorted stocks will be displayed here -->
+                {% for x in filtered_list_of_stocks %}
+                    <p>{{x}}</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

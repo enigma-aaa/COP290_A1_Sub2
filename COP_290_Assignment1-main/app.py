@@ -7,7 +7,11 @@ from bokeh.models import RangeTool,PanTool,WheelZoomTool
 from bokeh.layouts import column,layout
 import pandas as pd
 import stockData
-
+import sys
+inf = sys.maxsize
+excel_file_path = 'MCAP31122023.xlsx'
+all_stocks_df = pd.read_excel(excel_file_path)
+all_stocks_symbol_list = all_stocks_df['Symbol']
 initial = 1
 app = Flask(__name__)
 #change secret key later
@@ -34,8 +38,10 @@ last_selected = 'SBIN'
 
 #keeps track of which stock is selected and only that one is green
 currentlySelected = "SBIN"
-
-
+filter_market_cap = "small"
+filter_avg_vol = "Any"
+filter_pe_rat = "Any"
+filtered_list_of_stocks = []
 curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
@@ -82,6 +88,41 @@ with app.app_context():
     db.create_all()
 
 #for each url diff func defined with decorator below is the root
+    
+
+market_cap_vals = {
+    'Any' : (0, inf) ,
+    'large' : ( 2500000, inf) ,
+    'mid' : ( 850000,2500000 ) ,
+    'small' : (0,850000)
+}
+
+pe_rat_vals = {
+    'Any' : (0,inf) , 
+    'l5' : (0,5) ,
+    'b_5_10' : (5,10) ,
+    'b_10_20' : (10,20) ,
+    'b_20_50' : (20,50) ,
+    'g50' : (50,inf)
+}
+
+avg_vol_vals = {
+    'Any' : (0,inf) ,
+    'l1' : (0,100000) ,
+    'b_1_10' : (100000,1000000) ,
+    'g10' : (1000000,inf)
+}
+
+def perform_filtering() : 
+    global filtered_list_of_stocks
+    (l_market_cap ,m_market_cap) = market_cap_vals[filter_market_cap]
+    (l_pe_rat ,m_pe_rat) = pe_rat_vals[filter_pe_rat]
+    (l_avg_col,m_avg_vol) = avg_vol_vals[filter_avg_vol]
+    # for x in all_stocks_symbol_list : 
+        # df = all_stocks_df[']
+
+
+
 @app.route('/')
 def index():
     return render_template('login.html')
@@ -245,7 +286,10 @@ def dashboard():
         currentlySelected = currentlySelected , mode=mode)
     else:
         return redirect(url_for('index'))
-
+@app.route('/sort_page')
+def sort_page() :
+    print("hi")
+    return render_template('sort.html' , stockList = stockList ,    filter_avg_vol=filter_avg_vol , filter_market_cap=filter_market_cap, filter_pe_rat=filter_pe_rat ,filtered_list_of_stocks=filtered_list_of_stocks)
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
@@ -317,6 +361,26 @@ def process_mode_change() :
     print(mode)
     return redirect(url_for('dashboard'))
 
+@app.route('/process_filters_market_cap' , methods=['POST'])
+def process_filter() :
+    global filter_market_cap
+    filter_market_cap = request.form.get('marketCap')
+    process_filter()
+    return(redirect(url_for('sort_page')))
+
+@app.route('/process_filters_pe_rat' , methods = ['POST'])
+def filter_market_pe_rat() :
+    global filter_pe_rat
+    filter_pe_rat = request.form.get('pe_ratio')
+    process_filter()
+    return(redirect(url_for('sort_page')))
+
+@app.route('/process_filters_vol' , methods=['POST'])
+def process_filters_vol() :
+    global filter_avg_vol 
+    filter_avg_vol = request.form.get('vol')
+    process_filter()
+    return(redirect(url_for('sort_page')))
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code
     app.run(debug=True)
