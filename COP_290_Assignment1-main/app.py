@@ -28,6 +28,8 @@ all_stocks_df = all_stocks_df[all_stocks_df.eq(0).sum(axis=1) <= 4]
 # pd.reset_option('display.max_rows')
 # print(all_stocks_df)
 
+checked_filter_boxes = ['No' for i in range(0,12)]
+
 print('size' , all_stocks_df.shape)
 # all_stocks_symbol_list = all_stocks_df['Symbol']
 initial = 1
@@ -66,6 +68,7 @@ filter_lims = {
     'price' : [0,inf]  
 }
 
+Industries_filter = ['Textile Manufacturing' , 'Speciality Chemicals' , 'Engineering & Construction' , 'Drug Manufacturers-Speciality & Generic' , 'Auto Parts' , 'Capital Markets' , 'Information Technology Services' , 'Steel' , 'Banks Regional' , 'Industrial Machinery' , 'Others' , 'All']
 filtered_df = pd.DataFrame()
 curGraphSelection = {
     'SBIN':{
@@ -351,7 +354,9 @@ def sort_page() :
     print('gonna render')
     print(filtered_df)
     print(*filtered_df_columns)
-    return render_template('sort.html' , stockList = stockList ,filtered_df = filtered_df ,filtered_df_columns = filtered_df_columns )
+    return render_template('sort.html' , stockList = stockList ,filtered_df = filtered_df ,
+            filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
+            Industries_filter=Industries_filter )
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
@@ -464,9 +469,19 @@ def closeStock() :
 @app.route('/process_filters' , methods=['POST'])
 def process_filters() :
     # global l_lim_price,m_lim_price,l_lim_marketCap,m_lim_marketCap,l_lim_pe_rat,m_lim_pe_rat,l_lim_vol,m_lim_vol
-    global filter_lims
+    global filter_lims , checked_filter_boxes
     l_lims = request.form.getlist('l_lim[]')
     m_lims = request.form.getlist('m_lim[]')
+    list_check_status = request.form.getlist('checked_filter_boxes[]')
+    list_check_status = [int(x) for x in list_check_status]
+    print('here')
+    print(*list_check_status)
+    for i in range(0,12) :
+        if i in list_check_status :
+            checked_filter_boxes[i] = 'yes'
+        else :
+            checked_filter_boxes[i] = 'no'
+    
     i = 0 
     for x in filter_lims :
         if l_lims[i] != '' :
@@ -494,6 +509,8 @@ def perform_filtering():
         (pd.to_numeric(all_stocks_df['trailingPE'], errors='coerce') <= filter_lims['pe_rat'][1])
     )
     filtered_df = all_stocks_df[condition]
+    if(checked_filter_boxes[11] == 'no') :
+        
     filtered_df = filtered_df.reset_index().rename(columns={'index':'Symbol'})
     filtered_df = filtered_df.rename(columns={'marketCap':'Market Cap(in Cr)' , 'previousClose':'Prev. Close' , 'sector':'Sector' ,'open':'Open','dayLow':'Low','dayHigh' :'High' , 'currentPrice':'Price' , 'trailingPE' :'PE' ,'volume' :'Volume'})
     # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)']/100000000

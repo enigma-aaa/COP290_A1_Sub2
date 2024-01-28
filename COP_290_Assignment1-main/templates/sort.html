@@ -73,10 +73,52 @@
             <input type="number" name = 'l_lim[]' placeholder="Lower Limit for Price">
             <input type="number" name = 'm_lim[]' placeholder="Max Limit for Price">
             <br>
-            <button type="Submit">Submit</button>
-        </form>
+            <!-- <button type="Submit">Submit</button> -->
+        <!-- </form> -->
 
-        <form action=""></form>
+        <!-- <form action="/process_filter_tables_checkbox" method="POST"> -->
+
+            {% for i in range(0,12) %}
+
+            <input type="checkbox" name="checked_filter_boxes[]" value={{i}} {% if checked_filter_boxes[i]=='yes' %} checked {% endif %}>
+            <label for="checkbox">{{Industries_filter[i]}}</label>
+            <br>
+            {% endfor %}
+            <!-- <input type="checkbox" name="checked_filter_boxes[]" value="1">
+            <label for="checkbox">Speciality Chemicals</label>
+            <br>
+            <input type="checkbox" name="checked_filter_boxes[]"value='2'>
+            <label for="checkbox">Engineering & Construction</label>
+            <br>
+            <input type="checkbox" name="checked_filter_boxes[]" value="3">
+            <label for="checkbox">Drug Manufacturers-Speciality & Generic</label>
+            <br>
+            <input type="checkbox" name="checked_filter_boxes[]" value="4">
+            <label for="checkbox">Auto Parts</label>
+            <br>
+            <input type="checkbox" name="checked_filter_boxes[]" value="5">
+            <label for="checkbox">Capital Markets</label>
+            <br>
+            <input type="checkbox" name="checked_filter_boxes[]" value="6">
+            <label for="checkbox">Information Technology Services</label>
+            <br>
+            <input type="checkbox" name="checked_filter_boxes[]" value="7">
+            <label for="checkbox">Steel</label>
+            <br>
+            <input type="checkbox" name="checked_filter_boxes[]"value='8'>
+            <label for="checkbox">Banks Regional</label>
+            <br>
+            <input type="checkbox" name="checked_filter_boxes[]" value="9">
+            <label for="checkbox">Industrial Machinery</label>
+            <br>
+            <input type="checkbox" name="checked_filter_boxes[]" value="10">
+            <label for="checkbox">Others</label>
+            <br>
+            <input type="checkbox" name="checked_filter_boxes[]" value="11">
+            <label for="checkbox">All</label>
+            <br> -->
+            <input type="submit" value="Submit">
+        </form>
 
         </div>
 
