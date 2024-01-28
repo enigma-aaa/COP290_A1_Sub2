@@ -371,7 +371,7 @@ def updateList():
         }
     return redirect(url_for('dashboard'))
 
-@app.route('/selectStock',methods=['POST']) 
+@app.route('/selectAndRemoveStock',methods=['POST']) 
 #select stock function adds the stock symbol currently selected to the dictionary of graphs we want to draw
 def stockselected ():
     global last_selected
@@ -380,11 +380,16 @@ def stockselected ():
     stockName = request.form.get('selectedStock')
     #in our current assumption when we clicked a selected stock we deselect it and 
     #remove it fromt the list of graphs we are drawing
-    
-    if stockName != currentlySelected:
-        currentlySelected = stockName
-        curStockInfo = stockData.getInfo(stockName)
-
+    if stockName.endswith('Cross'):
+        stockName = stockName[:-5]
+        if currentlySelected == stockName:
+            currentlySelected = ''
+        stockList.remove(stockName)
+        del curGraphSelection[stockName]
+    else:
+        if stockName != currentlySelected:
+            currentlySelected = stockName
+            curStockInfo = stockData.getInfo(stockName)
     return redirect(url_for('dashboard'))
 
 @app.route('/process_duration' , methods = ['POST'])

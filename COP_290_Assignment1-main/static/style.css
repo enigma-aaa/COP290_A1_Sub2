@@ -228,16 +228,46 @@ main {
     /* padding: 20px; */
     height: calc(100vh - 50px);
 }
-
+table.StockList{
+    width: 100%;
+    border-collapse: collapse;
+}
+tr.selectedStock{
+    
+    background-color: #cecece;
+    border-bottom: 2px solid #dedede;
+}
+tr.selectedStock:hover{
+    background-color:#c0c0c0;
+}
+tr.unSelectedStock{
+    background-color: #fff;
+    border-bottom: 2px solid #dedede;
+}
+tr.unSelectedStock:hover{
+    background-color:#dedede;
+}
+col.StockList{
+    width: calc(100% -50px);
+}
+col.StockListCross{
+    width: 50px;
+}
 div.StockListAndSearch {
     width: 20%;
     /* height:80%; */
     background-color: #f7f7f7;
     align-items: flex-start;
     flex: 20;
-    height: calc(100vh - 50px);
+    height: calc(100vh - 20px);
     /* display: ; */
     border-right: 3px solid #eeeded;
+}
+div.StockList{
+    width: 100%;
+}
+div.StockRemoveList{
+    width: 50px;
 }
 
 /* div.GraphDiv{
@@ -463,7 +493,7 @@ input.GraphType{
     /*! height: ; */
 }
 button.selectedStock{
-    background-color: #d9d9d9;
+    background-color: rgba(255,255,255,0.0);
     color: black;
     width: 100%;
     font-size: 20px;
@@ -471,23 +501,45 @@ button.selectedStock{
     padding-left: 15px;
     text-align: left;
     border: none;
-    border-bottom: 2px solid #e4e4e4;
+    /*! border-bottom: 2px solid #e4e4e4; */
 }
-button.selectedStock:hover{
-    background-color: #bebebe;
+div.OnlyTheList{
+    display: inline-block;
+    width: 100%;
+}
+button.selectedStockCross{
+    background-color: rgba(255, 255, 255, 0);
+    color: gray;
+    width: 100%;
+    font-size: 15px;
+    padding: 8px;
+    text-align: center;
+    border: none;
+}
+button.selectedStockCross:hover{
+    color:black;
+}
+button.unSelectedStockCross{
+    background-color: rgba(255, 255, 255, 0);
+    color: gray;
+    width: 100%;
+    font-size: 15px;
+    padding: 8px;
+    text-align: center;
+    border: none;
+}
+button.unSelectedStockCross:hover{
+    color: black;
 }
 button.unSelectedStock{
-    background-color: #fff;
+    background-color: rgba(255, 255, 255,0);
     width: 100%;
     font-size: 20px;
     padding: 8px;
     border: none;
-    border-bottom: 2px solid #e4e4e4;
+    /*! border-bottom: 2px solid #e4e4e4; */
     text-align: left;
     padding-left: 15px;
-}
-button.unSelectedStock:hover{
-    background-color: #e4e4e4;
 }
 button.stockCrossButton{
     background-color: #ffffff;

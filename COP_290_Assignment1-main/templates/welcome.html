@@ -45,27 +45,40 @@
 
                 </form>
             </div>
-            <div class="StockList">
-                <form action="/selectStock" method="POST">
-                    {% for stock in stockList %}
-                    {% if stock == currentlySelected %}
-                    <button type="submit" name="selectedStock" value="{{stock}}" class = "selectedStock">
-                        {{stock}} 
-                    </button>
-                    {% else %}
-                    <button type="submit" name="selectedStock" value="{{stock}}" class= "unSelectedStock">
-                        {{stock}}
-                    </button>
-                    {% endif %}
-                    <!-- <p class ="StockItem">{{stock}}</p>             -->
-                    <!--<form action="/closeStock" method="POST" style="display: inline-block;">
-                        <input type="hidden" name="closedStock" value="{{ stock }}">
-                        <button type="submit" style="background-color: #f44336; color: white;">✖</button>
-                    </form>-->
-                    {% endfor%}
-                </form>
+            <div class="OnlyTheList">
+                <div class="StockList">
+                    <form action="/selectAndRemoveStock" method="POST">
+                        <table class = "StockList">
+                            <colgroup>
+                                <col class="StockList"></col>
+                                <col class="StockListCross"></col>
+                            </colgroup>
+                        {% for stock in stockList %}
+                            
+                            {% if stock == currentlySelected %}
+                            <tr class="selectedStock">
+                                <td><button type="submit" name="selectedStock" value="{{stock}}" class = "selectedStock">
+                                    {{stock}} 
+                                </button></td>
+                                <td><button type="submit" name="selectedStock" value="{{stock}}Cross" class = "selectedStockCross">x</button></td>
+                            {% else %}
+                            <tr class="unSelectedStock">
+                                <td><button type="submit" name="selectedStock" value="{{stock}}" class= "unSelectedStock">
+                                    {{stock}}
+                                </button></td>
+                                <td><button type="submit" name="selectedStock" value="{{stock}}Cross" class = "unSelectedStockCross">x</button></td>
+                            {% endif %}
+                            </tr>
+                            <!-- <p class ="StockItem">{{stock}}</p>             -->
+                            <!--<form action="/closeStock" method="POST" style="display: inline-block;">
+                                <input type="hidden" name="closedStock" value="{{ stock }}">
+                                <button type="submit" style="background-color: #f44336; color: white;">✖</button>
+                            </form>-->
+                        {% endfor%}
+                        </table>
+                    </form>
+                </div>
             </div>
-
         </div>
         <div class="GraphColumn" id="center-column">
 
