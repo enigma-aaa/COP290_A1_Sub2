@@ -477,6 +477,7 @@ def perform_filtering():
     filtered_df = all_stocks_df[condition]
     filtered_df = filtered_df.reset_index().rename(columns={'index':'Symbol'})
     filtered_df_columns = filtered_df.columns
+    fi
     print('lessgo')
     return 
 
