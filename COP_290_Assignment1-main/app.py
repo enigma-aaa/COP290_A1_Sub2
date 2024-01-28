@@ -335,7 +335,7 @@ def dashboard():
     else:
         return redirect(url_for('index'))
 @app.route('/sort_page')
-def sort_page() :
+def sort_page():
     print('gonna render')
     print(filtered_df)
     print(*filtered_df_columns)
@@ -355,6 +355,7 @@ def updateList():
             print("symbol Name",stockName,"is invalid directly going to dashboard")
             return redirect(url_for('dashboard'))
         stockList.append(stockName)
+        last_selected = stockList
         curGraphSelection[stockName] = {
         'graphDuration':'1_day',
         'color':{

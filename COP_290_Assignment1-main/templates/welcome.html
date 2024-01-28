@@ -84,11 +84,9 @@
 
             <div class="buttons-over-graph" id="modes-container">
                 <form action="/process_mode_change" method="POST">
-                    <input type="submit" name="graph-mode" value="Mode1">
+                    <button type="submit" name="graph-mode" value="Mode1" class = "GraphButton"></button>
                     <br>
-                    <input type="submit" name="graph-mode" value="Mode2">
-                    <br>
-                    <input type="submit" name="graph-mode" value="Mode3">
+                    <button type="submit" name="graph-mode" value="Mode2" class = "TableButton"></button>
                 </form>
             </div>
             {% if mode == 'Mode1' %}
