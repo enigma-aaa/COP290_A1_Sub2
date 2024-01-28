@@ -1,11 +1,5 @@
 /* style.css */
 
-.column {
-    flex: 1;
-    /* padding: 20px; */
-    border: 1px solid #ddd;
-    /* box-sizing: border-box; */
-}
 
 .login-container {
     background-color: white;
@@ -35,6 +29,9 @@ input[type="password"] {
     box-sizing: border-box;
 }
 
+div.NavBarHeader{
+    height: 50px;
+}
 
 /* Add this to your existing style.css */
 
@@ -76,13 +73,13 @@ div.LoginInfo {
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f2f2f2;
+    /*! background-color: #f2f2f2; */
     /* display: flex; */
     /* justify-content: center; */
     /* align-items: center; */
     /* height: 100vh; */
     margin: 0;
-    padding: 0;
+    /*! padding: 0; */
 }
 
 header {
@@ -226,19 +223,19 @@ td.StockInfoTableLeft {
 
 main {
     display: flex;
-    /* flex-wrap: wrap;
-     */
+    flex-wrap: wrap;
     justify-content: space-between;
     /* padding: 20px; */
-    height: 100vh;
+    height: calc(100vh - 50px);
 }
 
 div.StockListAndSearch {
-    /* width: 20%; */
+    width: 20%;
     /* height:80%; */
     background-color: #f7f7f7;
     align-items: flex-start;
     flex: 20;
+    height: calc(100vh - 50px);
     /* display: ; */
     border-right: 3px solid #eeeded;
 }
@@ -248,15 +245,15 @@ div.StockListAndSearch {
 /* height:100%; */
 /* background-color: turquoise; */
 /* } */
-div.Graph {
+div.GraphColumn {
     /* width:80%; */
     /* height:100%; */
-    /* width : 60% ; */
-    background-color: rebeccapurple;
+    width : 60% ;
+    background-color: white;
     /* align-items: flex-start; */
     flex: 60;
     position: relative;
-
+    height: calc(100vh - 50px);
     /* position: relative; */
 
 }
@@ -359,12 +356,14 @@ div.StockSearchDiv {
 }
 
 div.StockInfo {
-    /* width: 20%; */
-    /* height: 100%; */
+    width: 20%;
+    /*! height: 100%; */
     background-color: white;
     flex: 20;
+    height: calc(100vh - 50px);
 
     border-left: 4px solid #f2f2f2;
+    /*! overflow: auto; */
 }
 
 div.right-table {
@@ -378,6 +377,7 @@ div.right-table {
 
 div.StockInfoTableCont {
     overflow: auto;
+    height: 100%;
 }
 
 table.StockTableHeading {

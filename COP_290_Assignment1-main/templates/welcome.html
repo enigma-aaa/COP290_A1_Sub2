@@ -15,8 +15,7 @@
 
 
 <body>
-    <header>
-
+    <div class="NavBarHeader">
         <nav>
             <ul>
                 <li><a href="#">Home</a></li>
@@ -27,8 +26,9 @@
             </ul>
         </nav>
 
-    </header>
+    </div>
     <!--
+        Height set to 50px
         <div class="welcome-container">
             <h1>Welcome, {{ username }}!</h1>
             <p>This is your dashboard.</p>
@@ -67,7 +67,7 @@
             </div>
 
         </div>
-        <div class="Graph column" id="center-column">
+        <div class="GraphColumn" id="center-column">
 
             <div class="buttons-over-graph" id="modes-container">
                 <form action="/process_mode_change" method="POST">
