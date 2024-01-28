@@ -7,12 +7,13 @@ symbols = df['Symbol']
 print("symbols are:",symbols)
 columnNames = ['industry','sector','previousClose','open',
 'dayLow','dayHigh','previousClose','currentPrice','volume'
-,'trailingPE','averageVolume']
-defaultVal = ['','',0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+,'trailingPE','averageVolume','forwardPE' , 'marketCap']
+defaultVal = ['','',0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 ColumnArr = [ [] for i in range(len(columnNames))]
 def get_stats(symbolName):
     #print("symbolName is:",symbolName)
     info = stockData.getInfo(symbolName)
+    # print(info)
     for i in range(len(columnNames)):
         elm = columnNames[i]
         if elm in info:
