@@ -83,7 +83,7 @@ curGraphSelection = {
             "COMBINED":colorGenerator.genColor()
         },
         'graphCont':{
-            "HIGH":True,
+            "HIGH":False,
             "LOW":False,
             "OPEN":False,
             "CLOSE":False,
@@ -100,7 +100,7 @@ curGraphSelection = {
             "COMBINED":colorGenerator.genColor()
         },
         'graphCont':{
-            "HIGH":True,
+            "HIGH":False,
             "LOW":False,
             "OPEN":False,
             "CLOSE":False,
@@ -362,7 +362,7 @@ def updateList():
             "COMBINED":colorGenerator.genColor()
         },
         'graphCont':{
-                "HIGH":True,
+                "HIGH":False,
                 "LOW":False,
                 "OPEN":False,
                 "CLOSE":False,
