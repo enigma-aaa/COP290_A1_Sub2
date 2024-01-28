@@ -1,11 +1,12 @@
 /* style.css */
 
-.column{
-    flex : 1 ;
+.column {
+    flex: 1;
     /* padding: 20px; */
     border: 1px solid #ddd;
     /* box-sizing: border-box; */
 }
+
 .login-container {
     background-color: white;
     padding: 40px;
@@ -23,7 +24,8 @@
     margin-bottom: 15px;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"],
+input[type="password"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -36,8 +38,9 @@ button {
     padding: 10px;
     border: none;
     background-color: #007bff;
-    
+
 }
+
 /* Add this to your existing style.css */
 
 .welcome-container {
@@ -67,14 +70,15 @@ button {
     background-color: #c82333;
 }
 
-div.LoginInfo{
-    width:100%;
-    height:10%;
+div.LoginInfo {
+    width: 100%;
+    height: 10%;
     background-color: black;
     font-size: 60px;
     text-align: right;
     color: white;
 }
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f2f2f2;
@@ -85,69 +89,119 @@ body {
     margin: 0;
     padding: 0;
 }
-header{
+
+header {
     /* width : 100% ;
      */
-     padding : 10px;
-     text-align: center;
-     height : 40% ;
+    padding: 10px;
+    text-align: center;
+    height: 40%;
     /* position : relative */
 }
-.navbar{
+
+.navbar {
     list-style-type: none;
-    margin : 0;
-    padding : 0 ;
+    margin: 0;
+    padding: 0;
     /* width : 100%; */
 }
-nav{
-    height : 100% ;
+
+nav {
+    height: 100%;
 }
 
-nav ul{
+nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-nav ul li{
+nav ul li {
     display: inline;
     margin-right: 15px;
 }
-th.StockInfoTable{
+
+th.StockInfoTable {
     text-align: center;
     width: 100%;
+    font-size: 22px;
 }
+
+table.StockInfoTable {
+    width: 95%;
+    /*! border-bottom: 5px solid #ff0101; */
+    border-collapse: collapse;
+    padding: 10px;
+    /*! margin-left: 5px; */
+    /*! margin-right: 5px; */
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+tr.StockInfoTable {
+
+    /*! margin: 5px; */
+    /*! padding: 5px; */
+    border-bottom: 2px solid #d9d9d9;
+    border-radius: 5px;
+}
+tr.StockInfoTable:hover{
+    background-color: #dbdbdb;
+}
+td.StockInfoTableRight {
+
+    text-align: right;
+    font-size: 20px;
+    padding: 10px;
+    /*! border-bottom: 5px solid gray; */
+    /*! border-collapse: collapse; */
+    padding-left: 0px;
+}
+
+td.StockInfoTableLeft {
+
+    text-align: left;
+    margin: 5px;
+    padding: 10px;
+    /*! border-bottom: 5px solid gray; */
+    font-size: 20px;
+    /*! border-collapse: collapse; */
+    padding-right: 0px;
+}
+
 /* th.StockInfoTable{
 
     font-size: 18px;
     /*! width: 100%; */
-    /* padding: 5px; */
+/* padding: 5px; */
 /* } */
 /* td.StockInfoTable{ */
 
-    /* padding: 5px; */
-    /* font-size: 16px; */
+/* padding: 5px; */
+/* font-size: 16px; */
 /* } */
 /* table.StockInfoTable{ */
-    /*  */
-    /* width: 100%; */
-/* } */ */
-
-#table1{
+/*  */
+/* width: 100%; */
+/* } */
+*/ #table1 {
     background: white;
-    color : black ;
+    color: black;
     font-size: 10pt;
     border-collapse: collapse;
-    text-align: center ;
-    width : 100%
+    text-align: center;
+    width: 100%
 }
-.first{
+
+.first {
     background: green;
-    color : white ;
+    color: white;
     border: 1pt solid #757575;
     text-align: center;
 }
-.rows{
+
+.rows {
     background: #f2f2f2;
     color: black;
     border-bottom: 1pt solid #ddd;
@@ -155,51 +209,63 @@ th.StockInfoTable{
     border-right: 1pt solid #757575;
 }
 
-.last{
+.last {
     background: #f2f2f2;
-    color : black ;
+    color: black;
     border-bottom: 1pt solid #757575;
     border-left: 1pt solid #757575;
     border-right: 1pt solifd #757575;
 }
-#table1 tbody tr:hover{background-color: #ddd;}
-#table1 tfoot tr:hover{background-color: #ddd;}
-#table1 tr:nth-child(even){background-color: #f2f2f2;}
-main
-{
+
+#table1 tbody tr:hover {
+    background-color: #ddd;
+}
+
+#table1 tfoot tr:hover {
+    background-color: #ddd;
+}
+
+#table1 tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+main {
     display: flex;
     /* flex-wrap: wrap;
      */
-     justify-content: space-between;
-     /* padding: 20px; */
-     height: 100vh;
+    justify-content: space-between;
+    /* padding: 20px; */
+    height: 100vh;
 }
-div.StockListAndSearch{
+
+div.StockListAndSearch {
     /* width: 20%; */
     /* height:80%; */
     background-color: gray;
-    align-items:flex-start;
-    flex :20 ;
+    align-items: flex-start;
+    flex: 20;
     /* display: ; */
 }
+
 /* div.GraphDiv{
     /* width:100%; */
-    /* height:100%; */
-    /* background-color: turquoise; */
-    /* } */ 
-div.Graph{
+/* height:100%; */
+/* background-color: turquoise; */
+/* } */
+div.Graph {
     /* width:80%; */
     /* height:100%; */
     /* width : 60% ; */
     background-color: rebeccapurple;
     /* align-items: flex-start; */
-    flex : 60 ;
+    flex: 60;
     position: relative;
 
     /* position: relative; */
-     
+
 }
-.buttons-over-graph{
+
+.buttons-over-graph {
     position: absolute;
     /* top: 15%; */
     /* left: 35%; */
@@ -212,7 +278,8 @@ div.Graph{
     display: flex;
     flex-direction: column;
 }
-div.GraphContainer{
+
+div.GraphContainer {
     /* width: 80%; */
     align-items: flex-start;
     /* display: ; */
@@ -223,46 +290,55 @@ div.GraphContainer{
 }
 
 
-table.StockDataTable{
+table.StockDataTable {
     border-collapse: collapse;
     border: 1px solid;
     width: 100%;
     text-align: center;
 }
-th.StockDataTable{
+
+th.StockDataTable {
     border: 1px solid;
     background-color: #1a89ff;
 }
-tr.StockDataTable:nth-child(odd){
+
+tr.StockDataTable:nth-child(odd) {
     border: 1px solid;
     background-color: #e9f5ff;
 }
-tr.StockDataTable:nth-child(even){
+
+tr.StockDataTable:nth-child(even) {
     border: 1px solid;
     background-color: #8accf5;
 }
-td.StockDataTable{
+
+td.StockDataTable {
     border: 1px solid;
     padding-left: 10px;
     padding-right: 10px;
 }
-td.TableHeading{
+
+td.TableHeading {
     font-size: 32px;
 }
-table.TableHeading{
+
+table.TableHeading {
     width: 100%;
     text-align: center;
 }
-div.HeadingContainer{
+
+div.HeadingContainer {
     width: 100%;
 }
-div.TableContainer{
-    width:100%;
-    height:100%;
+
+div.TableContainer {
+    width: 100%;
+    height: 100%;
     overflow: auto;
     padding-top: 50px;
 }
-div.IndividualTable{
+
+div.IndividualTable {
     width: 93%;
     height: 600px;
     overflow: auto;
@@ -273,20 +349,28 @@ div.IndividualTable{
     margin-top: 30px;
 }
 
-div.StockSearchDiv{
+div.ListHorizontalLine {
+    width: 100%;
+    height: 2px;
+    background-color: gray;
+}
+
+div.StockSearchDiv {
     /* display: flex; */
     /* justify-content: space-between; */
     /* width: 100%; */
     align-items: center;
 }
-div.StockInfo{
+
+div.StockInfo {
     /* width: 20%; */
     /* height: 100%; */
-    background-color: turquoise;
-    flex : 20 ;
+    background-color: white;
+    flex: 20;
 
 }
-div.right-table{
+
+div.right-table {
     /* display: flex; */
     /* text-align: center; */
     /* display: inline-block; */
@@ -294,32 +378,37 @@ div.right-table{
     flex-direction: column;
     text-align: center;
 }
-div.StockInfoTableCont{
+
+div.StockInfoTableCont {
     overflow: auto;
 }
-table.StockTableHeading{
+
+table.StockTableHeading {
 
     width: 100%;
     font-size: 24px;
     padding-top: 10px;
     padding-bottom: 10px;
+    color: black;
 }
-th.StockTableHeading{
 
-}
-div.StockInfoAndGraph{
+th.StockTableHeading {}
+
+div.StockInfoAndGraph {
     position: relative;
     height: 90%;
     display: flex;
 }
-input.SearchBar{
+
+input.SearchBar {
     font-size: 32px;
     /* padding: 10px; */
     /* margin: 5px; */
     /* width : 100% ; */
     /* width: 75%; */
 }
-p.StockItem{
+
+p.StockItem {
     padding: 10px;
     border-left: 5px solid red;
     margin-left: 5px;
