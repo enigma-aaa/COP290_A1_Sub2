@@ -43,7 +43,7 @@ selectedStocksList = []
 last_selected = 'SBIN'
 
 #keeps track of which stock is selected and only that one is green
-currentlySelected = "SBIN"
+currentlySelected = ""
 # filter_market_cap = "small"
 # filter_avg_vol = "Any"
 # filter_pe_rat = "Any"
@@ -312,11 +312,21 @@ def drawCurGraphAndTable(dataFrameDict):
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div)
 
+#this function takes in curStockInfo and replaces all missing values with N/A
+def padCurStockInfo(curStockInfo):
+    keys = ['longName','open','previousClose','currentPrice','dayHigh'
+            ,'dayLow','fiftyTwoWeekLow','fiftyTwoWeekHigh','trailingPE',
+            'forwardPE','marketCap','forwardEps','trailingEps','bookValue',
+            'dividendYield','returnOnEquity']
+    for key in keys:
+        if key not in curStockInfo:
+            curStockInfo[key] = 'N/A'
 @app.route('/dashboard') 
 def dashboard():
     if 'user_id' in session:
         dataFrameDict = getStockDataFrameInfo()
         script1,div1 = drawCurGraphAndTable(dataFrameDict)
+        padCurStockInfo(curStockInfo)
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
