@@ -10,6 +10,10 @@ columnNames = ['industryKey','sector','previousClose','open',
 ,'trailingPE', 'marketCap']
 defaultVal = ['','',0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 ColumnArr = [ [] for i in range(len(columnNames))]
+def symbolInNSElist(symbolName):
+    if symbolName in symbols:
+        return True 
+    return False
 def get_stats(symbolName):
     #print("symbolName is:",symbolName)
     info = stockData.getInfo(symbolName)
