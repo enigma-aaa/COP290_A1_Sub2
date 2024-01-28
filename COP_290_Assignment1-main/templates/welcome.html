@@ -41,7 +41,7 @@
             <div class="StockSearchDiv">
                 <form action="/updateList" method="POST">
                     <input type="search" name="search_bar" class="SearchBar">
-                    <button type="submit">Submit</button>
+                    <button type="submit" class="StockSubmitButton" >Submit</button>
 
                 </form>
             </div>
@@ -49,12 +49,11 @@
                 <form action="/selectStock" method="POST">
                     {% for stock in stockList %}
                     {% if stock == currentlySelected %}
-                    <button type="submit" name="selectedStock" value="{{stock}}"
-                        style="background-color: #4CAF50; color: white;">
-                        {{stock}}
+                    <button type="submit" name="selectedStock" value="{{stock}}" class = "selectedStock">
+                        {{stock}} 
                     </button>
                     {% else %}
-                    <button type="submit" name="selectedStock" value="{{stock}}" color=#>
+                    <button type="submit" name="selectedStock" value="{{stock}}" class= "unSelectedStock">
                         {{stock}}
                     </button>
                     {% endif %}

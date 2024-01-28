@@ -33,13 +33,6 @@ input[type="password"] {
     box-sizing: border-box;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background-color: #007bff;
-
-}
 
 /* Add this to your existing style.css */
 
@@ -241,10 +234,11 @@ main {
 div.StockListAndSearch {
     /* width: 20%; */
     /* height:80%; */
-    background-color: gray;
+    background-color: #f7f7f7;
     align-items: flex-start;
     flex: 20;
     /* display: ; */
+    border-right: 3px solid #eeeded;
 }
 
 /* div.GraphDiv{
@@ -421,7 +415,6 @@ p.StockItem {
 table.GraphDropDown{
 
     /*! width: 100%; */
-    text-align: ;
     /*! margin: 10px; */
     /*! margin-left: auto; */
     margin-right: auto;
@@ -443,6 +436,7 @@ select.GraphDropDown{
 option.GraphDropDown{
 
 }
+
 label.GraphDropDown{
     
     font-size: 20px;
@@ -465,4 +459,35 @@ input.GraphType{
     margin-top: 10px;
     font-size: 25px;
     /*! height: ; */
+}
+button.selectedStock{
+    background-color: #e1dede;
+    color: black;
+    width: 100%;
+    font-size: 20px;
+    padding: 8px;
+    padding-left: 15px;
+    text-align: left;
+    border: none;
+    border-bottom: 2px solid #e4e4e4;
+}
+button.unSelectedStock{
+    background-color: #fff;
+    width: 100%;
+    font-size: 20px;
+    padding: 8px;
+    border: none;
+    border-bottom: 2px solid #e4e4e4;
+    text-align: left;
+    padding-left: 15px;
+}
+button.stockCrossButton{
+    background-color: red;
+    color:white;
+}
+button.StockSubmitButton{
+    width: 100%;
+    
+    padding: 10px;
+    font-size: 20px;
 }
