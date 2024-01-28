@@ -50,15 +50,19 @@
                     {% for stock in stockList %}
                     {% if stock == currentlySelected %}
                     <button type="submit" name="selectedStock" value="{{stock}}"
-                        style="background-color: #4CAF50; color: white;">{{stock}}</button>
+                        style="background-color: #4CAF50; color: white;">
+                        {{stock}}
+                    </button>
                     {% else %}
-                    <button type="submit" name="selectedStock" value="{{stock}}" color=#>{{stock}}</button>
+                    <button type="submit" name="selectedStock" value="{{stock}}" color=#>
+                        {{stock}}
+                    </button>
                     {% endif %}
                     <!-- <p class ="StockItem">{{stock}}</p>             -->
-                    <form action="/closeStock" method="POST" style="display: inline-block;">
+                    <!--<form action="/closeStock" method="POST" style="display: inline-block;">
                         <input type="hidden" name="closedStock" value="{{ stock }}">
                         <button type="submit" style="background-color: #f44336; color: white;">✖</button>
-                    </form>
+                    </form>-->
                     {% endfor%}
                 </form>
             </div>
@@ -132,7 +136,7 @@
 
                     <table class="StockTableHeading">
                         <tr>
-                            <th class="StockTableHeading">{{ curStockInfo['longName'] }}</th>
+                            <th class="StockTableHeading">{{curStockInfo['longName']}}</th>
                         </tr>
                     </table>
                 <table class="StockInfoTable" id="table1">
@@ -254,6 +258,7 @@
                     <form action="/process_graph_options" method="POST">
                         <label>Select Graph Types:</label><br>
 
+                        {%if currentlySelected in curGraphSelection%}
                         <input type="checkbox" name="graph_options[]" value="HIGH" onchange="this.form.submit()" {% if
                             curGraphSelection[currentlySelected]['graphCont']["HIGH"]==True %} checked {% endif
                             %}>High<br>
@@ -269,6 +274,7 @@
                         <input type="checkbox" name="graph_options[]" value="COMBINED" onchange="this.form.submit()" {%
                             if curGraphSelection[currentlySelected]['graphCont']["COMBINED"]==True %} checked {% endif
                             %}>Combined<br>
+                        {%endif%}
                         <!-- <input type="checkbox" name="graph_options[]" value="radar_chart"> Radar Chart<br> -->
 
                         <!-- <button type="submit">Submit</button> -->
