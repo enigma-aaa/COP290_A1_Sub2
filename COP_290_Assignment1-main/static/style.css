@@ -368,6 +368,7 @@ div.StockInfo {
     background-color: white;
     flex: 20;
 
+    border-left: 4px solid #f2f2f2;
 }
 
 div.right-table {
@@ -416,4 +417,52 @@ p.StockItem {
     margin-top: 5px;
     background-color: white;
     border-radius: 5px;
+}
+table.GraphDropDown{
+
+    /*! width: 100%; */
+    text-align: ;
+    /*! margin: 10px; */
+    /*! margin-left: auto; */
+    margin-right: auto;
+    width: 100%;
+    padding: 10px;
+}
+tr.GraphDropDown{
+
+}
+td.GraphDropDown{
+
+}
+select.GraphDropDown{
+
+    font-size: 20px;
+    width: 100%;
+    padding: 5px;
+}
+option.GraphDropDown{
+
+}
+label.GraphDropDown{
+    
+    font-size: 20px;
+}
+div.GraphType{
+    
+    padding: 10px;
+    padding-top: 0px;
+}
+label.GraphType{
+
+    /*! width: ; */
+    /*! margin: 10px; */
+    padding: 10px;
+    font-size: 20px;
+}
+input.GraphType{
+    
+    /*! padding: 10px; */
+    margin-top: 10px;
+    font-size: 25px;
+    /*! height: ; */
 }

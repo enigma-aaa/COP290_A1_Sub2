@@ -202,46 +202,53 @@
             </div>
                 <div class="StockInfo2">
                     <form action="/process_duration" method="POST">
-                        <label for="duration">Select Data Duration:</label>
-                        <select name="duration" id="duration" onchange="this.form.submit()">
-
-                            <option value="1_day" {% if selected_duration=='1_day' %} selected {% endif %}>1 Day
-                            </option>
-                            <option value="1_week" {% if selected_duration=='1_week' %} selected {% endif %}>1 Week
-                            </option>
-                            <option value="1_month" {% if selected_duration=='1_month' %} selected {% endif %}>1
-                                Month</option>
-                            <option value="1_year" {% if selected_duration=='1_year' %} selected {% endif %}>1 Year
-                            </option>
-                            <option value="5_year" {% if selected_duration=='5_year' %} selected {% endif %}>5 Year
-                            </option>
-                            <option value="All" {% if selected_duration=='All' %} selected {% endif %}>All</option>
-
-                        </select>
-
+                        <table class="GraphDropDown">
+                            <tr class="GraphDropDown">
+                                <td class="GraphDropDown"><label for="duration" class="GraphDropDown">Select Data Duration:</label></td>
+                            </tr>
+                            <tr class="GraphDropDown">
+                                <td class="GraphDropDown">
+                                <select name="duration" id="duration" onchange="this.form.submit()" class="GraphDropDown">
+                                    <option class="GraphDropDown" value="1_day" {% if selected_duration=='1_day' %} selected {% endif %}>1 Day
+                                    </option>
+                                    <option class="GraphDropDown" value="1_week" {% if selected_duration=='1_week' %} selected {% endif %}>1 Week
+                                    </option>
+                                    <option class="GraphDropDown" value="1_month" {% if selected_duration=='1_month' %} selected {% endif %}>1
+                                        Month</option>
+                                    <option class="GraphDropDown" value="1_year" {% if selected_duration=='1_year' %} selected {% endif %}>1 Year
+                                    </option>
+                                    <option class="GraphDropDown" value="5_year" {% if selected_duration=='5_year' %} selected {% endif %}>5 Year
+                                    </option>
+                                    <option class="GraphDropDown" value="All" {% if selected_duration=='All' %} selected {% endif %}>All</option>
+                                </select>
+                                </td>
+                            </tr>
+                        </table>
                         <!-- <button type="submit">Submit</button> -->
                     </form>
                 </div>
                 <div class="StockInfo3">
                     <form action="/process_graph_options" method="POST">
-                        <label>Select Graph Types:</label><br>
+                        <label class="GraphType">Select Graph Types:</label><br>
 
                         {%if currentlySelected in curGraphSelection%}
-                        <input type="checkbox" name="graph_options[]" value="HIGH" onchange="this.form.submit()" {% if
-                            curGraphSelection[currentlySelected]['graphCont']["HIGH"]==True %} checked {% endif
-                            %}>High<br>
-                        <input type="checkbox" name="graph_options[]" value="LOW" onchange="this.form.submit()" {% if
-                            curGraphSelection[currentlySelected]['graphCont']["LOW"]==True %} checked {% endif
-                            %}>Low<br>
-                        <input type="checkbox" name="graph_options[]" value="OPEN" onchange="this.form.submit()" {% if
-                            curGraphSelection[currentlySelected]['graphCont']["OPEN"]==True %} checked {% endif
-                            %}>Open<br>
-                        <input type="checkbox" name="graph_options[]" value="CLOSE" onchange="this.form.submit()" {% if
-                            curGraphSelection[currentlySelected]['graphCont']["CLOSE"]==True %} checked {% endif
-                            %}>Close<br>
-                        <input type="checkbox" name="graph_options[]" value="COMBINED" onchange="this.form.submit()" {%
-                            if curGraphSelection[currentlySelected]['graphCont']["COMBINED"]==True %} checked {% endif
-                            %}>Combined<br>
+                        <div class="GraphType">
+                            <input class="GraphType" type="checkbox" name="graph_options[]" value="HIGH" onchange="this.form.submit()" {% if
+                                curGraphSelection[currentlySelected]['graphCont']["HIGH"]==True %} checked {% endif
+                                %}><label class="GraphType">High</label><br>
+                            <input class="GraphType" type="checkbox" name="graph_options[]" value="LOW" onchange="this.form.submit()" {% if
+                                curGraphSelection[currentlySelected]['graphCont']["LOW"]==True %} checked {% endif
+                                %}><label class="GraphType">Low</label><br>
+                            <input class="GraphType" type="checkbox" name="graph_options[]" value="OPEN" onchange="this.form.submit()" {% if
+                                curGraphSelection[currentlySelected]['graphCont']["OPEN"]==True %} checked {% endif
+                                %}><label class="GraphType">Open</label><br>
+                            <input class="GraphType" type="checkbox" name="graph_options[]" value="CLOSE" onchange="this.form.submit()" {% if
+                                curGraphSelection[currentlySelected]['graphCont']["CLOSE"]==True %} checked {% endif
+                                %}><label class="GraphType">Close</label><br>
+                            <input class="GraphType" type="checkbox" name="graph_options[]" value="COMBINED" onchange="this.form.submit()" {%
+                                if curGraphSelection[currentlySelected]['graphCont']["COMBINED"]==True %} checked {% endif
+                                %}><label class="GraphType">Combined</label><br>
+                        </div>
                         {%endif%}
                         <!-- <input type="checkbox" name="graph_options[]" value="radar_chart"> Radar Chart<br> -->
 
