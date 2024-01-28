@@ -7,6 +7,7 @@ from bokeh.models import RangeTool,PanTool,WheelZoomTool,HoverTool
 from bokeh.layouts import column,layout
 import pandas as pd
 import stockData
+import numpy as np
 # import sys
 import math
 import colorGenerator
@@ -16,7 +17,18 @@ excel_file_path = 'MCAP31122023.xlsx'
 pickel_file_path = 'Data_folder/AllStocks.pkl'
 # all_stocks_df = pd.read_excel(excel_file_path)
 all_stocks_df = pd.read_pickle(pickel_file_path)
+all_stocks_df['marketCap'] = all_stocks_df['marketCap']/10000000
+all_stocks_df['marketCap'] =all_stocks_df['marketCap'].round(2)
+all_stocks_df['new_col'] = np.where(all_stocks_df['industryKey'] != '' , all_stocks_df['industryKey'] , all_stocks_df['industry'])
+all_stocks_df = all_stocks_df.drop(columns=['industryKey' , 'industry'])
+all_stocks_df = all_stocks_df.rename(columns={'new_col' : 'industryKey'})
+all_stocks_df = all_stocks_df[all_stocks_df.eq(0).sum(axis=1) <= 4]
+# pd.set_option('display.max_rows',None)
+# print(all_stocks_df['industryKey'].value_counts())
+# pd.reset_option('display.max_rows')
 # print(all_stocks_df)
+
+print('size' , all_stocks_df.shape)
 # all_stocks_symbol_list = all_stocks_df['Symbol']
 initial = 1
 app = Flask(__name__)
@@ -466,14 +478,11 @@ def process_filters() :
         else :
             filter_lims[x][1] = inf
         i+=1 
-    print(filter_lims)
-    print('calling function')
     perform_filtering()
-    print('done')
     return(redirect(url_for('sort_page')))
 def perform_filtering():
-    global filtered_df , filtered_df_columns
-    print('inside perform_filtering')
+    global filtered_df , filtered_df_columns 
+    # all_stocks_df['marketCap'] = all_stocks_df['marketCap']/10000000
     condition = (
         (pd.to_numeric(all_stocks_df['volume'], errors='coerce') >= filter_lims['vol'][0]) &
         (pd.to_numeric(all_stocks_df['volume'], errors='coerce') <= filter_lims['vol'][1]) &
@@ -486,8 +495,18 @@ def perform_filtering():
     )
     filtered_df = all_stocks_df[condition]
     filtered_df = filtered_df.reset_index().rename(columns={'index':'Symbol'})
+    filtered_df = filtered_df.rename(columns={'marketCap':'Market Cap(in Cr)' , 'previousClose':'Prev. Close' , 'sector':'Sector' ,'open':'Open','dayLow':'Low','dayHigh' :'High' , 'currentPrice':'Price' , 'trailingPE' :'PE' ,'volume' :'Volume'})
+    # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)']/100000000
+    # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)'].round(2)
+    # print('Here I am ')
+
+    filtered_df['PE'] = pd.to_numeric(filtered_df['PE'], errors='coerce')
+    filtered_df['PE'] = filtered_df['PE'].round(2)
+    filtered_df = filtered_df.rename(columns={'industryKey' : 'Industry'})
+    colums_order = ['Symbol' , 'Industry' , 'Sector' , 'Prev. Close' , 'Open' , 'Low' , 'High' , 'Price' ,'Volume' , 'PE' , 'Market Cap(in Cr)']
+    filtered_df = filtered_df[colums_order]
+    print(filtered_df['PE'])
     filtered_df_columns = filtered_df.columns
-    
     print('lessgo')
     return 
 

@@ -5,10 +5,10 @@ from concurrent.futures import ThreadPoolExecutor
 df = pd.read_csv('./Data_folder/NSE_Stock_List.csv')
 symbols = df['Symbol']
 print("symbols are:",symbols)
-columnNames = ['industryKey','sector','previousClose','open',
+columnNames = ['industryKey','industry','sector','previousClose','open',
 'dayLow','dayHigh','previousClose','currentPrice','volume'
 ,'trailingPE', 'marketCap']
-defaultVal = ['','',0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+defaultVal = ['','','',0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 ColumnArr = [ [] for i in range(len(columnNames))]
 def get_stats(symbolName):
     #print("symbolName is:",symbolName)
