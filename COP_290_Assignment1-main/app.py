@@ -7,18 +7,23 @@ from bokeh.models import RangeTool,PanTool,WheelZoomTool,HoverTool
 from bokeh.layouts import column,layout
 import pandas as pd
 import stockData
-import sys
+# import sys
+import math
 import colorGenerator
-inf = sys.maxsize
+# inf = sys.maxsize
+inf = math.inf
 excel_file_path = 'MCAP31122023.xlsx'
-all_stocks_df = pd.read_excel(excel_file_path)
-all_stocks_symbol_list = all_stocks_df['Symbol']
+pickel_file_path = 'Data_folder/AllStocks.pkl'
+# all_stocks_df = pd.read_excel(excel_file_path)
+all_stocks_df = pd.read_pickle(pickel_file_path)
+# print(all_stocks_df)
+# all_stocks_symbol_list = all_stocks_df['Symbol']
 initial = 1
 app = Flask(__name__)
 #change secret key later
 app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 mode = 'Mode1'
-
+filtered_df_columns = []
 selected_duration = '1_day'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -49,7 +54,7 @@ filter_lims = {
     'price' : [0,inf]  
 }
 
-filtered_list_of_stocks = []
+filtered_df = pd.DataFrame()
 curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
@@ -141,13 +146,8 @@ with app.app_context():
 #     'b_1_10' : (100000,1000000) ,
 #     'g10' : (1000000,inf)
 # }
-
-def perform_filtering() : 
-    global filtered_list_of_stocks
-    (l_market_cap ,m_market_cap) = market_cap_vals[filter_market_cap]
-    (l_pe_rat ,m_pe_rat) = pe_rat_vals[filter_pe_rat]
-    (l_avg_col,m_avg_vol) = avg_vol_vals[filter_avg_vol]
     # for x in all_stocks_symbol_list : 
+
         # df = all_stocks_df[']
 
 
@@ -336,8 +336,10 @@ def dashboard():
         return redirect(url_for('index'))
 @app.route('/sort_page')
 def sort_page() :
-    print("hi")
-    return render_template('sort.html' , stockList = stockList ,filtered_list_of_stocks=filtered_list_of_stocks)
+    print('gonna render')
+    print(filtered_df)
+    print(*filtered_df_columns)
+    return render_template('sort.html' , stockList = stockList ,filtered_df = filtered_df ,filtered_df_columns = filtered_df_columns )
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
@@ -465,7 +467,29 @@ def process_filters() :
             filter_lims[x][1] = inf
         i+=1 
     print(filter_lims)
+    print('calling function')
+    perform_filtering()
+    print('done')
     return(redirect(url_for('sort_page')))
+def perform_filtering():
+    global filtered_df , filtered_df_columns
+    print('inside perform_filtering')
+    condition = (
+        (pd.to_numeric(all_stocks_df['volume'], errors='coerce') >= filter_lims['vol'][0]) &
+        (pd.to_numeric(all_stocks_df['volume'], errors='coerce') <= filter_lims['vol'][1]) &
+        (pd.to_numeric(all_stocks_df['marketCap'], errors='coerce') >= filter_lims['marketCap'][0]) &
+        (pd.to_numeric(all_stocks_df['marketCap'], errors='coerce') <= filter_lims['marketCap'][1]) &
+        (pd.to_numeric(all_stocks_df['currentPrice'], errors='coerce') >= filter_lims['price'][0]) &
+        (pd.to_numeric(all_stocks_df['currentPrice'], errors='coerce') <= filter_lims['price'][1]) &
+        (pd.to_numeric(all_stocks_df['trailingPE'], errors='coerce') >= filter_lims['pe_rat'][0]) &
+        (pd.to_numeric(all_stocks_df['trailingPE'], errors='coerce') <= filter_lims['pe_rat'][1])
+    )
+    filtered_df = all_stocks_df[condition]
+    filtered_df = filtered_df.reset_index().rename(columns={'index':'Symbol'})
+    filtered_df_columns = filtered_df.columns
+    fi
+    print('lessgo')
+    return 
 
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code

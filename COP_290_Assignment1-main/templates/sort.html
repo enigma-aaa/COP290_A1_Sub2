@@ -82,9 +82,27 @@
             <!-- Display sorted stock list here -->
             <ul id="sortedStockList">
                 <!-- Sorted stocks will be displayed here -->
-                {% for x in filtered_list_of_stocks %}
-                    <p>{{x}}</p>
-                {% endfor %}
+                <table>
+                    <thead>
+                        <tr>
+                            {% for col in filtered_df_columns %}
+                                <th>{{col}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for index,row in filtered_df.iterrows() %}
+                        <tr>
+                            {% for col in filtered_df_columns %}
+                                
+                            <td>{{ row[col]}}</td>
+                                
+                                
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </ul>
         </div>
     </div>
