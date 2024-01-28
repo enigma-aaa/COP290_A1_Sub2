@@ -39,9 +39,16 @@ last_selected = 'SBIN'
 
 #keeps track of which stock is selected and only that one is green
 currentlySelected = "SBIN"
-filter_market_cap = "small"
-filter_avg_vol = "Any"
-filter_pe_rat = "Any"
+# filter_market_cap = "small"
+# filter_avg_vol = "Any"
+# filter_pe_rat = "Any"
+filter_lims = {
+    'vol' : [0 , inf] ,
+    'pe_rat' : [0 ,  inf] ,
+    'marketCap' : [0,inf] ,
+    'price' : [0,inf]  
+}
+
 filtered_list_of_stocks = []
 curGraphSelection = {
     'SBIN':{
@@ -112,28 +119,28 @@ with app.app_context():
 #for each url diff func defined with decorator below is the root
     
 
-market_cap_vals = {
-    'Any' : (0, inf) ,
-    'large' : ( 2500000, inf) ,
-    'mid' : ( 850000,2500000 ) ,
-    'small' : (0,850000)
-}
+# market_cap_vals = {
+#     'Any' : (0, inf) ,
+#     'large' : ( 2500000, inf) ,
+#     'mid' : ( 850000,2500000 ) ,
+#     'small' : (0,850000)
+# }
 
-pe_rat_vals = {
-    'Any' : (0,inf) , 
-    'l5' : (0,5) ,
-    'b_5_10' : (5,10) ,
-    'b_10_20' : (10,20) ,
-    'b_20_50' : (20,50) ,
-    'g50' : (50,inf)
-}
+# pe_rat_vals = {
+#     'Any' : (0,inf) , 
+#     'l5' : (0,5) ,
+#     'b_5_10' : (5,10) ,
+#     'b_10_20' : (10,20) ,
+#     'b_20_50' : (20,50) ,
+#     'g50' : (50,inf)
+# }
 
-avg_vol_vals = {
-    'Any' : (0,inf) ,
-    'l1' : (0,100000) ,
-    'b_1_10' : (100000,1000000) ,
-    'g10' : (1000000,inf)
-}
+# avg_vol_vals = {
+#     'Any' : (0,inf) ,
+#     'l1' : (0,100000) ,
+#     'b_1_10' : (100000,1000000) ,
+#     'g10' : (1000000,inf)
+# }
 
 def perform_filtering() : 
     global filtered_list_of_stocks
@@ -320,7 +327,7 @@ def dashboard():
 @app.route('/sort_page')
 def sort_page() :
     print("hi")
-    return render_template('sort.html' , stockList = stockList ,    filter_avg_vol=filter_avg_vol , filter_market_cap=filter_market_cap, filter_pe_rat=filter_pe_rat ,filtered_list_of_stocks=filtered_list_of_stocks)
+    return render_template('sort.html' , stockList = stockList ,filtered_list_of_stocks=filtered_list_of_stocks)
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
@@ -399,26 +406,57 @@ def process_mode_change() :
     print(mode)
     return redirect(url_for('dashboard'))
 
-@app.route('/process_filters_market_cap' , methods=['POST'])
-def process_filter() :
-    global filter_market_cap
-    filter_market_cap = request.form.get('marketCap')
-    process_filter()
+@app.route('/closeStock' , methods=['POST'])
+def closeStock() :
+    to_close = request.form.get('closedStock')
+    global curGraphSelection
+    global stockList
+    del curGraphSelection[to_close]
+    stockList.remove(to_close)
+    print(*stockList)
+    print(to_close)
+    return redirect(url_for('dashboard'))
+# @app.route('/process_filters_market_cap' , methods=['POST'])
+# def process_filter() :
+#     global filter_market_cap
+#     filter_market_cap = request.form.get('marketCap')
+#     process_filter()
+#     return(redirect(url_for('sort_page')))
+
+# @app.route('/process_filters_pe_rat' , methods = ['POST'])
+# def filter_market_pe_rat() :
+#     global filter_pe_rat
+#     filter_pe_rat = request.form.get('pe_ratio')
+#     process_filter()
+#     return(redirect(url_for('sort_page')))
+
+# @app.route('/process_filters_vol' , methods=['POST'])
+# def process_filters_vol() :
+#     global filter_avg_vol 
+#     filter_avg_vol = request.form.get('vol')
+#     process_filter()
+#     return(redirect(url_for('sort_page')))
+
+@app.route('/process_filters' , methods=['POST'])
+def process_filters() :
+    # global l_lim_price,m_lim_price,l_lim_marketCap,m_lim_marketCap,l_lim_pe_rat,m_lim_pe_rat,l_lim_vol,m_lim_vol
+    global filter_lims
+    l_lims = request.form.getlist('l_lim[]')
+    m_lims = request.form.getlist('m_lim[]')
+    i = 0 
+    for x in filter_lims :
+        if l_lims[i] != '' :
+            filter_lims[x][0] = int(l_lims[i])
+        else :
+            filter_lims[x][0] = 0
+        if m_lims[i] != '' :
+            filter_lims[x][1] = int(m_lims[i])
+        else :
+            filter_lims[x][1] = inf
+        i+=1 
+    print(filter_lims)
     return(redirect(url_for('sort_page')))
 
-@app.route('/process_filters_pe_rat' , methods = ['POST'])
-def filter_market_pe_rat() :
-    global filter_pe_rat
-    filter_pe_rat = request.form.get('pe_ratio')
-    process_filter()
-    return(redirect(url_for('sort_page')))
-
-@app.route('/process_filters_vol' , methods=['POST'])
-def process_filters_vol() :
-    global filter_avg_vol 
-    filter_avg_vol = request.form.get('vol')
-    process_filter()
-    return(redirect(url_for('sort_page')))
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code
     app.run(debug=True)

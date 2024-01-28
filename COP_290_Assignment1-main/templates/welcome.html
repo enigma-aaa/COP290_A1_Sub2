@@ -55,6 +55,10 @@
                     <button type="submit" name="selectedStock" value="{{stock}}" color=#>{{stock}}</button>
                     {% endif %}
                     <!-- <p class ="StockItem">{{stock}}</p>             -->
+                    <form action="/closeStock" method="POST" style="display: inline-block;">
+                        <input type="hidden" name="closedStock" value="{{ stock }}">
+                        <button type="submit" style="background-color: #f44336; color: white;">✖</button>
+                    </form>
                     {% endfor%}
                 </form>
             </div>
@@ -124,92 +128,106 @@
         </div>
         <div class="StockInfo" id="right-column">
             <div class="StockInfoTableCont">
-                <table class ="StockTableHeading">
-                    <tr>
-                        <th class="StockTableHeading">{{ curStockInfo['longName'] }}</th>
-                    </tr>
-                </table>
-                <table class ="StockInfoTable">
-                    <tr>
+                <div class="right-tables">
+
+                    <table class="StockTableHeading">
+                        <tr>
+                            <th class="StockTableHeading">{{ curStockInfo['longName'] }}</th>
+                        </tr>
+                    </table>
+                <table class="StockInfoTable" id="table1">
+                    <thead class="first">
                         <th class="StockInfoTable"> Daily Summary</th>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable">Opening Price</td>
-                        <td class="StockInfoTable">{{ curStockInfo['open'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable">Previous Close</td>
-                        <td class="StockInfoTable">{{ curStockInfo['previousClose'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable">Current Price</td>
-                        <td class="StockInfoTable">{{ curStockInfo['currentPrice'] }}</td>
-                    </tr> 
-                    <tr>
-                        <td class="StockInfoTable">High</td>
-                        <td class="StockInfoTable">{{ curStockInfo['dayHigh'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable">Low</td>
-                        <td class="StockInfoTable">{{ curStockInfo['dayLow'] }}</td>
-                    </tr>
-
-                    <tr>
-                        <th class="StockInfoTable">Yearly Summary</th>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable" >Yearly Low</td>
-                        <td class="StockInfoTable">{{ curStockInfo['fiftyTwoWeekLow'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable">Yearly High</td>
-                        <td class="StockInfoTable">{{ curStockInfo['fiftyTwoWeekHigh']}}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="StockInfoTable">Trailing PE</td>
-                        <td class="StockInfoTable">{{ curStockInfo['trailingPE'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable">Forward PE</td>
-                        <td class="StockInfoTable">{{ curStockInfo['forwardPE']}}</td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable" ></td>
-                    </tr>
-
-                    <tr>
-                        <td class="StockInfoTable">Market Cap</td>
-                        <td class="StockInfoTable">{{ curStockInfo['marketCap'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable">Forward Eps</td>
-                        <td class="StockInfoTable">{{ curStockInfo['forwardEps'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable">Trailing Eps</td>
-                        <td class="StockInfoTable">{{ curStockInfo['trailingEps'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable"></td>
-                    </tr>
-
-                    <tr>
-                        <td class="StockInfoTable">Book value</td>
-                        <td class="StockInfoTable">{{ curStockInfo['bookValue'] }}/td></td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable">Div Yield</td>
-                        <td class="StockInfoTable">{{ curStockInfo['dividendYield'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="StockInfoTable">ROE</td>
-                        <td class="StockInfoTable">{{ curStockInfo['returnOnEquity'] }}</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                    </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr class="rows">
+                            <td class="StockInfoTable">Opening Price</td>
+                            <td class="StockInfoTable">{{ curStockInfo['open'] }}</td>
+                        </tr>
+                        <tr class="rows">
+                            <td class="StockInfoTable">Previous Close</td>
+                            <td class="StockInfoTable">{{ curStockInfo['previousClose'] }}</td>
+                        </tr>
+                        <tr class="rows">
+                            <td class="StockInfoTable">Current Price</td>
+                            <td class="StockInfoTable">{{ curStockInfo['currentPrice'] }}</td>
+                        </tr>
+                        <tr class="rows">
+                            <td class="StockInfoTable">High</td>
+                            <td class="StockInfoTable">{{ curStockInfo['dayHigh'] }}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="last">
+                            <td class="StockInfoTable">Low</td>
+                            <td class="StockInfoTable">{{ curStockInfo['dayLow'] }}</td>
+                        </tr>
+                    </tfoot>
                 </table>
+
+                <br>
+                <br>
+                <br>
+                <br>
+                <table id="table1">
+                    <thead class="first">
+                        
+                        
+                        <th class="StockInfoTable">Yearly Summary</th>
+                        
+                    </thead>
+                    <tbody>
+
+                        <tr class="rows">
+                            <td class="StockInfoTable">Yearly Low</td>
+                            <td class="StockInfoTable">{{ curStockInfo['fiftyTwoWeekLow'] }}</td>
+                        </tr>
+                        <tr class="rows">
+                            <td class="StockInfoTable">Yearly High</td>
+                            <td class="StockInfoTable">{{ curStockInfo['fiftyTwoWeekHigh']}}</td>
+                        </tr>
+                        
+                        <tr class="rows">
+                            <td class="StockInfoTable">Trailing PE</td>
+                            <td class="StockInfoTable">{{ curStockInfo['trailingPE'] }}</td>
+                        </tr>
+                        <tr class="rows">
+                            <td class="StockInfoTable">Forward PE</td>
+                            <td class="StockInfoTable">{{ curStockInfo['forwardPE']}}</td>
+                        </tr>
+                        <tr class="rows">
+                            <td class="StockInfoTable">Market Cap</td>
+                            <td class="StockInfoTable">{{ curStockInfo['marketCap'] }}</td>
+                        </tr>
+                        <tr class="rows">
+                            <td class="StockInfoTable">Forward Eps</td>
+                            <td class="StockInfoTable">{{ curStockInfo['forwardEps'] }}</td>
+                        </tr>
+                        <tr class="rows">
+                            <td class="StockInfoTable">Trailing Eps</td>
+                            <td class="StockInfoTable">{{ curStockInfo['trailingEps'] }}</td>
+                        </tr>
+                        
+                        <tr class="rows">
+                            <td class="StockInfoTable">Book value</td>
+                            <td class="StockInfoTable">{{ curStockInfo['bookValue'] }}</td>
+                        </tr>
+                        <tr class="rows">
+                            <td class="StockInfoTable">Div Yield</td>
+                            <td class="StockInfoTable">{{ curStockInfo['dividendYield'] }}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot class="last">
+                        <tr>
+                            <td class="StockInfoTable">ROE</td>
+                            <td class="StockInfoTable">{{ curStockInfo['returnOnEquity'] }}</td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+                
+            </div>
                 <div class="StockInfo2">
                     <form action="/process_duration" method="POST">
                         <label for="duration">Select Data Duration:</label>
@@ -236,11 +254,21 @@
                     <form action="/process_graph_options" method="POST">
                         <label>Select Graph Types:</label><br>
 
-                        <input type="checkbox" name="graph_options[]" value="HIGH" onchange="this.form.submit()" {% if curGraphSelection[currentlySelected]['graphCont']["HIGH"] == True %} checked {% endif %}>High<br>
-                        <input type="checkbox" name="graph_options[]" value="LOW" onchange="this.form.submit()" {% if curGraphSelection[currentlySelected]['graphCont']["LOW"] == True %} checked {% endif %}>Low<br>
-                        <input type="checkbox" name="graph_options[]" value="OPEN" onchange="this.form.submit()"  {% if curGraphSelection[currentlySelected]['graphCont']["OPEN"] == True %} checked {% endif %}>Open<br>
-                        <input type="checkbox" name="graph_options[]" value="CLOSE" onchange="this.form.submit()" {% if curGraphSelection[currentlySelected]['graphCont']["CLOSE"] == True %} checked {% endif %}>Close<br>
-                        <input type="checkbox" name="graph_options[]" value="COMBINED" onchange="this.form.submit()" {% if curGraphSelection[currentlySelected]['graphCont']["COMBINED"] == True %} checked {% endif %}>Combined<br>
+                        <input type="checkbox" name="graph_options[]" value="HIGH" onchange="this.form.submit()" {% if
+                            curGraphSelection[currentlySelected]['graphCont']["HIGH"]==True %} checked {% endif
+                            %}>High<br>
+                        <input type="checkbox" name="graph_options[]" value="LOW" onchange="this.form.submit()" {% if
+                            curGraphSelection[currentlySelected]['graphCont']["LOW"]==True %} checked {% endif
+                            %}>Low<br>
+                        <input type="checkbox" name="graph_options[]" value="OPEN" onchange="this.form.submit()" {% if
+                            curGraphSelection[currentlySelected]['graphCont']["OPEN"]==True %} checked {% endif
+                            %}>Open<br>
+                        <input type="checkbox" name="graph_options[]" value="CLOSE" onchange="this.form.submit()" {% if
+                            curGraphSelection[currentlySelected]['graphCont']["CLOSE"]==True %} checked {% endif
+                            %}>Close<br>
+                        <input type="checkbox" name="graph_options[]" value="COMBINED" onchange="this.form.submit()" {%
+                            if curGraphSelection[currentlySelected]['graphCont']["COMBINED"]==True %} checked {% endif
+                            %}>Combined<br>
                         <!-- <input type="checkbox" name="graph_options[]" value="radar_chart"> Radar Chart<br> -->
 
                         <!-- <button type="submit">Submit</button> -->

@@ -114,21 +114,57 @@ nav ul li{
     margin-right: 15px;
 }
 th.StockInfoTable{
+    text-align: center;
+    width: 100%;
+}
+/* th.StockInfoTable{
 
     font-size: 18px;
     /*! width: 100%; */
-    padding: 5px;
-}
-td.StockInfoTable{
+    /* padding: 5px; */
+/* } */
+/* td.StockInfoTable{ */
 
-    padding: 5px;
-    font-size: 16px;
+    /* padding: 5px; */
+    /* font-size: 16px; */
+/* } */
+/* table.StockInfoTable{ */
+    /*  */
+    /* width: 100%; */
+/* } */ */
+
+#table1{
+    background: white;
+    color : black ;
+    font-size: 10pt;
+    border-collapse: collapse;
+    text-align: center ;
+    width : 100%
 }
-table.StockInfoTable{
-    
-    width: 100%;
+.first{
+    background: green;
+    color : white ;
+    border: 1pt solid #757575;
+    text-align: center;
+}
+.rows{
+    background: #f2f2f2;
+    color: black;
+    border-bottom: 1pt solid #ddd;
+    border-left: 1pt solid #757575;
+    border-right: 1pt solid #757575;
 }
 
+.last{
+    background: #f2f2f2;
+    color : black ;
+    border-bottom: 1pt solid #757575;
+    border-left: 1pt solid #757575;
+    border-right: 1pt solifd #757575;
+}
+#table1 tbody tr:hover{background-color: #ddd;}
+#table1 tfoot tr:hover{background-color: #ddd;}
+#table1 tr:nth-child(even){background-color: #f2f2f2;}
 main
 {
     display: flex;
@@ -221,13 +257,13 @@ div.HeadingContainer{
     width: 100%;
 }
 div.TableContainer{
-    width:80%;
-    height:90%;
+    width:100%;
+    height:100%;
     overflow: auto;
     padding-top: 50px;
 }
 div.IndividualTable{
-    width: 80%;
+    width: 93%;
     height: 600px;
     overflow: auto;
     align-items: center;
@@ -248,6 +284,15 @@ div.StockInfo{
     /* height: 100%; */
     background-color: turquoise;
     flex : 20 ;
+
+}
+div.right-table{
+    /* display: flex; */
+    /* text-align: center; */
+    /* display: inline-block; */
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 div.StockInfoTableCont{
     overflow: auto;
