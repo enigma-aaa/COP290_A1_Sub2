@@ -366,7 +366,7 @@ def dashboard():
     if 'user_id' in session:
         try:
             dataFrameDict = getStockDataFrameInfo()
-        except e:
+        except Exception as e:
             # print("curGraphSelection is:")
             # print(curGraphSelection)
             raise e
