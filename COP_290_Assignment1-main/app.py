@@ -183,7 +183,21 @@ with app.app_context():
         # df = all_stocks_df[']
 
 
-
+def checkUserAndPasswrodValid(username,password):
+    userNameMinLen = 9
+    passwordMinLen = 8
+    valid = True
+    userExist = User.query.filter_by(username=username).first()
+    if(len(password) < passwordMinLen):
+        flash('Password must be atleast 8 characters')
+        valid = False
+    if(len(username) < userNameMinLen):
+        flash('Username must be atleast 9 characters')
+        valid = False
+    if userExist:
+        flash('Username already exists choose different username')
+        valid = False
+    return valid
 @app.route('/')
 def index():
     return render_template('login.html')
@@ -194,12 +208,9 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-        userExist = User.query.filter_by(username=username).first()
-        if userExist:
-            #check to check if username already exists to fix it up
-            flash('Username already exists choose different username')
-            #registerErrorMsg = "Username already exists choose different username"
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')  
+        valid = checkUserAndPasswrodValid(username,password)
+        if not valid:
             return redirect(url_for('register'))
         else:
             new_user = User(username=username, password_hash=hashed_password)
@@ -225,27 +236,22 @@ def login():
         return redirect(url_for('index'))
 
 
-def drawOpenGraph(symbolName,plot,df):
-    color = colorGenerator.genColor()
+def drawOpenGraph(symbolName,plot,df,color):
     plot.line(df['Datetime'],df['Open'],legend_label=symbolName+" Open",line_width=2,color = color)
 #code for drawing the close prices of the stock available in the dataframe
-def drawCloseGraph(symbolName,plot,df):
-    color = colorGenerator.genColor()
+def drawCloseGraph(symbolName,plot,df,color):
     plot.line(df['Datetime'],df['Close'],legend_label=symbolName+" Close",line_width=2,color=color)
 #code for drawing the high prices
-def drawHighGraph(symbolName,plot,df):
-    color = colorGenerator.genColor()
+def drawHighGraph(symbolName,plot,df,color):
     plot.line(df['Datetime'],df['High'],legend_label=symbolName+" High",line_width=2,color=color)
 #code for drawing the low prices
-def drawLowGraph(symbolName,plot,df):
-    color = colorGenerator.genColor()
+def drawLowGraph(symbolName,plot,df,color):
     plot.line(df['Datetime'],df['Low'],legend_label=symbolName+" Low",line_width=2,color=color)
 #code for drawing a combined candle stick graph to consisting of 
 #high low prices as segments
 #the blocks represent opening and closing prices
-def drawCombinedGraph(symbolName,plot,df,timeInterval):
+def drawCombinedGraph(symbolName,plot,df,timeInterval,color):
     #this draws the segemnt from the opening to the closing price
-    color = colorGenerator.genColor()
     plot.segment(df.Datetime,df.High,df.Datetime,df.Low,color=color,legend_label=symbolName+" Combined")
     #different plots for open price above close price and 
     #close price above open price
@@ -255,7 +261,7 @@ def drawCombinedGraph(symbolName,plot,df,timeInterval):
     priceDec = df.Open > df.Close 
     #add legend lable here later perhaps?
     plot.vbar(df.Datetime[priceDec],barWidth,df.Open[priceDec],df.Close[priceDec],color="#eb3c40")
-    plot.vbar(df.Datetime[priceInc],barWidth,df.Open[priceInc],df.Close[priceInc],color="#0000ff",
+    plot.vbar(df.Datetime[priceInc],barWidth,df.Open[priceInc],df.Close[priceInc],color="#00ff00",
               line_color="00ffff",line_width=2)
 
 #helper function which looks at all the stock names in our curGraph selection dictionary and 
@@ -319,25 +325,25 @@ def drawCurGraphAndTable(dataFrameDict):
         #time period for which graph is drawn
         timePeriod = curDict['graphDuration']
         graphCont = curDict['graphCont']
-
+        colors = curDict['color']
         for elm in graphCont:
             if graphCont[elm] :
                 match elm:
                     case 'OPEN':
-                        drawOpenGraph(symbolName,plot,df)
-                        drawOpenGraph(symbolName,rangePlot,df)
+                        drawOpenGraph(symbolName,plot,df,colors['OPEN'])
+                        drawOpenGraph(symbolName,rangePlot,df,colors['OPEN'])
                     case 'CLOSE':
-                        drawCloseGraph(symbolName,plot,df)
-                        drawCloseGraph(symbolName,rangePlot,df)
+                        drawCloseGraph(symbolName,plot,df,colors['CLOSE'])
+                        drawCloseGraph(symbolName,rangePlot,df,colors['CLOSE'])
                     case 'HIGH':
-                        drawHighGraph(symbolName,plot,df)
-                        drawHighGraph(symbolName,rangePlot,df)
+                        drawHighGraph(symbolName,plot,df,colors['HIGH'])
+                        drawHighGraph(symbolName,rangePlot,df,colors['HIGH'])
                     case 'LOW':
-                        drawLowGraph(symbolName,plot,df)
-                        drawLowGraph(symbolName,rangePlot,df)
+                        drawLowGraph(symbolName,plot,df,colors['LOW'])
+                        drawLowGraph(symbolName,rangePlot,df,colors['LOW'])
                     case 'COMBINED':
-                        drawCombinedGraph(symbolName,plot,df,timeInterval)
-                        drawCombinedGraph(symbolName,rangePlot,df,timeInterval)
+                        drawCombinedGraph(symbolName,plot,df,timeInterval,colors['COMBINED'])
+                        drawCombinedGraph(symbolName,rangePlot,df,timeInterval,colors['COMBINED'])
 
     total = column(plot,rangePlot,sizing_mode="stretch_both")
     script,div = components(total)
