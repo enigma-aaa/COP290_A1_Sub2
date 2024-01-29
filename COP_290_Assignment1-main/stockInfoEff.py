@@ -4,7 +4,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 df = pd.read_csv('./Data_folder/NSE_Stock_List.csv')
 symbols = df['Symbol']
-print("symbols are:",symbols)
+# print("symbols are:",symbols)
 columnNames = ['industryKey','industry','sector','previousClose','open',
 'dayLow','dayHigh','previousClose','currentPrice','volume'
 ,'trailingPE', 'marketCap']
@@ -32,7 +32,7 @@ def getAllInfos():
     with ThreadPoolExecutor() as executor:
         executor.map(get_stats,symbols)
     endTime = time.time()
-    print("timeElapsed =",endTime-startTime)
+    # print("timeElapsed =",endTime-startTime)
 
     dataFrameDict = {}
     for i in range(len(columnNames)):

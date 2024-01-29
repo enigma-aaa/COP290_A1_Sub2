@@ -77,7 +77,8 @@
         <!-- </form> -->
 
         <!-- <form action="/process_filter_tables_checkbox" method="POST"> -->
-
+            <label for="">Industry Filters :</label>
+            <br>
             {% for i in range(0,12) %}
 
             <input type="checkbox" name="checked_filter_boxes[]" value={{i}} {% if checked_filter_boxes[i]=='yes' %} checked {% endif %}>
