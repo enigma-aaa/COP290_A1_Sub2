@@ -414,6 +414,12 @@ table.TableHeading {
     text-align: center;
 }
 
+div.ErrorMsg{
+    width: 50em;
+    top:0;
+    display: fixed;
+}
+
 div.HeadingContainer {
     width: 100%;
 }
