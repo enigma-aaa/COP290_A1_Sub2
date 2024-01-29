@@ -16,8 +16,43 @@
 
 
 
+div.form-container{
+    width: 25em;
+    /*! height: 800px; */
+    /*! margin: 0; */
+    margin-right: auto;
+    margin-left: auto;
+    top: 50%;
+    /*! position: absolute; */
+    /*! margin-top: 10%; */
+    /*! transform: translateY(100%); */
+    /*! top: 50%; */
+    /*! position: inherit; */
+    padding: 10px;
+    background-color: whitesmoke;
+    border-radius: 10px;
+    margin-top: unset;
+}
+h2.LoginLabel{
+
+}
+input.LoginInput{
+}
+button.LoginButton{
+    padding: 10px;
+    background-color: blue;
+    border: 0px;
+    color: white;
+    width: 100%;
+    margin: auto;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 12px;
+}
+
 .form-group {
     margin-bottom: 15px;
+    padding: 10px;
 }
 
 input[type="text"],
@@ -80,6 +115,13 @@ body {
     /* height: 100vh; */
     margin: 0;
     /*! padding: 0; */
+}
+
+body.LoginBody{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
 header {
@@ -388,7 +430,7 @@ div.IndividualTable {
     height: 600px;
     overflow: auto;
     align-items: center;
-    background-color: bisque;
+    background-color: #fbfbfb;
     margin: 0 auto;
     padding: 20px;
     margin-top: 30px;

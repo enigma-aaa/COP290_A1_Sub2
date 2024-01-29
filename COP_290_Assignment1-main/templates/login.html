@@ -4,18 +4,18 @@
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="LoginBody">
     <div class="form-container">
-        <h2>Login</h2>
+        <h2 class = "LoginLabel">Login</h2>
         <form action="/login" method="post">
             <div class="form-group">
-                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="username" placeholder="Username" required class="LoginInput">
             </div>
             <div class="form-group">
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="password" placeholder="Password" required class = "LoginButton">
             </div>
             <div class="form-group">
-                <button type="submit">Login</button>
+                <button type="submit" class="LoginButton">Login</button>
             </div>
         </form>
         <p>Don't have an account? <a href="/register">Register here</a></p>

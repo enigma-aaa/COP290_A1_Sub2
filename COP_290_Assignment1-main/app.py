@@ -339,7 +339,12 @@ def padCurStockInfo(curStockInfo):
 @app.route('/dashboard') 
 def dashboard():
     if 'user_id' in session:
-        dataFrameDict = getStockDataFrameInfo()
+        try:
+            dataFrameDict = getStockDataFrameInfo()
+        except e:
+            print("curGraphSelection is:")
+            print(curGraphSelection)
+            raise e
         script1,div1 = drawCurGraphAndTable(dataFrameDict)
         padCurStockInfo(curStockInfo)
         return render_template('welcome.html', username=session['username'],

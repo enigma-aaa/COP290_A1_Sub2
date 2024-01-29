@@ -4,7 +4,7 @@
     <title>Register</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="LoginBody">
     <div class="form-container">
         <h2>Register</h2>
         <form action="/register" method="post">
@@ -15,7 +15,7 @@
                 <input type="password" name="password" placeholder="Password" required>
             </div>
             <div class="form-group">
-                <button type="submit">Register</button>
+                <button type="submit" class="LoginButton" >Register</button>
             </div>
             {% with messages = get_flashed_messages() %}
             {% if messages %}
