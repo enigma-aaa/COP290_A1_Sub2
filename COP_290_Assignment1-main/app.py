@@ -23,7 +23,7 @@ all_stocks_df['new_col'] = np.where(all_stocks_df['industryKey'] != '' , all_sto
 all_stocks_df = all_stocks_df.drop(columns=['industryKey' , 'industry'])
 all_stocks_df = all_stocks_df.rename(columns={'new_col' : 'industryKey'})
 all_stocks_df = all_stocks_df[all_stocks_df.eq(0).sum(axis=1) <= 4]
-all_stocks_df['industryKey'].replace({'specialty-chemicals':'Specialty Chemicals' , 'auto-parts' : 'Auto Parts' , 'drug-manufacturers-specialty-generic':'Drug Manufacturers—Specialty & Generic' , 
+all_stocks_df['industryKey'] = all_stocks_df['industryKey'].replace({'specialty-chemicals':'Specialty Chemicals' , 'auto-parts' : 'Auto Parts' , 'drug-manufacturers-specialty-generic':'Drug Manufacturers—Specialty & Generic' , 
                                       'specialty-industrial-machinery':'Specialty Industrial Machinery' ,'steel' : 'Steel' ,'information-technology-services' :'Information Technology Services' , 
                                       'credit-services' :'Credit Services' ,'packaged-foods' :'Packaged Foods' , 'real-estate-development' :'Real Estate—Development' , 'agricultural-inputs' :'Agricultural Inputs' ,
                                         'furnishings-fixtures-appliances' :'Furnishings, Fixtures & Appliances' ,'textile-manufacturing' :'Textile Manufacturing' , 'asset-management' : 'Asset Management',
@@ -38,16 +38,16 @@ all_stocks_df['industryKey'].replace({'specialty-chemicals':'Specialty Chemicals
                                          'business-equipment-supplies':'Business Equipment & Supplies',  'specialty-business-services':'Specialty Business Services','communication-equipment':'Communication Equipment','medical-instruments-supplies':'Medical Instruments & Supplies' , 'medical-care-facilities':'Medical Care Facilities',
                                          'publishing':'Publishing','household-personal-products':'Household & Personal Products','oil-gas-refining-marketing':'Oil & Gas Refining & Marketing','footwear-accessories':'Footwear & Accessories','aerospace-defense':'Aerospace & Defense','utilities-independent-power-producers':'Utilities—Independent Power Producers',
                                          'utilities-regulated-gas':'Utilities—Regulated Gas','utilities-renewable':'Utilities—Renewable','utilities-regulated-electric':'Utilities—Regulated Electric','mortgage-finance':'Mortgage Finance','telecom-services':'Telecom Services','biotechnology':'Biotechnology','Tools & Accesories':'Tools & Accessories',
-                                         'beverages-wineries-distilleries':'Beverages—Wineries & Distilleries','beverages-brewers':'Beverages—Brewers'} , inplace=True)
+                                         'beverages-wineries-distilleries':'Beverages—Wineries & Distilleries','beverages-brewers':'Beverages—Brewers'})
 pd.set_option('display.max_rows',None)
-print(all_stocks_df['industryKey'].value_counts())
+# print(all_stocks_df['industryKey'].value_counts())
 pd.reset_option('display.max_rows')
 # print(all_stocks_df)
 registerErrorMsg = ""
-
+allIndustriesList = all_stocks_df['industryKey'].unique().tolist()
 checked_filter_boxes = ['No' for i in range(0,12)]
 
-print('size' , all_stocks_df.shape)
+# print('size' , all_stocks_df.shape)
 # all_stocks_symbol_list = all_stocks_df['Symbol']
 initial = 1
 app = Flask(__name__)
@@ -85,7 +85,7 @@ filter_lims = {
     'price' : [0,inf]  
 }
 
-Industries_filter = ['Textile Manufacturing' , 'Speciality Chemicals' , 'Engineering & Construction' , 'Drug Manufacturers-Speciality & Generic' , 'Auto Parts' , 'Capital Markets' , 'Information Technology Services' , 'Steel' , 'Banks Regional' , 'Industrial Machinery' , 'Others' , 'All']
+Industries_filter = ['Specialty Chemicals' , 'Textile Manufacturing' , 'Auto Parts' , 'Drug Manufacturers—Specialty & Generic' , 'Engineering & Construction' , 'Steel' , 'Specialty Industrial Machinery' , 'Information Technology Services' , 'Capital Markets' , 'Credit Services' , 'Others' , 'All']
 filtered_df = pd.DataFrame()
 curGraphSelection = {
     'SBIN':{
@@ -367,8 +367,8 @@ def dashboard():
         try:
             dataFrameDict = getStockDataFrameInfo()
         except e:
-            print("curGraphSelection is:")
-            print(curGraphSelection)
+            # print("curGraphSelection is:")
+            # print(curGraphSelection)
             raise e
         script1,div1 = drawCurGraphAndTable(dataFrameDict)
         padCurStockInfo(curStockInfo)
@@ -381,9 +381,9 @@ def dashboard():
         return redirect(url_for('index'))
 @app.route('/sort_page')
 def sort_page():
-    print('gonna render')
-    print(filtered_df)
-    print(*filtered_df_columns)
+    # print('gonna render')
+    # print(filtered_df)
+    # print(*filtered_df_columns)
     return render_template('sort.html' , stockList = stockList ,filtered_df = filtered_df ,
             filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
             Industries_filter=Industries_filter )
@@ -471,8 +471,9 @@ def process_graph_options() :
 def process_mode_change() :
     global mode
     mode = request.form.get('graph-mode')
-    print("came here")
-    print(mode)
+    # print("came here")
+    # print(mode)
+
     return redirect(url_for('dashboard'))
 
 @app.route('/closeStock' , methods=['POST'])
@@ -482,8 +483,8 @@ def closeStock() :
     global stockList
     del curGraphSelection[to_close]
     stockList.remove(to_close)
-    print(*stockList)
-    print(to_close)
+    # print(*stockList)
+    # print(to_close)
     return redirect(url_for('dashboard'))
 # @app.route('/process_filters_market_cap' , methods=['POST'])
 # def process_filter() :
@@ -514,8 +515,8 @@ def process_filters() :
     m_lims = request.form.getlist('m_lim[]')
     list_check_status = request.form.getlist('checked_filter_boxes[]')
     list_check_status = [int(x) for x in list_check_status]
-    print('here')
-    print(*list_check_status)
+    # print('here')
+    # print(*list_check_status)
     for i in range(0,12) :
         if i in list_check_status :
             checked_filter_boxes[i] = 'yes'
@@ -549,22 +550,35 @@ def perform_filtering():
         (pd.to_numeric(all_stocks_df['trailingPE'], errors='coerce') <= filter_lims['pe_rat'][1])
     )
     filtered_df = all_stocks_df[condition]
-    if(checked_filter_boxes[11] == 'no') :
-            filtered_df = filtered_df.reset_index().rename(columns={'index':'Symbol'})
-            filtered_df = filtered_df.rename(columns={'marketCap':'Market Cap(in Cr)' , 'previousClose':'Prev. Close' , 'sector':'Sector' ,'open':'Open','dayLow':'Low','dayHigh' :'High' , 'currentPrice':'Price' , 'trailingPE' :'PE' ,'volume' :'Volume'})
+    
+    filtered_df = filtered_df.reset_index().rename(columns={'index':'Symbol'})
+    filtered_df = filtered_df.rename(columns={'marketCap':'Market Cap(in Cr)' , 'previousClose':'Prev. Close' , 'sector':'Sector' ,'open':'Open','dayLow':'Low','dayHigh' :'High' , 'currentPrice':'Price' , 'trailingPE' :'PE' ,'volume' :'Volume'})
     # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)']/100000000
     # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)'].round(2)
     # print('Here I am ')
-
+    # for col in filtered_df :
+    #     print(col)
     filtered_df['PE'] = pd.to_numeric(filtered_df['PE'], errors='coerce')
     filtered_df['PE'] = filtered_df['PE'].round(2)
     filtered_df = filtered_df.rename(columns={'industryKey' : 'Industry'})
 
     colums_order = ['Symbol' , 'Industry' , 'Sector' , 'Prev. Close' , 'Open' , 'Low' , 'High' , 'Price' ,'Volume' , 'PE' , 'Market Cap(in Cr)']
     filtered_df = filtered_df[colums_order]
-    print(filtered_df['PE'])
+
+    # print(filtered_df['PE'])
     filtered_df_columns = filtered_df.columns
-    print('lessgo')
+    # print('lessgo')
+
+    checked_boxes_industry_list = []
+    if checked_filter_boxes[11] == 'no' :
+        for i in range(0,10) :
+            if checked_filter_boxes[i] == 'yes' :
+                checked_boxes_industry_list.append(Industries_filter[i])
+        if checked_filter_boxes[10] == 'yes' :
+            for x in allIndustriesList :
+                if not(x in Industries_filter) :
+                    checked_boxes_industry_list.append(x)
+        filtered_df = filtered_df[filtered_df['Industry'].isin(checked_boxes_industry_list)]
     return 
 
 if __name__ == '__main__':
