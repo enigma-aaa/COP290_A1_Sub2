@@ -7,6 +7,7 @@ from bokeh.models import RangeTool,PanTool,WheelZoomTool,HoverTool
 from bokeh.layouts import column,layout
 import pandas as pd
 import stockData
+import numpy as np
 # import sys
 import math
 import colorGenerator
@@ -16,7 +17,20 @@ excel_file_path = 'MCAP31122023.xlsx'
 pickel_file_path = 'Data_folder/AllStocks.pkl'
 # all_stocks_df = pd.read_excel(excel_file_path)
 all_stocks_df = pd.read_pickle(pickel_file_path)
+all_stocks_df['marketCap'] = all_stocks_df['marketCap']/10000000
+all_stocks_df['marketCap'] =all_stocks_df['marketCap'].round(2)
+all_stocks_df['new_col'] = np.where(all_stocks_df['industryKey'] != '' , all_stocks_df['industryKey'] , all_stocks_df['industry'])
+all_stocks_df = all_stocks_df.drop(columns=['industryKey' , 'industry'])
+all_stocks_df = all_stocks_df.rename(columns={'new_col' : 'industryKey'})
+all_stocks_df = all_stocks_df[all_stocks_df.eq(0).sum(axis=1) <= 4]
+# pd.set_option('display.max_rows',None)
+# print(all_stocks_df['industryKey'].value_counts())
+# pd.reset_option('display.max_rows')
 # print(all_stocks_df)
+
+checked_filter_boxes = ['No' for i in range(0,12)]
+
+print('size' , all_stocks_df.shape)
 # all_stocks_symbol_list = all_stocks_df['Symbol']
 initial = 1
 app = Flask(__name__)
@@ -54,6 +68,7 @@ filter_lims = {
     'price' : [0,inf]  
 }
 
+Industries_filter = ['Textile Manufacturing' , 'Speciality Chemicals' , 'Engineering & Construction' , 'Drug Manufacturers-Speciality & Generic' , 'Auto Parts' , 'Capital Markets' , 'Information Technology Services' , 'Steel' , 'Banks Regional' , 'Industrial Machinery' , 'Others' , 'All']
 filtered_df = pd.DataFrame()
 curGraphSelection = {
     'SBIN':{
@@ -339,7 +354,9 @@ def sort_page():
     print('gonna render')
     print(filtered_df)
     print(*filtered_df_columns)
-    return render_template('sort.html' , stockList = stockList ,filtered_df = filtered_df ,filtered_df_columns = filtered_df_columns )
+    return render_template('sort.html' , stockList = stockList ,filtered_df = filtered_df ,
+            filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
+            Industries_filter=Industries_filter )
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
@@ -461,9 +478,19 @@ def closeStock() :
 @app.route('/process_filters' , methods=['POST'])
 def process_filters() :
     # global l_lim_price,m_lim_price,l_lim_marketCap,m_lim_marketCap,l_lim_pe_rat,m_lim_pe_rat,l_lim_vol,m_lim_vol
-    global filter_lims
+    global filter_lims , checked_filter_boxes
     l_lims = request.form.getlist('l_lim[]')
     m_lims = request.form.getlist('m_lim[]')
+    list_check_status = request.form.getlist('checked_filter_boxes[]')
+    list_check_status = [int(x) for x in list_check_status]
+    print('here')
+    print(*list_check_status)
+    for i in range(0,12) :
+        if i in list_check_status :
+            checked_filter_boxes[i] = 'yes'
+        else :
+            checked_filter_boxes[i] = 'no'
+    
     i = 0 
     for x in filter_lims :
         if l_lims[i] != '' :
@@ -475,14 +502,11 @@ def process_filters() :
         else :
             filter_lims[x][1] = inf
         i+=1 
-    print(filter_lims)
-    print('calling function')
     perform_filtering()
-    print('done')
     return(redirect(url_for('sort_page')))
 def perform_filtering():
-    global filtered_df , filtered_df_columns
-    print('inside perform_filtering')
+    global filtered_df , filtered_df_columns 
+    # all_stocks_df['marketCap'] = all_stocks_df['marketCap']/10000000
     condition = (
         (pd.to_numeric(all_stocks_df['volume'], errors='coerce') >= filter_lims['vol'][0]) &
         (pd.to_numeric(all_stocks_df['volume'], errors='coerce') <= filter_lims['vol'][1]) &
@@ -494,9 +518,21 @@ def perform_filtering():
         (pd.to_numeric(all_stocks_df['trailingPE'], errors='coerce') <= filter_lims['pe_rat'][1])
     )
     filtered_df = all_stocks_df[condition]
+    if(checked_filter_boxes[11] == 'no') :
+        
     filtered_df = filtered_df.reset_index().rename(columns={'index':'Symbol'})
+    filtered_df = filtered_df.rename(columns={'marketCap':'Market Cap(in Cr)' , 'previousClose':'Prev. Close' , 'sector':'Sector' ,'open':'Open','dayLow':'Low','dayHigh' :'High' , 'currentPrice':'Price' , 'trailingPE' :'PE' ,'volume' :'Volume'})
+    # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)']/100000000
+    # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)'].round(2)
+    # print('Here I am ')
+
+    filtered_df['PE'] = pd.to_numeric(filtered_df['PE'], errors='coerce')
+    filtered_df['PE'] = filtered_df['PE'].round(2)
+    filtered_df = filtered_df.rename(columns={'industryKey' : 'Industry'})
+    colums_order = ['Symbol' , 'Industry' , 'Sector' , 'Prev. Close' , 'Open' , 'Low' , 'High' , 'Price' ,'Volume' , 'PE' , 'Market Cap(in Cr)']
+    filtered_df = filtered_df[colums_order]
+    print(filtered_df['PE'])
     filtered_df_columns = filtered_df.columns
-    fi
     print('lessgo')
     return 
 
