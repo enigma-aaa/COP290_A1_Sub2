@@ -124,7 +124,7 @@ body.LoginBody{
     height: 100vh;
 }
 
-header {
+.StockSortHeader {
     /* width : 100% ;
      */
     padding: 10px;
