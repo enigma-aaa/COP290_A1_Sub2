@@ -17,6 +17,8 @@
             <div class="form-group">
                 <button type="submit" class="LoginButton" >Register</button>
             </div>
+            <label>{{registerErrorMsg}}</label>
+            <!--
             {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul class=flashes>
@@ -26,6 +28,7 @@
                 </ul>
             {% endif %}
             {% endwith %}
+            -->
         </form>
         <p>Already have an account? <a href="/">Login here</a></p>
     </div>
