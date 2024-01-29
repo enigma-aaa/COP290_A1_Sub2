@@ -43,7 +43,6 @@ pd.set_option('display.max_rows',None)
 print(all_stocks_df['industryKey'].value_counts())
 pd.reset_option('display.max_rows')
 # print(all_stocks_df)
-loginErrorMsg = ""
 registerErrorMsg = ""
 
 checked_filter_boxes = ['No' for i in range(0,12)]
@@ -187,7 +186,7 @@ with app.app_context():
 
 @app.route('/')
 def index():
-    return render_template('login.html',loginErrorMsg = loginErrorMsg)
+    return render_template('login.html')
 #understand what get and post is
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -199,21 +198,20 @@ def register():
         userExist = User.query.filter_by(username=username).first()
         if userExist:
             #check to check if username already exists to fix it up
-            #flash('Username already exists choose different username')
-            registerErrorMsg = "Username already exists choose different username"
+            flash('Username already exists choose different username')
+            #registerErrorMsg = "Username already exists choose different username"
             return redirect(url_for('register'))
         else:
             new_user = User(username=username, password_hash=hashed_password)
             db.session.add(new_user)
             db.session.commit()
-            #flash('Registration successful! Please login.')
+            flash('Registration successful! Please login.')
             return redirect(url_for('index'))
 
     return render_template('register.html',registerErrorMsg = registerErrorMsg)
 
 @app.route('/login', methods=['POST'])
 def login():
-    global loginErrorMsg
     username = request.form['username']
     password = request.form['password']
     user = User.query.filter_by(username=username).first()
@@ -221,11 +219,9 @@ def login():
     if user and check_password_hash(user.password_hash, password):
         session['user_id'] = user.id
         session['username'] = user.username
-        loginErrorMsg = ""
         return redirect(url_for('dashboard'))
     else:
-        #flash('Invalid username or password')
-        loginErrorMsg = "Invalid username or password"
+        flash('Invalid username or password')
         return redirect(url_for('index'))
 
 

@@ -295,6 +295,41 @@ col.StockList{
 col.StockListCross{
     width: 50px;
 }
+div.ErrorListCont{
+    position: fixed;
+    z-index: 1;
+    left :0 ;
+    top:0;
+    margin: auto;
+    width: 100%;
+    background-color: rgba(255,255,255,0.0);
+    overflow: auto;
+}
+button.ErrorMsgClsButton{
+    float: right;
+    background-color: rgba(255,255,255,0.0);
+    border: none;
+    color: #5c5c5c;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+button.ErrorMsgClsButton:hover{
+    float: right;
+    background-color: rgba(255,255,255,0.0);
+    border: none;
+    color: black;
+}
+div.IndvError{
+    width: 20em;
+    padding: 20px;
+    margin: auto;
+    font-size: 20px;
+    /*! text-align: center; */
+    background-color: #fcf8e3;
+    margin-top: 5px;
+    border-radius: 5px;
+    color: #5c5c5c;
+}
 div.StockListAndSearch {
     width: 20%;
     /* height:80%; */

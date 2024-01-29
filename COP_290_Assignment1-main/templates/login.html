@@ -5,6 +5,17 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="LoginBody">
+    <div class="ErrorListCont">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="IndvError">
+                    {{message}} <button class="ErrorMsgClsButton" onclick="this.parentNode.remove()">x</button>
+                </div>
+            {% endfor %}
+        {% endif%}
+        {% endwith %}
+    </div>
     <div class="form-container">
         <h2 class = "LoginLabel">Login</h2>
         <form action="/login" method="post">
