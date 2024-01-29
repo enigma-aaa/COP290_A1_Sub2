@@ -23,6 +23,7 @@ all_stocks_df['new_col'] = np.where(all_stocks_df['industryKey'] != '' , all_sto
 all_stocks_df = all_stocks_df.drop(columns=['industryKey' , 'industry'])
 all_stocks_df = all_stocks_df.rename(columns={'new_col' : 'industryKey'})
 all_stocks_df = all_stocks_df[all_stocks_df.eq(0).sum(axis=1) <= 4]
+
 # pd.set_option('display.max_rows',None)
 # print(all_stocks_df['industryKey'].value_counts())
 # pd.reset_option('display.max_rows')
