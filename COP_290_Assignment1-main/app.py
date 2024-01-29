@@ -519,9 +519,8 @@ def perform_filtering():
     )
     filtered_df = all_stocks_df[condition]
     if(checked_filter_boxes[11] == 'no') :
-        
-    filtered_df = filtered_df.reset_index().rename(columns={'index':'Symbol'})
-    filtered_df = filtered_df.rename(columns={'marketCap':'Market Cap(in Cr)' , 'previousClose':'Prev. Close' , 'sector':'Sector' ,'open':'Open','dayLow':'Low','dayHigh' :'High' , 'currentPrice':'Price' , 'trailingPE' :'PE' ,'volume' :'Volume'})
+            filtered_df = filtered_df.reset_index().rename(columns={'index':'Symbol'})
+            filtered_df = filtered_df.rename(columns={'marketCap':'Market Cap(in Cr)' , 'previousClose':'Prev. Close' , 'sector':'Sector' ,'open':'Open','dayLow':'Low','dayHigh' :'High' , 'currentPrice':'Price' , 'trailingPE' :'PE' ,'volume' :'Volume'})
     # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)']/100000000
     # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)'].round(2)
     # print('Here I am ')
