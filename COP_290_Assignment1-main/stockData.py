@@ -11,14 +11,14 @@ def stockIsValid(symbolName):
     if stockInfoEff.symbolInNSElist(symbolName):
         print("symbolName:",symbolName,"is valid")
         return True 
-    curDict = {}
+    curDf= None
     try:
         symbolName = symbolName + ".NS"
-        curDict = yf.Ticker(symbolName).info
+        curDf = yf.Ticker(symbolName).history(period='1d',interval='1m')
     except e:
         print("symbolName",symbolName , "is invalid")
         return False
-    if 'symbol' in curDict:
+    if not curDf.empty:
         return True
     return False
 def getData(symbolName,period,interval):
