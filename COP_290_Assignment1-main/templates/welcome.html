@@ -36,7 +36,17 @@
         </div>
     -->
     <main>
-
+        <div class="ErrorListCont">
+            {%with messages = get_flashed_messages()%}
+            {%if messages%}
+                {% for message in messages %}
+                    <div class="IndvError">
+                        {{message}} <button class="ErrorMsgClsButton" onclick="this.parentNode.remove()">x</button>
+                    </div>
+                {% endfor %}
+                {%endif%}
+            {%endwith%}
+        </div>
         <div class="StockListAndSearch column" id="left-column">
             <div class="StockSearchDiv">
                 <form action="/updateList" method="POST">

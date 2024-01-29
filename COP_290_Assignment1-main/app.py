@@ -394,6 +394,7 @@ def updateList():
     if stockName not in stockList:
         if(not stockData.stockIsValid(stockName)):
             print("symbol Name",stockName,"is invalid directly going to dashboard")
+            flash(stockName+ " is invalid please check")
             return redirect(url_for('dashboard'))
         stockList.append(stockName)
         last_selected = stockList
