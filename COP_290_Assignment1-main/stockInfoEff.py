@@ -10,6 +10,7 @@ columnNames = ['industryKey','sector','previousClose','open',
 ,'trailingPE', 'marketCap']
 defaultVal = ['','',0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 ColumnArr = [ [] for i in range(len(columnNames))]
+#hvae to finx NIFTY50 that is not working yet but is important 
 def symbolInNSElist(symbolName):
     if symbolName in symbols:
         return True 
