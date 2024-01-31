@@ -66,6 +66,9 @@ input[type="password"] {
 
 div.NavBarHeader{
     height: 50px;
+    background-color: #333;
+    padding: 1rem;
+    color: fff;
 }
 
 /* Add this to your existing style.css */
@@ -132,7 +135,11 @@ body.LoginBody{
     height: 40%;
     /* position : relative */
 }
-
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .navbar {
     list-style-type: none;
     margin: 0;
@@ -148,6 +155,13 @@ nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    display : flex;
+}
+.left-links{
+    margin-right: auto;
+}
+.right-links{
+    margin-left: auto;
 }
 
 nav ul li {
@@ -663,4 +677,12 @@ button.StockSubmitButton{
     
     padding: 10px;
     font-size: 20px;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+}
+li{
+    margin-right: 1rem;
 }
