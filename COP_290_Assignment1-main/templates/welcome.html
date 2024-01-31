@@ -17,13 +17,18 @@
 <body>
     <div class="NavBarHeader">
         <nav>
-            <ul>
+            <ul class="left-links">
                 <li><a href="{{url_for('storehist')}}">Store this in history</a></li>
                 <li><a href="{{url_for('add_to_fav')}}">Add to fav</a></li>
                 <li><a href="{{ url_for('sort_page') }}">Go to Stocks Page</a></li>
                 <li><a href="{{url_for('login_welcome')}}">Login Welcome</a></li>
                 <!-- <a href="#">Home</a> -->
                 <!-- <a href="#">About us</a> -->
+            </ul>
+
+            <ul class="right-links">
+                <li><a href="#">{{username}}</a></li>
+                <li><a href="{{url_for('logout')}}">Logout</a></li>
             </ul>
         </nav>
 
