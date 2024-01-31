@@ -185,7 +185,7 @@ class Stock_History(db.Model) :
 class Favourites_Histroy(db.Model) :
     id = db.Column(db.Integer, primary_key=True)
     stock_name = db.Column(db.String(50),nullable=False)
-    user_id = db.Column(db.Integer,db.ForeignKey('user_id'),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
 with app.app_context():
     db.create_all()
 
