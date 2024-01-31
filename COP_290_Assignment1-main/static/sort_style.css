@@ -24,19 +24,23 @@ nav ul li {
 
 .container {
     display: flex;
-    min-height: 100vh;
+    height: calc(100vh - 67px);
 }
 
 .sidebar {
     width: 25%;
     padding: 1rem;
     background-color: #f4f4f4;
-    min-height: 100vh;
+    height: 100%;
+    padding-bottom: 0px;
+    overflow: auto;
 }
 
 .content {
     /* flex-grow: 1;  */
     padding: 1rem;
+    padding-bottom: 0px;
+    height: 100%;
 }
 
 ul {
