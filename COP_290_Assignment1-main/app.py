@@ -174,7 +174,7 @@ class User(db.Model):
     username = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
     stocks_history = db.relationship('Stock_History',backref='viewer',lazy=True  )
-    favourites_history = db.relationship('Favourites_History',backref='user',lazy=True)
+    # favourites_history = db.relationship('Favourites_History',backref='user',lazy=True)
 # Initialize Database within Application Context
 
 class Stock_History(db.Model) :
@@ -267,7 +267,7 @@ def login():
     if user and check_password_hash(user.password_hash, password):
         session['user_id'] = user.id
         session['username'] = user.username
-        stocks_in_history = user.stocks_history
+        # stocks_in_history = user.stocks_history
 
         return redirect(url_for('dashboard'))
     else:
