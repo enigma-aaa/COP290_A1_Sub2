@@ -7,6 +7,21 @@ import stockInfoEff
 #1m data only for last 7days less than 1day data for last 60 days
 #actions also downloads stock dividends and stock splits events
 #assumes without .NS
+
+#index names have counter intuitive symbols which do not
+#follow the .NS convention hence we use the following dict
+indexNameSymbols = {
+    'NIFTY 50' : "^NSEI",
+    'NIFTY NEXT 50':"^NSMIDCP",
+    'NIFTY 100':"^CNX100",
+    'NIFTY 200':"^CNX200",
+    'NIFTY 500':"^CRSLDX",
+    'NIFTY MIDCAP 50':"^NSEMDCP50",
+    'NIFTY MIDCAP 100':"NIFTY_MIDCAP_100.NS",
+    'NIFTY SMALLCAP 100':"^CNXSC",
+    'INDIA VIX':"^INDIAVIX",
+    'NIFTY MIDCAP 150': "NIFTYMIDCAP150.NS",
+}
 def stockIsValid(symbolName):
     if stockInfoEff.symbolInNSElist(symbolName):
         print("symbolName:",symbolName,"is valid")
@@ -22,8 +37,11 @@ def stockIsValid(symbolName):
         return True
     return False
 def getData(symbolName,period,interval):
-    try:
+    if symbolName in indexNameSymbols:
+        symbolName = indexNameSymbols[symbolName]
+    else:
         symbolName = symbolName + ".NS"
+    try:
         symbolTicker = yf.Ticker(symbolName)
         symbolHistory  = symbolTicker.history(period=period,interval=interval)
         symbolHistory.reset_index(inplace=True) 
