@@ -59,6 +59,8 @@ sort_state= {
 }
 stocks_in_history = []
 stocks_in_fav = []
+stocks_in_history_symbols=[]
+stocks_in_fav_symbols=[]
 #companies_to_remove = ['ACL' , 'RAJMET' , 'GEPIL' , 'OSWALGREEN' , 'SOTL' , 'WABAG' , 'AVG' , 'BMETRICS' ,'JINDWORLD' , 'ROHLTD' , 'FMNL' , 'ASTEC' , 'SHRENIK' , 'AILIMITED' , 'AMNPLST' , 'SHIVALIK' , 'SERVOTECH' , 'BANARISUG' , '3PLAND' , 'AARTECH' , 'PLADAINFO' ,'STERTOOLS' , 'SATINDLTD' , 'AGRITECH' , 'INDOBORAX' , 'INOXGREEN']
 companies_to_remove = ['ACL' , 'RAJMET' , 'GEPIL' , 'OSWALGREEN' , 'SOTL' , 'WABAG' , 'AVG'  ,'JINDWORLD' , 'ROHLTD' , 'FMNL' , 'ASTEC' , 'SHRENIK', 'AMNPLST' , 'SHIVALIK' , 'SERVOTECH' , 'BANARISUG' , '3PLAND' , 'AARTECH' , 'PLADAINFO' ,'STERTOOLS' , 'SATINDLTD' , 'AGRITECH' , 'INDOBORAX' , 'INOXGREEN']
 # print(all_stocks_df['industryKey'].value_counts())
@@ -264,6 +266,9 @@ def register():
 @app.route('/login', methods=['POST'])
 def login():
     global stocks_in_history
+    global stocks_in_history_symbols
+    global stocks_in_fav
+    global stocks_in_fav_symbols
     username = request.form['username']
     password = request.form['password']
     user = User.query.filter_by(username=username).first()
@@ -272,7 +277,12 @@ def login():
         session['user_id'] = user.id
         session['username'] = user.username
         stocks_in_history = user.stocks_history
-
+        stocks_in_fav = user.favourites_history
+        for x in stocks_in_history :
+            stocks_in_history_symbols.append(x.stock_name)
+        for x in stocks_in_fav :
+            stocks_in_fav_symbols.append(x.stock_name)
+        # stocks_in_history_symbols = [for x in stocks_history x.stock_name]
         return redirect(url_for('dashboard'))
     else:
         flash('Invalid username or password')
@@ -511,7 +521,9 @@ def add_to_fav() :
 @app.route('/login_welcome')
 def login_welcome():
     (script,div) = drawStockIndicesGraph()
-    return render_template('loginWelcome.html',script=script,div=div)
+    print(*stocks_in_fav_symbols)
+    print(*stocks_in_history_symbols)
+    return render_template('loginWelcome.html',script=script,div=div,stocks_in_fav=stocks_in_fav , stocks_in_history=stocks_in_history,stocks_in_history_symbols=stocks_in_history_symbols,stocks_in_fav_symbols=stocks_in_fav_symbols)
 @app.route('/logout')
 def logout():
 

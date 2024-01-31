@@ -30,6 +30,9 @@
                     <tr><th>Favourites</th></tr>
                 </table>
                 <table class="StockInfoTable">
+                    {% for x in stocks_in_fav_symbols %}
+                    {{x}}
+                    {% endfor %}
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm1</th></tr>
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm2</th></tr>
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm3</th></tr>
@@ -48,6 +51,9 @@
                     <tr><th>History</th></tr>
                 </table>
                 <table class="StockInfoTable">
+                    {% for x in stocks_in_history_symbols %}
+                        {{x}}
+                    {% endfor %}
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm1</th></tr>
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm2</th></tr>
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm3</th></tr>
