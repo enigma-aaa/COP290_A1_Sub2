@@ -113,7 +113,16 @@
                     <div class="HeadingContainer">
                         <table class="TableHeading">
                             <tr>
+                                <colgroup>
+                                    <col class="StockTableName"></col>
+                                    <col class="DownloadButton"></col>
+                                </colgroup>
                                 <td class="TableHeading">{{symbolName}}</td>
+                                <td>
+                                    <form action="/downloadTable" method="POST">
+                                        <button type="submit" name="DownloadButton" value="{{symbolName}}" class = "DownloadButton"></button>
+                                    </form>
+                                </td>
                             </tr>
                         </table>
                     </div>
