@@ -43,6 +43,7 @@
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm11</th></tr>
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm12</th></tr>    
                 </table>
+                <button>Load Favourites</button>
                 <table class="StockTableHeading">
                     <tr><th>History</th></tr>
                 </table>
@@ -63,6 +64,13 @@
                 </table>
             </div>
             <div class="StockSummary">
+                <div class="IndicesSummaryHeading">
+                    NSE Indices Summary
+                </div>
+                <div class="IndexGraphContainer">
+                    {{div|safe}}
+                    {{script|safe}}
+                </div>
             </div>
         </div>
     </main>

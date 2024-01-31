@@ -7,7 +7,7 @@ from bokeh.plotting import figure
 from bokeh.models import RangeTool,PanTool,WheelZoomTool,HoverTool,BoxZoomTool
 #have to check TapTool
 from bokeh.models import TapTool,WheelPanTool,SaveTool,ZoomInTool,ZoomOutTool,ResetTool
-from bokeh.layouts import column,layout
+from bokeh.layouts import column,layout,gridplot
 import pandas as pd
 import stockData
 import numpy as np
@@ -393,6 +393,33 @@ def drawCurGraphAndTable(dataFrameDict):
     div = div[:-7] + ' class="GraphDiv" ></div>'
     return (script,div)
 
+def drawStockIndicesGraph():
+    indices = ['NIFTY 50','NIFTY NEXT 50','NIFTY BANK','NIFTY IT']
+    colors = ['#d04848','#f3b95f','#6895d2','#37b5b6']
+    plotArr = []
+    hoverTool = HoverTool(
+        tooltips = [('date','$x{%F}'),('price','$y{(0.00 a)}')],
+        formatters={'$x':'datetime'}
+    )
+
+    tools = [PanTool(),WheelZoomTool(),hoverTool,BoxZoomTool(),
+            TapTool(),WheelPanTool(),SaveTool(),ZoomInTool(),ZoomOutTool(),ResetTool()]
+    for i in range(len(indices)):
+        symbolName = indices[i]
+        curCol = colors[i]
+        curDf = stockData.getDailyData(symbolName)
+        print('For symbolName',symbolName)
+        print("data frame is:",curDf)
+        curPlot = figure(x_axis_label="Date Time",y_axis_label="Open Price",
+                x_axis_type="datetime",title=symbolName,tools = tools)
+        curPlot.title.align = "center"
+        curPlot.title.text_font_size = "20px"
+        drawOpenGraph(symbolName,curPlot,curDf,curCol)
+        plotArr.append(curPlot)
+    grid = gridplot(plotArr,ncols = 2,width=500,height=500)
+    (script,div) = components(grid)
+    div = div[:-7] + ' class="StockIndices" ></div>'
+    return (script,div)
 #this function takes in curStockInfo and replaces all missing values with N/A
 def padCurStockInfo(curStockInfo):
     keys = ['longName','open','previousClose','currentPrice','dayHigh'
@@ -471,7 +498,8 @@ def add_to_fav() :
     return(redirect(url_for('dashboard')))
 @app.route('/login_welcome')
 def login_welcome():
-    return render_template('loginWelcome.html')
+    (script,div) = drawStockIndicesGraph()
+    return render_template('loginWelcome.html',script=script,div=div)
 @app.route('/logout')
 def logout():
 
