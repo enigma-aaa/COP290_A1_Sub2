@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='style.css')}}">
+</head>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.3.3.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.3.3.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.3.3.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.3.3.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.3.3.min.js" crossorigin="anonymous"></script>
+
+<body>
+    <div class="NavBarHeader">
+        <nav>
+            <ul>
+                <li><a href="{{url_for('storehist')}}">Store this in history</a></li>
+                <li><a href="{{url_for('add_to_fav')}}">Add to fav</a></li>
+                <li><a href="{{ url_for('sort_page') }}">Go to Stocks Page</a></li>
+                <li><a href="{{url_for('login_welcome')}}">Login Welcome</a></li>   
+            </ul>
+        </nav>
+    </div>
+    <main>
+        <div class="SideBarAndStockSummary">
+            <div class="SideBar">
+                <!-- Favourites table -->
+                <table class="StockTableHeading">
+                    <tr><th>Favourites</th></tr>
+                </table>
+                <table class="StockInfoTable">
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm1</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm2</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm3</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm4</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm5</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm6</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm7</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm8</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm9</th></tr> 
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm10</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm11</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm12</th></tr>    
+                </table>
+                <table class="StockTableHeading">
+                    <tr><th>History</th></tr>
+                </table>
+                <table class="StockInfoTable">
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm1</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm2</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm3</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm4</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm5</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm6</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm7</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm8</th></tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm9</th></tr> 
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm10</th></tr> 
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm11</th></tr> 
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm12</th></tr> 
+
+                </table>
+            </div>
+            <div class="StockSummary">
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

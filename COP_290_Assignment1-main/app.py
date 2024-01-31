@@ -469,7 +469,9 @@ def add_to_fav() :
             db.session.add(fav_stock)
         db.session.commit()
     return(redirect(url_for('dashboard')))
-
+@app.route('/login_welcome')
+def login_welcome():
+    return render_template('loginWelcome.html')
 @app.route('/logout')
 def logout():
 

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Welcome</title>
+    <title>Graph</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.3.3.min.js" crossorigin="anonymous"></script>
@@ -21,6 +21,7 @@
                 <li><a href="{{url_for('storehist')}}">Store this in history</a></li>
                 <li><a href="{{url_for('add_to_fav')}}">Add to fav</a></li>
                 <li><a href="{{ url_for('sort_page') }}">Go to Stocks Page</a></li>
+                <li><a href="{{url_for('login_welcome')}}">Login Welcome</a></li>
                 <!-- <a href="#">Home</a> -->
                 <!-- <a href="#">About us</a> -->
             </ul>
