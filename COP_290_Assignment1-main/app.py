@@ -39,9 +39,26 @@ all_stocks_df['industryKey'] = all_stocks_df['industryKey'].replace({'specialty-
                                          'publishing':'Publishing','household-personal-products':'Household & Personal Products','oil-gas-refining-marketing':'Oil & Gas Refining & Marketing','footwear-accessories':'Footwear & Accessories','aerospace-defense':'Aerospace & Defense','utilities-independent-power-producers':'Utilities—Independent Power Producers',
                                          'utilities-regulated-gas':'Utilities—Regulated Gas','utilities-renewable':'Utilities—Renewable','utilities-regulated-electric':'Utilities—Regulated Electric','mortgage-finance':'Mortgage Finance','telecom-services':'Telecom Services','biotechnology':'Biotechnology','Tools & Accesories':'Tools & Accessories',
                                          'beverages-wineries-distilleries':'Beverages—Wineries & Distilleries','beverages-brewers':'Beverages—Brewers'})
-pd.set_option('display.max_rows',None)
+# pd.set_option('display.max_rows',None)
+sort_state= {
+    'Symbol' : 0,
+    'Industry'  :0 ,
+    'Sector'  :0 ,
+    'Prev. Close'  :0 ,
+    'Open'  :0 ,
+    'Low'  :0 ,
+    'High'  :0 ,
+    'Price'  :0 ,
+    'Volume'  :0 ,
+    'PE'  :0 ,
+    'Market Cap(in Cr)'  :0 ,
+}
+companies_to_remove = ['ACL' , 'RAJMET' , 'GEPIL' , 'OSWALGREEN' , 'SOTL' , 'WABAG' , 'AVG' , 'BMETRICS' ,'JINDWORLD' , 'ROHLTD' , 'FMNL' , 'ASTEC' , 'SHRENIK' , 'AILIMITED' , 'AMNPLST' , 'SHIVALIK' , 'SERVOTECH' , 'BANARISUG' , '3PLAND' , 'AARTECH' , 'PLADAINFO' ,'STERTOOLS' , 'SATINDLTD' , 'AGRITECH' , 'INDOBORAX' , 'INOXGREEN']
 # print(all_stocks_df['industryKey'].value_counts())
-pd.reset_option('display.max_rows')
+# all_stocks_df = all_stocks_df[all_stocks_df['symbol'] != companies_to_remove]
+print(all_stocks_df)
+all_stocks_df = all_stocks_df.drop(companies_to_remove)
+# pd.reset_option('display.max_rows')/
 # print(all_stocks_df)
 registerErrorMsg = ""
 allIndustriesList = all_stocks_df['industryKey'].unique().tolist()
@@ -580,6 +597,24 @@ def perform_filtering():
                     checked_boxes_industry_list.append(x)
         filtered_df = filtered_df[filtered_df['Industry'].isin(checked_boxes_industry_list)]
     return 
+
+
+@app.route('/sort_filters' , methods=['POST'])
+def sort_filters() :
+    global sort_state  , filtered_df
+    to_change = request.form.get('sort')
+    print(to_change)
+    sort_state[to_change] = (sort_state[to_change]+1)%3
+    if sort_state[to_change] == 1 :
+        print('here1')
+        filtered_df =  filtered_df.sort_values(by=to_change)
+    elif sort_state[to_change] == 2 :
+        print('here2')
+        filtered_df = filtered_df.sort_values(by=to_change , ascending=False)
+    else :
+        print('here3')
+        filtered_df = filtered_df.sort_values(by='Industry')
+    return (redirect(url_for('sort_page')))
 
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code
