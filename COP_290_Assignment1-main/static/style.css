@@ -295,6 +295,16 @@ col.StockList{
 col.StockListCross{
     width: 50px;
 }
+col.StockTableName{
+    width:calc(100% - 64px)
+}
+col.DownloadButton{
+    width: 64px;
+}
+input.DownloadButton{
+    width:64px;
+    height:64px;
+}
 div.ErrorListCont{
     position: fixed;
     z-index: 1;

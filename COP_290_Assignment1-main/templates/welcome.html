@@ -113,7 +113,16 @@
                     <div class="HeadingContainer">
                         <table class="TableHeading">
                             <tr>
+                                <colgroup>
+                                    <col class="StockTableName"></col>
+                                    <col class="DownloadButton"></col>
+                                </colgroup>
                                 <td class="TableHeading">{{symbolName}}</td>
+                                <td>
+                                    <form action="/downloadTable" method="POST">
+                                        <input type="image submit" src="../static/img/FinalTransDownload32.png" value="{{symbolName}}"></input>
+                                    </form>
+                                </td>
                             </tr>
                         </table>
                     </div>
