@@ -63,7 +63,7 @@ stocks_in_fav = []
 companies_to_remove = ['ACL' , 'RAJMET' , 'GEPIL' , 'OSWALGREEN' , 'SOTL' , 'WABAG' , 'AVG'  ,'JINDWORLD' , 'ROHLTD' , 'FMNL' , 'ASTEC' , 'SHRENIK', 'AMNPLST' , 'SHIVALIK' , 'SERVOTECH' , 'BANARISUG' , '3PLAND' , 'AARTECH' , 'PLADAINFO' ,'STERTOOLS' , 'SATINDLTD' , 'AGRITECH' , 'INDOBORAX' , 'INOXGREEN']
 # print(all_stocks_df['industryKey'].value_counts())
 # all_stocks_df = all_stocks_df[all_stocks_df['symbol'] != companies_to_remove]
-print(all_stocks_df)
+# print(all_stocks_df)
 all_stocks_df = all_stocks_df.drop(companies_to_remove)
 # pd.reset_option('display.max_rows')/
 # print(all_stocks_df)
@@ -167,6 +167,16 @@ curGraphSelection = {
 }
 
 # User Model
+class Favourites_History(db.Model) :
+    id = db.Column(db.Integer, primary_key=True)
+    fav_name= db.Column(db.String(50),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+
+class Stock_History(db.Model) :
+    id = db.Column(db.Integer, primary_key=True)
+    stock_name = db.Column(db.String(50),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+
 class User(db.Model):
     #by defualt table name lowercase class name#
     #explicit definiton __tablename__ = #
@@ -174,18 +184,12 @@ class User(db.Model):
     username = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
     stocks_history = db.relationship('Stock_History',backref='viewer',lazy=True  )
-    # favourites_history = db.relationship('Favourites_History',backref='user',lazy=True)
+    favourites_history = db.relationship('Favourites_History',backref='fav_user',lazy=True)
+
 # Initialize Database within Application Context
 
-class Stock_History(db.Model) :
-    id = db.Column(db.Integer, primary_key=True)
-    stock_name = db.Column(db.String(50),nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id') , nullable=False)
                         
-class Favourites_Histroy(db.Model) :
-    id = db.Column(db.Integer, primary_key=True)
-    stock_name = db.Column(db.String(50),nullable=False)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+
 with app.app_context():
     db.create_all()
 
@@ -267,7 +271,7 @@ def login():
     if user and check_password_hash(user.password_hash, password):
         session['user_id'] = user.id
         session['username'] = user.username
-        # stocks_in_history = user.stocks_history
+        stocks_in_history = user.stocks_history
 
         return redirect(url_for('dashboard'))
     else:
@@ -346,7 +350,7 @@ def drawCurGraphAndTable(dataFrameDict):
                         background_fill_color="#efefef")
     #setting the mini graph to only stretch in the x direction
     rangePlot.sizing_mode = "stretch_width"
-        
+
     rangeTool = RangeTool(x_range=plot.x_range)
     rangeTool.overlay.fill_color = "navy"
     rangeTool.overlay.fill_alpha = 0.2
@@ -431,7 +435,19 @@ def sort_page():
     # print(*filtered_df_columns)
     return render_template('sort.html' , stockList = stockList ,filtered_df = filtered_df ,
             filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
-            Industries_filter=Industries_filter )
+            Industries_filter=Industries_filter ,filter_lims=filter_lims)
+
+
+# class Favourites_History(db.Model) :
+#     id = db.Column(db.Integer, primary_key=True)
+#     fav_name= db.Column(db.String(50),nullable=False)
+#     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+
+# class Stock_History(db.Model) :
+#     id = db.Column(db.Integer, primary_key=True)
+#     stock_name = db.Column(db.String(50),nullable=False)
+#     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+
 # class User(db.Model):
 #     #by defualt table name lowercase class name#
 #     #explicit definiton __tablename__ = #
@@ -439,12 +455,8 @@ def sort_page():
 #     username = db.Column(db.String(100), unique=True, nullable=False)
 #     password_hash = db.Column(db.String(200), nullable=False)
 #     stocks_history = db.relationship('Stock_History',backref='viewer',lazy=True  )
-# # Initialize Database within Application Context
+#     favourites_history = db.relationship('Favourites_History',backref='fav_user',lazy=True)
 
-# class Stock_History(db.Model) :
-#     id = db.Column(db.Integer, primary_key=True)
-#     stock_name = db.Column(db.String(50),nullable=False)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id') , nullable=False)
 @app.route('/storehist')
 def storehist() :
     if 'user_id' in session: 
@@ -462,10 +474,10 @@ def add_to_fav() :
     if 'user_id' in session :
         user_id = session['user_id']
         user = User.query.get(user_id)
-        db.session.query(Favourites_Histroy).delete()
+        db.session.query(Favourites_History).delete()
         stocks_viewed = list(curGraphSelection.keys())
-        for stock in stocks_viewed :
-            fav_stock = Favourites_Histroy(stock_name=stock , viewer=user)
+        for fav_name in stocks_viewed :
+            fav_stock = Favourites_History(fav_name=fav_name,fav_user=user)
             db.session.add(fav_stock)
         db.session.commit()
     return(redirect(url_for('dashboard')))
@@ -681,16 +693,12 @@ def perform_filtering():
 def sort_filters() :
     global sort_state  , filtered_df
     to_change = request.form.get('sort')
-    print(to_change)
     sort_state[to_change] = (sort_state[to_change]+1)%3
     if sort_state[to_change] == 1 :
-        print('here1')
         filtered_df =  filtered_df.sort_values(by=to_change)
     elif sort_state[to_change] == 2 :
-        print('here2')
         filtered_df = filtered_df.sort_values(by=to_change , ascending=False)
     else :
-        print('here3')
         filtered_df = filtered_df.sort_values(by='Industry')
     return (redirect(url_for('sort_page')))
 
