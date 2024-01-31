@@ -301,9 +301,11 @@ col.StockTableName{
 col.DownloadButton{
     width: 64px;
 }
-input.DownloadButton{
-    width:64px;
-    height:64px;
+button.DownloadButton{
+    width: 32px;
+    height: 32px;
+    background-image: url("./img/FinalTransDownload32.png");
+    border: none;
 }
 div.ErrorListCont{
     position: fixed;

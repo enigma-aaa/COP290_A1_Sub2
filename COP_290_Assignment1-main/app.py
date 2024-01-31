@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import send_file
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from bokeh.embed import components
@@ -12,6 +13,7 @@ import stockData
 import numpy as np
 # import sys
 import math
+import os
 import colorGenerator
 # inf = sys.maxsize
 inf = math.inf
@@ -107,6 +109,7 @@ filter_lims = {
 
 Industries_filter = ['Specialty Chemicals' , 'Textile Manufacturing' , 'Auto Parts' , 'Drug Manufacturers—Specialty & Generic' , 'Engineering & Construction' , 'Steel' , 'Specialty Industrial Machinery' , 'Information Technology Services' , 'Capital Markets' , 'Credit Services' , 'Others' , 'All']
 filtered_df = pd.DataFrame()
+dataFrameDict = {}
 curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
@@ -385,6 +388,7 @@ def padCurStockInfo(curStockInfo):
             curStockInfo[key] = 'N/A'
 @app.route('/dashboard') 
 def dashboard():
+    global dataFrameDict
     if 'user_id' in session:
         try:
             dataFrameDict = getStockDataFrameInfo()
@@ -558,6 +562,17 @@ def process_filters() :
         i+=1 
     perform_filtering()
     return(redirect(url_for('sort_page')))
+@app.route('/downloadTable',methods=['POST'])
+def downloadTable():
+    symbolName = request.form.get('DownloadButton')
+    tableDataDuration = curGraphSelection[symbolName]['graphDuration']
+    folderName = "./TableData/"
+    fileName = symbolName+"_"+tableDataDuration+".csv"
+    relPath = folderName + fileName
+    curDf = dataFrameDict[symbolName]
+    curDf.to_csv(relPath)
+    #uploads = os.path.join(current_app.root_path,app.config['UPLOAD_FOLDER'])
+    return send_file(relPath,as_attachment=True)
 def perform_filtering():
     global filtered_df , filtered_df_columns 
     # all_stocks_df['marketCap'] = all_stocks_df['marketCap']/10000000
