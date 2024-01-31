@@ -366,6 +366,24 @@ div.StockListAndSearch {
     /* display: ; */
     border-right: 3px solid #eeeded;
 }
+div.SideBarAndStockSummary{
+    width: 100%;
+    height: calc(100vh - 50px);
+    display: flex;
+}
+div.SideBar{
+    width:400px;
+    height: 100%;
+    background-color: white;
+    overflow: auto;
+    border-right: 3px solid #f7f7f7;
+}
+div.StockSummary{
+    width: calc(100% - 400px);
+    height: 100%;
+    background-color: white;
+    /*! display: flex; */
+}
 div.StockList{
     width: 100%;
 }
@@ -685,4 +703,22 @@ a{
 }
 li{
     margin-right: 1rem;
+}
+
+div.IndicesSummaryHeading{
+    /*! width: 100%; */
+    height: 50px;
+    font-size: 32px;
+    text-align: left;
+    vertical-align: middle;
+    padding: 10px;
+    padding-left: 20px;
+}
+div.IndexGraphContainer{
+    width: 100%;
+    overflow: auto;
+}
+div.StockIndices{
+    width: 400px;
+    height: 400px;
 }

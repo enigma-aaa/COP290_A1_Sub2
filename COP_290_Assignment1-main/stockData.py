@@ -21,11 +21,15 @@ indexNameSymbols = {
     'NIFTY SMALLCAP 100':"^CNXSC",
     'INDIA VIX':"^INDIAVIX",
     'NIFTY MIDCAP 150': "NIFTYMIDCAP150.NS",
+    'NIFTY BANK': '^NSEBANK',
+    'NIFTY IT': '^CNXIT'
 }
 def stockIsValid(symbolName):
     if stockInfoEff.symbolInNSElist(symbolName):
         print("symbolName:",symbolName,"is valid")
         return True 
+    if stock in indexNameSymbols:
+        return True
     curDf= None
     try:
         symbolName = symbolName + ".NS"
