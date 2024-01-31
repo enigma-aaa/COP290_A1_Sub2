@@ -31,20 +31,9 @@
                 </table>
                 <table class="StockInfoTable">
                     {% for x in stocks_in_fav_symbols %}
-                    {{x}}
-                    {% endfor %}
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm1</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm2</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm3</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm4</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm5</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm6</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm7</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm8</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm9</th></tr> 
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm10</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm11</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">Elm12</th></tr>    
+                   <!-- <tr> {{x}}</td> -->
+                    <tr><td>{{x}}</td> </tr>
+                    {% endfor %}    
                 </table>
                 <button>Load Favourites</button>
                 <table class="StockTableHeading">
@@ -52,20 +41,9 @@
                 </table>
                 <table class="StockInfoTable">
                     {% for x in stocks_in_history_symbols %}
-                        {{x}}
+                    <tr><td>{{x}}</td> </tr> 
+                    <!-- <tr>{{x}}</tr>  -->
                     {% endfor %}
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm1</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm2</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm3</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm4</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm5</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm6</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm7</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm8</th></tr>
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm9</th></tr> 
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm10</th></tr> 
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm11</th></tr> 
-                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">elm12</th></tr> 
 
                 </table>
             </div>
