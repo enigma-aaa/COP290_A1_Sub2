@@ -55,6 +55,8 @@ sort_state= {
     'PE'  :0 ,
     'Market Cap(in Cr)'  :0 ,
 }
+stocks_in_history = []
+stocks_in_fav = []
 #companies_to_remove = ['ACL' , 'RAJMET' , 'GEPIL' , 'OSWALGREEN' , 'SOTL' , 'WABAG' , 'AVG' , 'BMETRICS' ,'JINDWORLD' , 'ROHLTD' , 'FMNL' , 'ASTEC' , 'SHRENIK' , 'AILIMITED' , 'AMNPLST' , 'SHIVALIK' , 'SERVOTECH' , 'BANARISUG' , '3PLAND' , 'AARTECH' , 'PLADAINFO' ,'STERTOOLS' , 'SATINDLTD' , 'AGRITECH' , 'INDOBORAX' , 'INOXGREEN']
 companies_to_remove = ['ACL' , 'RAJMET' , 'GEPIL' , 'OSWALGREEN' , 'SOTL' , 'WABAG' , 'AVG'  ,'JINDWORLD' , 'ROHLTD' , 'FMNL' , 'ASTEC' , 'SHRENIK', 'AMNPLST' , 'SHIVALIK' , 'SERVOTECH' , 'BANARISUG' , '3PLAND' , 'AARTECH' , 'PLADAINFO' ,'STERTOOLS' , 'SATINDLTD' , 'AGRITECH' , 'INDOBORAX' , 'INOXGREEN']
 # print(all_stocks_df['industryKey'].value_counts())
@@ -168,8 +170,19 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
-
+    stocks_history = db.relationship('Stock_History',backref='viewer',lazy=True  )
+    favourites_history = db.relationship('Favourites_History',backref='user',lazy=True)
 # Initialize Database within Application Context
+
+class Stock_History(db.Model) :
+    id = db.Column(db.Integer, primary_key=True)
+    stock_name = db.Column(db.String(50),nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id') , nullable=False)
+                        
+class Favourites_Histroy(db.Model) :
+    id = db.Column(db.Integer, primary_key=True)
+    stock_name = db.Column(db.String(50),nullable=False)
+    user_id = db.Column(db.Integer,db.ForeignKey('user_id'),nullable=False)
 with app.app_context():
     db.create_all()
 
@@ -243,6 +256,7 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
+    global stocks_in_history
     username = request.form['username']
     password = request.form['password']
     user = User.query.filter_by(username=username).first()
@@ -250,6 +264,8 @@ def login():
     if user and check_password_hash(user.password_hash, password):
         session['user_id'] = user.id
         session['username'] = user.username
+        stocks_in_history = user.stocks_history
+
         return redirect(url_for('dashboard'))
     else:
         flash('Invalid username or password')
@@ -394,6 +410,9 @@ def dashboard():
             raise e
         script1,div1 = drawCurGraphAndTable(dataFrameDict)
         padCurStockInfo(curStockInfo)
+        print("here are stocks in history")
+        for stocks in stocks_in_history:
+            print(stocks.stock_name)
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
@@ -409,8 +428,47 @@ def sort_page():
     return render_template('sort.html' , stockList = stockList ,filtered_df = filtered_df ,
             filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
             Industries_filter=Industries_filter )
+# class User(db.Model):
+#     #by defualt table name lowercase class name#
+#     #explicit definiton __tablename__ = #
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(100), unique=True, nullable=False)
+#     password_hash = db.Column(db.String(200), nullable=False)
+#     stocks_history = db.relationship('Stock_History',backref='viewer',lazy=True  )
+# # Initialize Database within Application Context
+
+# class Stock_History(db.Model) :
+#     id = db.Column(db.Integer, primary_key=True)
+#     stock_name = db.Column(db.String(50),nullable=False)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id') , nullable=False)
+@app.route('/storehist')
+def storehist() :
+    if 'user_id' in session: 
+        user_id = session['user_id']
+        user = User.query.get(user_id)
+        db.session.query(Stock_History).delete()
+        stocks_viewed = list(curGraphSelection.keys())
+        for stock_name in stocks_viewed :
+            view_history = Stock_History(stock_name=stock_name ,viewer=user)
+            db.session.add(view_history)
+        db.session.commit()
+    return (redirect(url_for('dashboard')))
+@app.route('/add_to_fav')
+def add_to_fav() :
+    if 'user_id' in session :
+        user_id = session['user_id']
+        user = User.query.get(user_id)
+        db.session.query(Favourites_Histroy).delete()
+        stocks_viewed = list(curGraphSelection.keys())
+        for stock in stocks_viewed :
+            fav_stock = Favourites_Histroy(stock_name=stock , viewer=user)
+            db.session.add(fav_stock)
+        db.session.commit()
+    return(redirect(url_for('dashboard')))
+
 @app.route('/logout')
 def logout():
+
     session.pop('user_id', None)
     session.pop('username', None)
     return redirect(url_for('index'))
