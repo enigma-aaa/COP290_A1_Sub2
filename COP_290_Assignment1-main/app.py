@@ -225,7 +225,7 @@ with app.app_context():
         # df = all_stocks_df[']
 
 
-def checkUserAndPasswrodValid(username,password):
+def checkUserAndPasswrodValid(username,password,confirmPass):
     userNameMinLen = 9
     passwordMinLen = 8
     valid = True
@@ -239,6 +239,9 @@ def checkUserAndPasswrodValid(username,password):
     if userExist:
         flash('Username already exists choose different username')
         valid = False
+    if password != confirmPass:
+        flash('Password fields do not match please recheck')
+        valid = False
     return valid
 @app.route('/')
 def index():
@@ -250,8 +253,9 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        confirmPass = request.form['confirmPass']
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')  
-        valid = checkUserAndPasswrodValid(username,password)
+        valid = checkUserAndPasswrodValid(username,password,confirmPass)
         if not valid:
             return redirect(url_for('register'))
         else:
