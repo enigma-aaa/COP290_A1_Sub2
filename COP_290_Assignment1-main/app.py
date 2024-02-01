@@ -11,10 +11,8 @@ import math
 import os
 import colorGenerator
 from filterStocks import allIndustriesList,companies_to_remove,initStockInfo,perform_filtering
-# inf = sys.maxsize
-inf = math.inf
+
 all_stocks_df = initStockInfo()
-# pd.set_option('display.max_rows',None)
 sort_state= {
     'Symbol' : 0,
     'Industry'  :0 ,
@@ -32,9 +30,7 @@ stocks_in_history = []
 stocks_in_fav = []
 stocks_in_history_symbols=[]
 stocks_in_fav_symbols=[]
-# pd.reset_option('display.max_rows')/
-# print(all_stocks_df)
-registerErrorMsg = ""
+
 checked_filter_boxes = ['No' for i in range(0,12)]
 
 # print('size' , all_stocks_df.shape)
@@ -55,19 +51,10 @@ db = SQLAlchemy(app)
 #list of stocks currently displayed on the left side of the website
 stockList = ["SBIN","ONGC","TATASTEEL"]
 curStockInfo = {}
-#this shouldn't be a list currently as a list this is representing the lost of grpahs currently beong drawn
-#this information is implicitly stored in the curGraphSelection anyways if there graphCont dictionary has all 
-#false then we don't need to draw it 
-#what we want selectedStockList to be like last selected this should only show one selected stock
-#we will use htis to decide what information we are showing on the side
-selectedStocksList = []
-last_selected = 'SBIN'
 
 #keeps track of which stock is selected and only that one is green
 currentlySelected = ""
-# filter_market_cap = "small"
-# filter_avg_vol = "Any"
-# filter_pe_rat = "Any"
+inf = math.inf
 filter_lims = {
     'vol' : [0 , inf] ,
     'pe_rat' : [0 ,  inf] ,
@@ -213,7 +200,6 @@ def index():
 #understand what get and post is
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    global registerErrorMsg
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -229,7 +215,7 @@ def register():
             flash('Registration successful! Please login.')
             return redirect(url_for('index'))
 
-    return render_template('register.html',registerErrorMsg = registerErrorMsg)
+    return render_template('register.html')
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -391,7 +377,6 @@ def updateList():
             flash(stockName+ " is invalid please check")
             return redirect(url_for('dashboard'))
         stockList.append(stockName)
-        last_selected = stockList
         curGraphSelection[stockName] = {
         'graphDuration':'1_day',
         'color':{
@@ -414,7 +399,6 @@ def updateList():
 @app.route('/selectAndRemoveStock',methods=['POST']) 
 #select stock function adds the stock symbol currently selected to the dictionary of graphs we want to draw
 def stockselected ():
-    global last_selected
     global curStockInfo
     global currentlySelected
     stockName = request.form.get('selectedStock')
