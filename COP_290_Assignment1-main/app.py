@@ -86,7 +86,9 @@ selected_duration = '1_day'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-
+df_temp = pd.read_csv('./Data_folder/NSE_Stock_List.csv')
+stocks_symbols_for_suggestion = df_temp['Symbol'].tolist()
+# print(*stocks_symbols_for_suggestion)
 db = SQLAlchemy(app)
 #list of stocks currently displayed on the left side of the website
 stockList = ["SBIN","ONGC","TATASTEEL"]
@@ -468,7 +470,7 @@ def dashboard():
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
         selected_duration = selected_duration,dataFrameDict=dataFrameDict , 
-        currentlySelected = currentlySelected , mode=mode)
+        currentlySelected = currentlySelected , mode=mode , stocks_symbols_for_suggestion=stocks_symbols_for_suggestion)
     else:
         return redirect(url_for('index'))
 @app.route('/sort_page')
@@ -478,7 +480,7 @@ def sort_page():
     # print(*filtered_df_columns)
     return render_template('sort.html' , stockList = stockList ,filtered_df = filtered_df ,
             filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
-            Industries_filter=Industries_filter ,filter_lims=filter_lims)
+            Industries_filter=Industries_filter ,filter_lims=filter_lims,username=session['username'])
 
 
 # class Favourites_History(db.Model) :
@@ -512,14 +514,19 @@ def storehist() :
             db.session.add(view_history)
         db.session.commit()
     return (redirect(url_for('dashboard')))
+
+
 @app.route('/set_to_fav')
 def set_to_fav() :
     if 'user_id' in session :
         global stocks_in_fav
         global stocks_in_fav_symbols
+        stocks_in_fav_symbols.clear()
+        stocks_in_fav.clear()
         user_id = session['user_id']
         user = User.query.get(user_id)
         db.session.query(Favourites_History).delete()
+        db.session.commit()
         stocks_viewed = list(curGraphSelection.keys())
         for fav_name in stocks_viewed :
             fav_stock = Favourites_History(fav_name=fav_name,fav_user=user)
@@ -534,7 +541,6 @@ def set_to_fav() :
 @app.route('/login_welcome')
 def login_welcome():
     (script,div) = drawStockIndicesGraph()
-    print('Hereeeeeeeeeeeeeeeeeeeeeeeee')
     print(*stocks_in_fav_symbols)
     print(*stocks_in_history_symbols)
     return render_template('loginWelcome.html',script=script,div=div,stocks_in_fav=stocks_in_fav , stocks_in_history=stocks_in_history,stocks_in_history_symbols=stocks_in_history_symbols,stocks_in_fav_symbols=stocks_in_fav_symbols
