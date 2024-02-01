@@ -97,7 +97,7 @@
                             <label for="checkbox" class="CheckBoxList">{{Industries_filter[i]}}</label>
                         </td>
                         <td class="CheckBoxList">
-                            <input type="checkbox" name="checked_filter_boxes[]" class="CheckBoxList" value="{{i}}" {% if checked_filter_boxes[i+6]=='yes'%} checked {% endif %}>
+                            <input type="checkbox" name="checked_filter_boxes[]" class="CheckBoxList" value="{{i+6}}" {% if checked_filter_boxes[i+6]=='yes'%} checked {% endif %}>
                             <label for="checkbox" class="CheckBoxList">{{Industries_filter[i+6]}}</label>
                         </td>
                     </tr>
