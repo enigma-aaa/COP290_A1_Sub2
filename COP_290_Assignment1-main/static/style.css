@@ -767,6 +767,7 @@ div.IndexGraphContainer{
     /*! height: \); */
     /*! height: calc(100% -70px); */
     height: calc(100% - 70px);
+    /* height: 100vh; */
     /*! height: 10px; */
 }
 div.StockIndices{

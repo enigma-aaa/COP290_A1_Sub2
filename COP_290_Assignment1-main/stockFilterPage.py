@@ -37,7 +37,7 @@ checked_filter_boxes = ['No' for i in range(0,12)]
 def sort_page():
     return render_template('sort.html' , stockList = graphPage.stockList ,filtered_df = filtered_df ,
             filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
-            Industries_filter=Industries_filter ,filter_lims=filter_lims)
+            Industries_filter=Industries_filter ,filter_lims=filter_lims, username = session['username'])
 
 
 
