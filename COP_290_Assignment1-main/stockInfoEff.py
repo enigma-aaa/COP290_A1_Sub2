@@ -4,21 +4,17 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 df = pd.read_csv('./Data_folder/NSE_Stock_List.csv')
 symbols = df['Symbol']
-# print("symbols are:",symbols)
 columnNames = ['industryKey','industry','sector','previousClose','open',
 'dayLow','dayHigh','previousClose','currentPrice','volume'
 ,'trailingPE', 'marketCap']
 defaultVal = ['','','',0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 ColumnArr = [ [] for i in range(len(columnNames))]
-#hvae to finx NIFTY50 that is not working yet but is important 
 def symbolInNSElist(symbolName):
     if symbolName in symbols:
         return True 
     return False
 def get_stats(symbolName):
-    #print("symbolName is:",symbolName)
     info = stockData.getInfo(symbolName)
-    # print(info)
     for i in range(len(columnNames)):
         elm = columnNames[i]
         if elm in info:
@@ -32,7 +28,6 @@ def getAllInfos():
     with ThreadPoolExecutor() as executor:
         executor.map(get_stats,symbols)
     endTime = time.time()
-    # print("timeElapsed =",endTime-startTime)
 
     dataFrameDict = {}
     for i in range(len(columnNames)):

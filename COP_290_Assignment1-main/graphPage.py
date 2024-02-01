@@ -100,14 +100,9 @@ def dashboard(session,stocks_in_history):
         try:
             dataFrameDict = getStockDataFrameInfo()
         except Exception as e:
-            # print("curGraphSelection is:")
-            # print(curGraphSelection)
             raise e
         script1,div1 = graph.drawCurGraphAndTable(dataFrameDict,curGraphSelection)
         padCurStockInfo(curStockInfo)
-        print("here are stocks in history")
-        for stocks in stocks_in_history:
-            print(stocks.stock_name)
         return render_template('welcome.html', username=session['username'],
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
@@ -121,7 +116,6 @@ def updateList():
     stockName = request.form['search_bar']
     if stockName not in stockList:
         if(not stockData.stockIsValid(stockName)):
-            print("symbol Name",stockName,"is invalid directly going to dashboard")
             flash(stockName+ " is invalid please check")
             return redirect(url_for('dashboard'))
         stockList.append(stockName)
@@ -188,15 +182,11 @@ def closeStock() :
     global stockList
     del curGraphSelection[to_close]
     stockList.remove(to_close)
-    # print(*stockList)
-    # print(to_close)
     return redirect(url_for('dashboard'))
 
 def process_mode_change() :
     global mode
     mode = request.form.get('graph-mode')
-    # print("came here")
-    # print(mode)
     return redirect(url_for('dashboard'))
 
 def getStockList():

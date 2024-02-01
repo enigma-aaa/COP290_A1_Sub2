@@ -33,12 +33,8 @@ def initStockInfo():
                                             'beverages-wineries-distilleries':'Beverages—Wineries & Distilleries','beverages-brewers':'Beverages—Brewers'})
     all_stocks_df = all_stocks_df.drop(companies_to_remove)
     allIndustriesList = all_stocks_df['industryKey'].unique().tolist()
-    print("After chanegs all_stocks_df is:")
-    print(all_stocks_df)
     return all_stocks_df
 def perform_filtering(all_stocks_df,filter_lims,checked_filter_boxes,Industries_filter):
-    # all_stocks_df['marketCap'] = all_stocks_df['marketCap']/10000000
-    print("all_stocks_df is:",all_stocks_df)
     condition = (
         (pd.to_numeric(all_stocks_df['volume'], errors='coerce') >= filter_lims['vol'][0]) &
         (pd.to_numeric(all_stocks_df['volume'], errors='coerce') <= filter_lims['vol'][1]) &
@@ -53,11 +49,6 @@ def perform_filtering(all_stocks_df,filter_lims,checked_filter_boxes,Industries_
     
     filtered_df = filtered_df.reset_index().rename(columns={'index':'Symbol'})
     filtered_df = filtered_df.rename(columns={'marketCap':'Market Cap(in Cr)' , 'previousClose':'Prev. Close' , 'sector':'Sector' ,'open':'Open','dayLow':'Low','dayHigh' :'High' , 'currentPrice':'Price' , 'trailingPE' :'PE' ,'volume' :'Volume'})
-    # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)']/100000000
-    # filtered_df['Market Cap(in Cr)'] = filtered_df['Market Cap(in Cr)'].round(2)
-    # print('Here I am ')
-    # for col in filtered_df :
-    #     print(col)
     filtered_df['PE'] = pd.to_numeric(filtered_df['PE'], errors='coerce')
     filtered_df['PE'] = filtered_df['PE'].round(2)
     filtered_df = filtered_df.rename(columns={'industryKey' : 'Industry'})
@@ -65,9 +56,7 @@ def perform_filtering(all_stocks_df,filter_lims,checked_filter_boxes,Industries_
     colums_order = ['Symbol' , 'Industry' , 'Sector' , 'Prev. Close' , 'Open' , 'Low' , 'High' , 'Price' ,'Volume' , 'PE' , 'Market Cap(in Cr)']
     filtered_df = filtered_df[colums_order]
 
-    # print(filtered_df['PE'])
     filtered_df_columns = filtered_df.columns
-    # print('lessgo')
 
     checked_boxes_industry_list = []
     if checked_filter_boxes[11] == 'no' :

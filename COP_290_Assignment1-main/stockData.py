@@ -26,7 +26,6 @@ indexNameSymbols = {
 }
 def stockIsValid(symbolName):
     if stockInfoEff.symbolInNSElist(symbolName):
-        print("symbolName:",symbolName,"is valid")
         return True 
     if symbolName in indexNameSymbols:
         return True
@@ -35,7 +34,6 @@ def stockIsValid(symbolName):
         symbolName = symbolName + ".NS"
         curDf = yf.Ticker(symbolName).history(period='1d',interval='1m')
     except e:
-        print("symbolName",symbolName , "is invalid")
         return False
     if not curDf.empty:
         return True
@@ -52,13 +50,6 @@ def getData(symbolName,period,interval):
     except e:
         print("Error with symbolName:",symbolName)
         print(e)
-    # print("called with interval =",interval)
-    # print("Columns in df are:")
-    # for col in symbolHistory:
-        # print("col is:",col)
-    # print("df is:")
-    # print(symbolHistory)
-
     if interval == '1d' :
         symbolHistory['Date'] = pd.to_datetime(symbolHistory['Date'])
         symbolHistory.rename(columns={'Date' : 'Datetime'} ,inplace=True)
@@ -83,8 +74,6 @@ def getInfo(symbolName):
     symbolName = symbolName + ".NS"
     symbolTicker = yf.Ticker(symbolName)
     symbolInfo = symbolTicker.info
-    # print(symbolInfo) 
-    # print(list(symbolInfo.keys()))
     return symbolInfo
 def controltime(symbolName,duration_req) :
     if(duration_req == '1_day') :
@@ -118,7 +107,6 @@ def getAllInfos():
             if key in arrayDict:
                 arrayDict[key].append(curDict[key])
         i += 1
-        print(i)
     totalData = []
     for key in sampleDict:
         totalData.append(arrayDict[key])

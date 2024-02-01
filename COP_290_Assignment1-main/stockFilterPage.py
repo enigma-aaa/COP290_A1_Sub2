@@ -35,9 +35,6 @@ filtered_df_columns = []
 checked_filter_boxes = ['No' for i in range(0,12)]
 
 def sort_page():
-    # print('gonna render')
-    # print(filtered_df)
-    # print(*filtered_df_columns)
     return render_template('sort.html' , stockList = graphPage.stockList ,filtered_df = filtered_df ,
             filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
             Industries_filter=Industries_filter ,filter_lims=filter_lims)
@@ -74,7 +71,6 @@ def set_to_fav() :
     return(redirect(url_for('dashboard')))
 
 def process_filters() :
-    # global l_lim_price,m_lim_price,l_lim_marketCap,m_lim_marketCap,l_lim_pe_rat,m_lim_pe_rat,l_lim_vol,m_lim_vol
     global filter_lims , checked_filter_boxes
     global filtered_df,filtered_df_columns
 
@@ -82,8 +78,6 @@ def process_filters() :
     m_lims = request.form.getlist('m_lim[]')
     list_check_status = request.form.getlist('checked_filter_boxes[]')
     list_check_status = [int(x) for x in list_check_status]
-    # print('here')
-    # print(*list_check_status)
     for i in range(0,12) :
         if i in list_check_status :
             checked_filter_boxes[i] = 'yes'
@@ -107,7 +101,6 @@ def process_filters() :
 def sort_filters() :
     global sort_state  , filtered_df
     to_change = request.form.get('sort')
-    print("to_change is:",to_change)
     sort_state[to_change] = (sort_state[to_change]+1)%3
     if sort_state[to_change] == 1 :
         filtered_df =  filtered_df.sort_values(by=to_change)

@@ -123,8 +123,6 @@ def drawStockIndicesGraph():
         symbolName = indices[i]
         curCol = colors[i]
         curDf = stockData.getDailyData(symbolName)
-        print('For symbolName',symbolName)
-        print("data frame is:",curDf)
         curPlot = figure(x_axis_label="Date Time",y_axis_label="Open Price",
                 x_axis_type="datetime",title=symbolName,tools = tools)
         curPlot.title.align = "center"
