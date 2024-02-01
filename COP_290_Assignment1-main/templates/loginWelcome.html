@@ -38,7 +38,9 @@
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">{{x}}</td> </tr>
                     {% endfor %}    
                 </table>
-                <button class="LoadFavButton">Load Favourites</button>
+                <form action="/load_fav">
+                    <button type="submit" class="LoadFavButton">Load Favourites</button>
+                </form>
                 <table class="StockTableHeading">
                     <tr><th>History</th></tr>
                 </table>

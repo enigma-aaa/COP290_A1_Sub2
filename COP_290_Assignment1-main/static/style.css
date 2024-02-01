@@ -108,7 +108,9 @@ div.LoginInfo {
     text-align: right;
     color: white;
 }
-
+.reg_link{
+    color: black;
+}
 body {
     font-family: 'Arial', sans-serif;
     /*! background-color: #f2f2f2; */
