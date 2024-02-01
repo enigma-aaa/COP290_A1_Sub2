@@ -34,6 +34,7 @@ nav ul li {
     height: 100%;
     padding-bottom: 0px;
     overflow: auto;
+    text-align: center;
 }
 
 .content {
@@ -109,6 +110,7 @@ table{
     /* border-collapse: collapse; */
     width : 100%;
     margin: 10px;
+    margin-left: 0px;
 }
 
 th,td{
