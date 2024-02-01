@@ -90,10 +90,6 @@ def register():
 
 @app.route('/login', methods=['POST'])
 def login():
-    global stocks_in_history
-    global stocks_in_history_symbols
-    global stocks_in_fav
-    global stocks_in_fav_symbols
     username = request.form['username']
     password = request.form['password']
     user = User.query.filter_by(username=username).first()
@@ -101,12 +97,12 @@ def login():
     if user and check_password_hash(user.password_hash, password):
         session['user_id'] = user.id
         session['username'] = user.username
-        stocks_in_history = user.stocks_history
-        stocks_in_fav = user.favourites_history
-        for x in stocks_in_history :
-            stocks_in_history_symbols.append(x.stock_name)
-        for x in stocks_in_fav :
-            stocks_in_fav_symbols.append(x.fav_name)
+        stockFilterPage.setStockInHistory(user.stocks_history)
+        stockFilterPage.setStockInFav(user.favourites_history)
+        for x in stockFilterPage.getStockInHistory() :
+            stockFilterPage.addStockSymbolInHistory(x.stock_name)
+        for x in stockFilterPage.getStockInFav():
+            stockFilterPage.addStockSymbolInFav(x.fav_name)
         # stocks_in_history_symbols = [for x in stocks_history x.stock_name]
         return redirect(url_for('dashboard'))
     else:
@@ -127,8 +123,11 @@ def set_to_fav() :
 @app.route('/login_welcome')
 def login_welcome():
     (script,div) = graph.drawStockIndicesGraph()
-    return render_template('loginWelcome.html',script=script,div=div,stocks_in_fav=stocks_in_fav , stocks_in_history=stocks_in_history,stocks_in_history_symbols=stocks_in_history_symbols,stocks_in_fav_symbols=stocks_in_fav_symbols
-                           ,username=session['username'])
+    return render_template('loginWelcome.html',script=script,div=div,stocks_in_fav=stockFilterPage.getStockInFav() 
+                            , stocks_in_history=stockFilterPage.getStockInHistory(),
+                            stocks_in_history_symbols=stockFilterPage.getStockInHistorySymbol(),
+                            stocks_in_fav_symbols= stockFilterPage.getStocksInFavSymbols(),
+                            username=session['username'])
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
@@ -145,7 +144,7 @@ def sort_filters() :
 
 @app.route('/dashboard',methods=['POST','GET'])
 def dashboard():
-    return graphPage.dashboard(session,stocks_in_history)
+    return graphPage.dashboard(session,stockFilterPage.getStockInHistory())
 @app.route('/updateList',methods=['POST','GET'])
 def updateList():
     return graphPage.updateList()

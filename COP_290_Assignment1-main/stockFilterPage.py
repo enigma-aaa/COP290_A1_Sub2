@@ -109,3 +109,22 @@ def sort_filters() :
     else :
         filtered_df = filtered_df.sort_values(by='Industry')
     return (redirect(url_for('sort_page')))
+
+def setStockInHistory(curList):
+    global stocks_in_history
+    stocks_in_history = curList
+def getStockInHistory():
+    return stocks_in_history
+def getStockInHistorySymbol():
+    return stocks_in_history_symbols
+def getStocksInFavSymbols():
+    return stocks_in_fav_symbols
+def setStockInFav(curList):
+    global stocks_in_fav
+    stocks_in_fav = curList
+def getStockInFav():
+    return stocks_in_fav
+def addStockSymbolInHistory(elm):
+    stocks_in_history_symbols.append(elm)
+def addStockSymbolInFav(elm):
+    stocks_in_fav_symbols.append(elm)
