@@ -109,7 +109,8 @@ div.LoginInfo {
     color: white;
 }
 .reg_link{
-    color: black;
+    /*! color: black; */
+    color: purple;
 }
 body {
     font-family: 'Arial', sans-serif;
@@ -378,7 +379,7 @@ div.StockListAndSearch {
     background-color: #f7f7f7;
     align-items: flex-start;
     flex: 20;
-    height: calc(100vh - 50px);
+    height: calc(100vh - 60px);
     /* display: ; */
     border-right: 3px solid #eeeded;
     display: flex;
@@ -440,7 +441,7 @@ div.GraphColumn {
     /* align-items: flex-start; */
     flex: 60;
     position: relative;
-    height: calc(100vh - 50px);
+    height: calc(100vh - 60px);
     /* position: relative; */
 
 }
@@ -537,7 +538,7 @@ div.TableContainer {
     width: 100%;
     height: 100%;
     overflow: auto;
-    padding-top: 50px;
+    /*! padding-top: 50px; */
 }
 
 div.IndividualTable {
@@ -569,7 +570,7 @@ div.StockInfo {
     /*! height: 100%; */
     background-color: white;
     flex: 20;
-    height: calc(100vh - 50px);
+    height: calc(100vh - 60px);
 
     border-left: 4px solid #f2f2f2;
     /*! overflow: auto; */
@@ -687,6 +688,7 @@ button.selectedStock{
 div.OnlyTheList{
     display: inline-block;
     width: 100%;
+    overflow: auto;
 }
 button.selectedStockCross{
     background-color: rgba(255, 255, 255, 0);
@@ -835,6 +837,9 @@ h1{
         flex-direction: row;
         justify-content: space-between;
     }
+}
+.LoginLink{
+    color: purple;
 }
 
 ul {

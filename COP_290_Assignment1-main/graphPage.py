@@ -239,6 +239,6 @@ def setCurGraphSelection(stocks_in_fav):
         # curGraphSelection[x]['color'] = dict(defaultcolor)
         # curGraphSelection[x]['graphCont'] = dict(defaultgraphCont)
     stockList = list(curGraphSelection.keys())
-    if len(stockList) > 0 :
-        currentlySelected=stockList[0]
+    #if len(stockList) > 0 :
+    #    currentlySelected=stockList[0]
     return 

@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    height: 100vh;
+    /*! height: 100vh; */
 }
 /* 
 header {
@@ -35,6 +35,7 @@ nav ul li {
     padding-bottom: 0px;
     overflow: auto;
     text-align: center;
+    padding-top: 0px;
 }
 
 .content {
@@ -151,7 +152,7 @@ tr:hover{
 }
 
 .filter{
-    height : 100vh;
+    height : 100%;
     font-size: 16px;
 }
 
