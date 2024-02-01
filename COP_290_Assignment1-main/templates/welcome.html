@@ -15,24 +15,38 @@
 
 
 <body>
-    <div class="NavBarHeader">
+    <!-- <div class="header"> -->
+        <header class="header">
+            <!-- <h1 class="logo"><a href="#" class="color-change">MarketMinds</a></h1> -->
+            <!-- <h1 class="logo"><a href="#" class="color-change"> -->
+                <img src="../static/img/Color logo - no background.png" alt="Image should have been here" id="logo">
+            <!-- </a></h1> -->
+          <ul class="main-nav">
+              <li><a href="{{url_for('login_welcome')}}">Home</a></li>
+              <li><a href="{{url_for('dashboard')}}">Graph Analysis</a></li>
+              <li><a href="{{url_for('sort_page')}}">Filter Stocks</a></li>
+              <li><a href="{{url_for('logout')}}">Logout</a></li>
+          </ul>
+        </header> 
+        <!--  
+        <h1 class="logo"><a href="#">MarketMinds</a></h1>
         <nav>
             <ul class="left-links">
                 <li><a href="{{url_for('storehist')}}">Store this in history</a></li>
                 <li><a href="{{url_for('add_to_fav')}}">Add to fav</a></li>
                 <li><a href="{{ url_for('sort_page') }}">Go to Stocks Page</a></li>
                 <li><a href="{{url_for('login_welcome')}}">Login Welcome</a></li>
-                <!-- <a href="#">Home</a> -->
-                <!-- <a href="#">About us</a> -->
-            </ul>
+                <a href="#">Home</a> 
+                 <a href="#">About us</a> 
+           </ul>
 
             <ul class="right-links">
                 <li><a href="#">{{username}}</a></li>
                 <li><a href="{{url_for('logout')}}">Logout</a></li>
             </ul>
-        </nav>
-
-    </div>
+        </nav> 
+    -->
+    <!-- </div> -->
     <!--
         Height set to 50px
         <div class="welcome-container">

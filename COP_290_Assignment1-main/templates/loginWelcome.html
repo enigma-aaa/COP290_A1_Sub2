@@ -20,6 +20,10 @@
                 <li><a href="{{ url_for('sort_page') }}">Go to Stocks Page</a></li>
                 <li><a href="{{url_for('login_welcome')}}">Login Welcome</a></li>   
             </ul>
+            <ul class="right-links">
+                <li><a href="#">{{username}}</a></li>
+                <li><a href="{{url_for('logout')}}">Logout</a></li>
+            </ul>
         </nav>
     </div>
     <main>
