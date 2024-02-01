@@ -281,7 +281,7 @@ def login():
         for x in stocks_in_history :
             stocks_in_history_symbols.append(x.stock_name)
         for x in stocks_in_fav :
-            stocks_in_fav_symbols.append(x.stock_name)
+            stocks_in_fav_symbols.append(x.fav_name)
         # stocks_in_history_symbols = [for x in stocks_history x.stock_name]
         return redirect(url_for('dashboard'))
     else:
@@ -521,6 +521,7 @@ def add_to_fav() :
 @app.route('/login_welcome')
 def login_welcome():
     (script,div) = drawStockIndicesGraph()
+    print('Hereeeeeeeeeeeeeeeeeeeeeeeee')
     print(*stocks_in_fav_symbols)
     print(*stocks_in_history_symbols)
     return render_template('loginWelcome.html',script=script,div=div,stocks_in_fav=stocks_in_fav , stocks_in_history=stocks_in_history,stocks_in_history_symbols=stocks_in_history_symbols,stocks_in_fav_symbols=stocks_in_fav_symbols)
