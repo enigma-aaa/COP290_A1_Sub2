@@ -4,6 +4,7 @@ import stockData
 import colorGenerator
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask import send_file
+import pandas as pd
 #list of all variables corresponding to graph state
 #list of stocks currently displayed on the left side of the website
 stockList = ["SBIN","ONGC","TATASTEEL"]
@@ -12,7 +13,8 @@ mode = 'Mode1'
 selected_duration = '1_day'
 currentlySelected = ""
 inf = math.inf
-
+df_temp = pd.read_csv('./Data_folder/NSE_Stock_List.csv')
+stocks_symbols_for_suggestion = df_temp['Symbol'].tolist()
 dataFrameDict = {}
 curGraphSelection = {
     'SBIN':{
@@ -107,7 +109,7 @@ def dashboard(session,stocks_in_history):
         stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
         curGraphSelection=curGraphSelection ,
         selected_duration = selected_duration,dataFrameDict=dataFrameDict , 
-        currentlySelected = currentlySelected , mode=mode)
+        currentlySelected = currentlySelected , mode=mode ,stocks_symbols_for_suggestion=stocks_symbols_for_suggestion)
     else:
         return redirect(url_for('index'))
 
