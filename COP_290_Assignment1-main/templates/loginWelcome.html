@@ -32,16 +32,16 @@
                 <table class="StockInfoTable">
                     {% for x in stocks_in_fav_symbols %}
                    <!-- <tr> {{x}}</td> -->
-                    <tr><td>{{x}}</td> </tr>
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">{{x}}</td> </tr>
                     {% endfor %}    
                 </table>
-                <button>Load Favourites</button>
+                <button class="LoadFavButton">Load Favourites</button>
                 <table class="StockTableHeading">
                     <tr><th>History</th></tr>
                 </table>
                 <table class="StockInfoTable">
                     {% for x in stocks_in_history_symbols %}
-                    <tr><td>{{x}}</td> </tr> 
+                    <tr class="StockInfoTable"><td class="StockInfoTableLeft">{{x}}</td> </tr> 
                     <!-- <tr>{{x}}</tr>  -->
                     {% endfor %}
 
@@ -52,8 +52,7 @@
                     NSE Indices Summary
                 </div>
                 <div class="IndexGraphContainer">
-                    {{div|safe}}
-                    {{script|safe}}
+                    {{div|safe}}{{script|safe}}
                 </div>
             </div>
         </div>

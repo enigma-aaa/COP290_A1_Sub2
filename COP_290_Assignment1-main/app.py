@@ -432,9 +432,11 @@ def drawStockIndicesGraph():
                 x_axis_type="datetime",title=symbolName,tools = tools)
         curPlot.title.align = "center"
         curPlot.title.text_font_size = "20px"
+        curPlot.sizing_mode = 'stretch_width'
         drawOpenGraph(symbolName,curPlot,curDf,curCol)
         plotArr.append(curPlot)
-    grid = gridplot(plotArr,ncols = 2,width=500,height=500)
+    grid = gridplot(plotArr,ncols = 2)
+    grid.sizing_mode = 'stretch_width'
     (script,div) = components(grid)
     div = div[:-7] + ' class="StockIndices" ></div>'
     return (script,div)

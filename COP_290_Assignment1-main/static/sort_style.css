@@ -32,10 +32,8 @@ nav ul li {
     padding: 1rem;
     background-color: #f4f4f4;
     height: 100%;
-    /*! padding-bottom: 5px; */
-    overflow: auto;
-    padding-left: 5px;
     padding-bottom: 0px;
+    overflow: auto;
 }
 
 .content {
@@ -66,15 +64,12 @@ th.FilterHeading{
 }
 table.CheckBoxList{
 
-    border: none;
 }
 tr.CheckBoxList{
 
-    border: none;
 }
 td.CheckBoxList{
 
-    border: none;
 }
 input.CheckBoxList{
 
@@ -82,7 +77,6 @@ input.CheckBoxList{
 label.CheckBoxList{
 
 }
-
 
 
 tr.FilterInputs{
@@ -107,7 +101,6 @@ input.SubmitButton{
     font-size: 20px;
     background-color: #0ddb0d;
     color: white;
-    margin-left: 15px;
 }
 table{
     /* border-collapse: collapse; */
