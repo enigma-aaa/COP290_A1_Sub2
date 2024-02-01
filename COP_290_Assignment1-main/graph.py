@@ -22,7 +22,7 @@ def drawLowGraph(symbolName,plot,df,color):
 #the blocks represent opening and closing prices
 def drawCombinedGraph(symbolName,plot,df,timeInterval,color):
     #this draws the segemnt from the opening to the closing price
-    plot.segment(df.Datetime,df.High,df.Datetime,df.Low,color=color,legend_label=symbolName+" Combined")
+    plot.segment(df.Datetime,df.High,df.Datetime,df.Low,color='000000',legend_label=symbolName+" Combined")
     #different plots for open price above close price and 
     #close price above open price
     #boolean arrs to show whether opening price is above or below closing price
@@ -127,11 +127,11 @@ def drawStockIndicesGraph():
                 x_axis_type="datetime",title=symbolName,tools = tools)
         curPlot.title.align = "center"
         curPlot.title.text_font_size = "20px"
-        curPlot.sizing_mode = 'stretch_width'
+        #curPlot.sizing_mode = 'stretch_width'
         drawOpenGraph(symbolName,curPlot,curDf,curCol)
         plotArr.append(curPlot)
-    grid = gridplot(plotArr,ncols = 2)
-    grid.sizing_mode = 'stretch_width'
+    grid = gridplot(plotArr,ncols = 2,width=600,height=400)
+    #grid.sizing_mode = 'stretch_width'
     (script,div) = components(grid)
     div = div[:-7] + ' class="StockIndices" ></div>'
     return (script,div)
