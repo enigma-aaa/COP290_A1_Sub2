@@ -12,6 +12,7 @@ import os
 import colorGenerator
 from filterStocks import allIndustriesList,companies_to_remove,initStockInfo,perform_filtering
 
+##All variables corresponding to dataframe filtering
 all_stocks_df = initStockInfo()
 sort_state= {
     'Symbol' : 0,
@@ -30,29 +31,29 @@ stocks_in_history = []
 stocks_in_fav = []
 stocks_in_history_symbols=[]
 stocks_in_fav_symbols=[]
-
+Industries_filter = ['Specialty Chemicals' , 'Textile Manufacturing' , 'Auto Parts' , 'Drug Manufacturers—Specialty & Generic' , 'Engineering & Construction' , 'Steel' , 'Specialty Industrial Machinery' , 'Information Technology Services' , 'Capital Markets' , 'Credit Services' , 'Others' , 'All']
+filtered_df = pd.DataFrame()
+filtered_df_columns = []
 checked_filter_boxes = ['No' for i in range(0,12)]
 
-# print('size' , all_stocks_df.shape)
-# all_stocks_symbol_list = all_stocks_df['Symbol']
+
 initial = 1
 app = Flask(__name__)
 #change secret key later
 app.secret_key = 'your_secret_key'  # Replace with your actual secret key
-mode = 'Mode1'
-filtered_df_columns = []
-selected_duration = '1_day'
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 db = SQLAlchemy(app)
+#list of all variables corresponding to graph state
 #list of stocks currently displayed on the left side of the website
 stockList = ["SBIN","ONGC","TATASTEEL"]
 curStockInfo = {}
-
-#keeps track of which stock is selected and only that one is green
+mode = 'Mode1'
+selected_duration = '1_day'
 currentlySelected = ""
 inf = math.inf
 filter_lims = {
@@ -62,8 +63,6 @@ filter_lims = {
     'price' : [0,inf]  
 }
 
-Industries_filter = ['Specialty Chemicals' , 'Textile Manufacturing' , 'Auto Parts' , 'Drug Manufacturers—Specialty & Generic' , 'Engineering & Construction' , 'Steel' , 'Specialty Industrial Machinery' , 'Information Technology Services' , 'Capital Markets' , 'Credit Services' , 'Others' , 'All']
-filtered_df = pd.DataFrame()
 dataFrameDict = {}
 curGraphSelection = {
     'SBIN':{
@@ -145,35 +144,6 @@ class User(db.Model):
 
 with app.app_context():
     db.create_all()
-
-#for each url diff func defined with decorator below is the root
-    
-
-# market_cap_vals = {
-#     'Any' : (0, inf) ,
-#     'large' : ( 2500000, inf) ,
-#     'mid' : ( 850000,2500000 ) ,
-#     'small' : (0,850000)
-# }
-
-# pe_rat_vals = {
-#     'Any' : (0,inf) , 
-#     'l5' : (0,5) ,
-#     'b_5_10' : (5,10) ,
-#     'b_10_20' : (10,20) ,
-#     'b_20_50' : (20,50) ,
-#     'g50' : (50,inf)
-# }
-
-# avg_vol_vals = {
-#     'Any' : (0,inf) ,
-#     'l1' : (0,100000) ,
-#     'b_1_10' : (100000,1000000) ,
-#     'g10' : (1000000,inf)
-# }
-    # for x in all_stocks_symbol_list : 
-
-        # df = all_stocks_df[']
 
 
 def checkUserAndPasswrodValid(username,password,confirmPass):
