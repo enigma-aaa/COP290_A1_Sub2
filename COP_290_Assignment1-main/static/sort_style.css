@@ -41,6 +41,7 @@ nav ul li {
     padding: 1rem;
     padding-bottom: 0px;
     height: 100%;
+    padding-top: 0px;
 }
 
 ul {
@@ -67,9 +68,11 @@ table.CheckBoxList{
 }
 tr.CheckBoxList{
 
+    border: none;
 }
 td.CheckBoxList{
 
+    border: none;
 }
 input.CheckBoxList{
 
