@@ -22,41 +22,88 @@
 
 
         <form class='filter'action="/process_filters" method="POST">
+            <!--
             <label class="font-inc" for="Volume">Volume  </label>
+            
             <br>
+            
             <input type="number" name = 'l_lim[]' placeholder="{{filter_lims['vol'][0]}}">
             <input type="number" name = 'm_lim[]' placeholder="{{filter_lims['vol'][1]}}">
+            
             <br>
             <br>
-            <label class="font-inc" for="pe_ratio">P/E Ratio</label>
-        <br>
-            <input type="number" name = 'l_lim[]' placeholder="{{filter_lims['pe_rat'][0]}}">
-            <input type="number" name = 'm_lim[]' placeholder="{{filter_lims['pe_rat'][1]}}">
-            <br>
-            <br>
-            <label class="font-inc" for="marketCap">Market Cap(in Cr)</label>
-        <br>
-            <input type="number" name = 'l_lim[]' placeholder="{{filter_lims['marketCap'][0]}}">
-            <input type="number" name = 'm_lim[]' placeholder="{{filter_lims['marketCap'][1]}}">
-            <br>
-            <br>
-            <label class="font-inc" for="Price">Price</label>
-<br>
-            <input type="number" name = 'l_lim[]' placeholder="{{filter_lims['price'][0]}}">
-            <input type="number" name = 'm_lim[]' placeholder="{{filter_lims['price'][1]}}">
-            <br>
-            <br>
-            <label class="font-inc"  for="">Industry Filters :</label>
-            <br>
-            <br>
-            {% for i in range(0,12) %}
+            -->
+            <table class="FilterHeading">
+                <tr class="FilterHeading"><th class="FilterHeading">Volume</th></tr>
+            </table>
+            <table class="FilterInputs">
+                <tr class="FilterInputs" >
+                    <td class="FilterInputs"><input type="number" name = 'l_lim[]' placeholder="{{filter_lims['vol'][0]}}" class="FilterInputs"></input></td>
+                </tr>
+                <tr class="FilterInputs" >
+                    <td class="FilterInputs"><input type="number" name = 'm_lim[]' placeholder="{{filter_lims['vol'][1]}}" class="FilterInputs"></input></td>
+                </tr>
+            </table>
 
-            <input type="checkbox" name="checked_filter_boxes[]" value={{i}} {% if checked_filter_boxes[i]=='yes' %} checked {% endif %}>
-            <label for="checkbox">{{Industries_filter[i]}}</label>
+            <table class="FilterHeading">
+                <tr class="FilterHeading"><th class="FilterHeading">P/E Ratio</th></tr>
+            </table>
+            <table class="FilterInputs">
+                <tr class="FilterInputs">
+                    <td class="FilterInputs"><input type="number" name = 'l_lim[]' placeholder="{{filter_lims['pe_rat'][0]}}" step="0.01" class="FilterInputs"></td>
+                </tr>
+                <tr class="FilterHeading">
+                    <td class="FilterInputs"><input type="number" name = 'm_lim[]' placeholder="{{filter_lims['pe_rat'][1]}}" step="0.01" class="FilterInputs"></td>
+                </tr>
+            </table>
+            
+            <table class="FilterHeading">
+                <tr class="FilterHeading"><th class="FilterHeading">Market Cap(in Cr)</th></tr>
+            </table>
+            <table class="FilterInputs">
+                <tr class="FilterInputs"><td class="FilterInputs"><input type="number" name = 'l_lim[]' placeholder="{{filter_lims['marketCap'][0]}}" step="0.001" class="FilterInputs"></td></tr>
+                <tr class="FilterInputs"><td class="FilterInputs"><input type="number" name = 'm_lim[]' placeholder="{{filter_lims['marketCap'][1]}}" step="0.001" class="FilterInputs"></td></tr>
+            </table>
+        
+            <table class="FilterHeading">
+                <tr class="FilterHeading"><th class="FilterHeading">Price</th></tr>
+            </table>
+            
+            <table class="FilterInputs">
+                <tr class="FilterInputs"><td class="FilterInputs"><input type="number" name = 'l_lim[]' placeholder="{{filter_lims['price'][0]}}" step="0.01" class="FilterInputs"></td></tr>
+                <tr class="FilterInputs"><td class="FilterInputs"><input type="number" name = 'm_lim[]' placeholder="{{filter_lims['price'][1]}}" step="0.01" class="FilterInputs"></td></tr>
+            </table>
+
+            <!--
             <br>
+            <label class="font-inc"  for="" class="CheckBoxHeading">Industry Filters :</label>
             <br>
+            -->
+            <table class="CheckBoxHeading">
+                <tr class="CheckBoxHeading"><th class="CheckBoxHeading"></th></tr>
+            </table>
+            <!--
+            {% for i in range(0,12) %}
+                <input type="checkbox" name="checked_filter_boxes[]" class="CheckBoxList" value={{i}} {% if checked_filter_boxes[i]=='yes' %} checked {% endif %}>
+                <label for="checkbox" class="CheckBoxList">{{Industries_filter[i]}}</label>
+                <br>
             {% endfor %}
-            <input type="submit" value="Submit">
+            -->
+            <table class="CheckBoxList">
+            {% for i in  range(0,6) %}
+                    <tr class="CheckBoxList">
+                        <td class="CheckBoxList">
+                            <input type="checkbox" name="checked_filter_boxes[]" class="CheckBoxList" value="{{i}}" {% if checked_filter_boxes[i]=='yes'%} checked {% endif %}>
+                            <label for="checkbox" class="CheckBoxList">{{Industries_filter[i]}}</label>
+                        </td>
+                        <td class="CheckBoxList">
+                            <input type="checkbox" name="checked_filter_boxes[]" class="CheckBoxList" value="{{i}}" {% if checked_filter_boxes[i+6]=='yes'%} checked {% endif %}>
+                            <label for="checkbox" class="CheckBoxList">{{Industries_filter[i+6]}}</label>
+                        </td>
+                    </tr>
+            {% endfor %}
+            </table>
+            <input type="submit" value="Submit" class="SubmitButton">
         </form>
 
         </div>
