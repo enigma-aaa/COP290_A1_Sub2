@@ -512,9 +512,11 @@ def storehist() :
             db.session.add(view_history)
         db.session.commit()
     return (redirect(url_for('dashboard')))
-@app.route('/add_to_fav')
-def add_to_fav() :
+@app.route('/set_to_fav')
+def set_to_fav() :
     if 'user_id' in session :
+        global stocks_in_fav
+        global stocks_in_fav_symbols
         user_id = session['user_id']
         user = User.query.get(user_id)
         db.session.query(Favourites_History).delete()
@@ -523,6 +525,11 @@ def add_to_fav() :
             fav_stock = Favourites_History(fav_name=fav_name,fav_user=user)
             db.session.add(fav_stock)
         db.session.commit()
+        username = session['username']
+        user = User.query.filter_by(username=username).first()
+        stocks_in_fav = user.favourites_history
+        for x in stocks_in_fav :
+            stocks_in_fav_symbols.append(x.fav_name)
     return(redirect(url_for('dashboard')))
 @app.route('/login_welcome')
 def login_welcome():
