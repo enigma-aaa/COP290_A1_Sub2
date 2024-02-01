@@ -8,6 +8,7 @@ pickel_file_path = 'Data_folder/AllStocks.pkl'
 allIndustriesList = []
 companies_to_remove = ['ACL' , 'RAJMET' , 'GEPIL' , 'OSWALGREEN' , 'SOTL' , 'WABAG' , 'AVG'  ,'JINDWORLD' , 'ROHLTD' , 'FMNL' , 'ASTEC' , 'SHRENIK', 'AMNPLST' , 'SHIVALIK' , 'SERVOTECH' , 'BANARISUG' , '3PLAND' , 'AARTECH' , 'PLADAINFO' ,'STERTOOLS' , 'SATINDLTD' , 'AGRITECH' , 'INDOBORAX' , 'INOXGREEN'] 
 def initStockInfo():
+    global allIndustriesList
     all_stocks_df = pd.read_pickle(pickel_file_path)
     all_stocks_df['marketCap'] = all_stocks_df['marketCap']/10000000
     all_stocks_df['marketCap'] =all_stocks_df['marketCap'].round(2)
