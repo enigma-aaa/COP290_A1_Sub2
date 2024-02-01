@@ -33,10 +33,14 @@
                     <tr><th>Favourites</th></tr>
                 </table>
                 <table class="StockInfoTable">
+                    {% if stocks_in_fav_symbols|length > 0 %}
                     {% for x in stocks_in_fav_symbols %}
-                   <!-- <tr> {{x}}</td> -->
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">{{x}}</td> </tr>
-                    {% endfor %}    
+                    {% endfor %}
+                    
+                    {% else %}
+                    You have not added anything in Favourites yet.
+                    {% endif %}    
                 </table>
                 <form action="/load_fav">
                     <button type="submit" class="LoadFavButton">Load Favourites</button>
@@ -45,10 +49,14 @@
                     <tr><th>History</th></tr>
                 </table>
                 <table class="StockInfoTable">
+                    {% if stocks_in_history_symbols|length>0 %}
                     {% for x in stocks_in_history_symbols %}
                     <tr class="StockInfoTable"><td class="StockInfoTableLeft">{{x}}</td> </tr> 
                     <!-- <tr>{{x}}</tr>  -->
                     {% endfor %}
+                    {% else %}
+                    No stocks in History.
+                    {% endif %}
 
                 </table>
             </div>
