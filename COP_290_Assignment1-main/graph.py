@@ -22,7 +22,7 @@ def drawLowGraph(symbolName,plot,df,color):
 #the blocks represent opening and closing prices
 def drawCombinedGraph(symbolName,plot,df,timeInterval,color):
     #this draws the segemnt from the opening to the closing price
-    plot.segment(df.Datetime,df.High,df.Datetime,df.Low,color='000000',legend_label=symbolName+" Combined")
+    plot.segment(df.Datetime,df.High,df.Datetime,df.Low,color='#000000',legend_label=symbolName+" Combined")
     #different plots for open price above close price and 
     #close price above open price
     #boolean arrs to show whether opening price is above or below closing price
@@ -30,9 +30,9 @@ def drawCombinedGraph(symbolName,plot,df,timeInterval,color):
     priceInc = df.Close > df.Open 
     priceDec = df.Open > df.Close 
     #add legend lable here later perhaps?
-    plot.vbar(df.Datetime[priceDec],barWidth,df.Open[priceDec],df.Close[priceDec],color="#eb3c40")
+    plot.vbar(df.Datetime[priceDec],barWidth,df.Open[priceDec],df.Close[priceDec],color="#ff0000",line_color="#ff0000")
     plot.vbar(df.Datetime[priceInc],barWidth,df.Open[priceInc],df.Close[priceInc],color="#00ff00",
-              line_color="00ffff",line_width=2)
+              line_color="#00ff00",line_width=2)
 def drawCurGraphAndTable(dataFrameDict,curGraphSelection):
     #creating the panTool and wheel zoom tool which is available to 
     #naigate across the graph

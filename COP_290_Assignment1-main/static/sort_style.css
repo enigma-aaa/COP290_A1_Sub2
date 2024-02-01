@@ -228,3 +228,9 @@ ul {
     padding: 0;
     list-style: none;
   }
+  ul.sortedStockList{
+    width:100%;
+  }
+  div.sortedStockList{
+    width: 100%;
+  }
