@@ -28,7 +28,7 @@ def stockIsValid(symbolName):
     if stockInfoEff.symbolInNSElist(symbolName):
         print("symbolName:",symbolName,"is valid")
         return True 
-    if stock in indexNameSymbols:
+    if symbolName in indexNameSymbols:
         return True
     curDf= None
     try:

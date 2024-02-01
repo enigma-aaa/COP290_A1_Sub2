@@ -28,33 +28,6 @@
               <li><a href="{{url_for('logout')}}">Logout</a></li>
           </ul>
         </header> 
-        <!--  
-        <h1 class="logo"><a href="#">MarketMinds</a></h1>
-        <nav>
-            <ul class="left-links">
-                <li><a href="{{url_for('storehist')}}">Store this in history</a></li>
-                <li><a href="{{url_for('add_to_fav')}}">Add to fav</a></li>
-                <li><a href="{{ url_for('sort_page') }}">Go to Stocks Page</a></li>
-                <li><a href="{{url_for('login_welcome')}}">Login Welcome</a></li>
-                <a href="#">Home</a> 
-                 <a href="#">About us</a> 
-           </ul>
-
-            <ul class="right-links">
-                <li><a href="#">{{username}}</a></li>
-                <li><a href="{{url_for('logout')}}">Logout</a></li>
-            </ul>
-        </nav> 
-    -->
-    <!-- </div> -->
-    <!--
-        Height set to 50px
-        <div class="welcome-container">
-            <h1>Welcome, {{ username }}!</h1>
-            <p>This is your dashboard.</p>
-            <a href="/logout" class="logout-button">Logout</a>
-        </div>
-    -->
     <main>
         <div class="ErrorListCont">
             {%with messages = get_flashed_messages()%}
@@ -108,6 +81,11 @@
                         </table>
                     </form>
                 </div>
+            </div>
+            <div class="set_to_fav">
+                <form action="/set_to_fav">
+                    <button type="submit" class="set_fav_button">Set to Fav</button>
+                </form>
             </div>
         </div>
         <div class="GraphColumn" id="center-column">
