@@ -5,6 +5,7 @@ import colorGenerator
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask import send_file
 import pandas as pd
+import os
 #list of all variables corresponding to graph state
 #list of stocks currently displayed on the left side of the website
 stockList = ["SBIN","ONGC","TATASTEEL"]
@@ -213,6 +214,7 @@ def getStockList():
 def downloadTable():
     symbolName = request.form.get('DownloadButton')
     tableDataDuration = curGraphSelection[symbolName]['graphDuration']
+    os.makedirs('./TableData')
     folderName = "./TableData/"
     fileName = symbolName+"_"+tableDataDuration+".csv"
     relPath = folderName + fileName
