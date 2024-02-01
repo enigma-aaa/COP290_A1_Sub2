@@ -25,6 +25,7 @@
               <li><a href="{{url_for('login_welcome')}}">Home</a></li>
               <li><a href="{{url_for('dashboard')}}">Graph Analysis</a></li>
               <li><a href="{{url_for('sort_page')}}">Filter Stocks</a></li>
+              <li><a href="#">{{username}}</a></li>
               <li><a href="{{url_for('logout')}}">Logout</a></li>
           </ul>
         </header> 
@@ -43,11 +44,44 @@
         <div class="StockListAndSearch column" id="left-column">
             <div class="StockSearchDiv">
                 <form action="/updateList" method="POST">
-                    <input type="search" name="search_bar" class="SearchBar">
+                    <input type="search" name="search_bar" class="SearchBar" id="search_input">
+                    <ul id="suggestions_for_stock"></ul>
                     <button type="submit" class="StockSubmitButton" >Submit</button>
-
+                
                 </form>
             </div>
+            <script>
+                console.log("This is a debug message.");
+        
+                // var exhaustivelist = ['AAPL', 'GOOGL', 'AMZN', 'MSFT', 'TSLA', 'FB', 'NVDA', 'V', 'PYPL'];
+                var exhaustivelist = {{ stocks_symbols_for_suggestion | tojson | safe }} ;
+                var searchboxele = document.getElementById('search_input') ;
+                var suggestionlist = document.getElementById('suggestions_for_stock');
+                searchboxele.addEventListener('input', function(){
+                    var userInput = searchboxele.value.trim().toUpperCase()
+                    var suggestions=getStockSuggestions(userInput) ;
+                    displaySuggestions(suggestions);
+                
+                }) ;
+                function getStockSuggestions(input){
+                    return exhaustivelist.filter(function(symbol){
+                        return symbol.startsWith(input);
+                    });
+                }
+
+                function displaySuggestions(suggestions){
+                    suggestionlist.innerHTML = '' ;
+                    suggestions.forEach(function(suggestion){
+                        var li = document.createElement('li') ;
+                        li.textContent=suggestion;
+                        li.addEventListener('click',function(){
+                            searchboxele.value = suggestion;
+                            suggestionsList.innerHTML='' ;
+                        });
+                        suggestionlist.appendChild(li) ;
+                    });
+                }
+            </script>
             <div class="OnlyTheList">
                 <div class="StockList">
                     <form action="/selectAndRemoveStock" method="POST">
@@ -84,7 +118,7 @@
             </div>
             <div class="set_to_fav">
                 <form action="/set_to_fav">
-                    <button type="submit" class="set_fav_button">Set to Fav</button>
+                    <button type="submit" class="set_fav_button">Set to Favourites</button>
                 </form>
             </div>
         </div>

@@ -16,7 +16,9 @@ app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-
+df_temp = pd.read_csv('./Data_folder/NSE_Stock_List.csv')
+stocks_symbols_for_suggestion = df_temp['Symbol'].tolist()
+# print(*stocks_symbols_for_suggestion)
 db = SQLAlchemy(app)
 
 # User Model
