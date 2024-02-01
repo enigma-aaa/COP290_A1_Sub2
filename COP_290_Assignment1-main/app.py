@@ -124,6 +124,7 @@ def login():
         for x in stocks_in_history :
             stocks_in_history_symbols.append(x.stock_name)
         # stocks_in_history_symbols = [for x in stocks_history x.stock_name]
+        graphPage.setCurGraphSelection(stocks_in_history_symbols)
         return redirect(url_for('login_welcome'))
     else:
         flash('Invalid username or password')
