@@ -10,8 +10,10 @@ import numpy as np
 import math
 import os
 import colorGenerator
+import graphPage
 from filterStocks import allIndustriesList,companies_to_remove,initStockInfo,perform_filtering
 
+inf = math.inf
 ##All variables corresponding to dataframe filtering
 all_stocks_df = initStockInfo()
 sort_state= {
@@ -26,6 +28,12 @@ sort_state= {
     'Volume'  :0 ,
     'PE'  :0 ,
     'Market Cap(in Cr)'  :0 ,
+}
+filter_lims = {
+    'vol' : [0 , inf] ,
+    'pe_rat' : [0 ,  inf] ,
+    'marketCap' : [0,inf] ,
+    'price' : [0,inf]  
 }
 stocks_in_history = []
 stocks_in_fav = []
@@ -48,75 +56,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 db = SQLAlchemy(app)
-#list of all variables corresponding to graph state
-#list of stocks currently displayed on the left side of the website
-stockList = ["SBIN","ONGC","TATASTEEL"]
-curStockInfo = {}
-mode = 'Mode1'
-selected_duration = '1_day'
-currentlySelected = ""
-inf = math.inf
-filter_lims = {
-    'vol' : [0 , inf] ,
-    'pe_rat' : [0 ,  inf] ,
-    'marketCap' : [0,inf] ,
-    'price' : [0,inf]  
-}
-
-dataFrameDict = {}
-curGraphSelection = {
-    'SBIN':{
-        'graphDuration':'1_day' ,
-        'color':{
-            "HIGH":colorGenerator.genColor(),
-            "LOW":colorGenerator.genColor(),
-            "OPEN":colorGenerator.genColor(),
-            "CLOSE":colorGenerator.genColor(),
-            "COMBINED":colorGenerator.genColor()
-        },
-        'graphCont':{
-            "HIGH" : True ,
-            "LOW" : False,
-            "OPEN" : False ,
-            "CLOSE" : False ,
-            "COMBINED" : False
-        }
-    },
-    'ONGC':{
-        'graphDuration':'1_day',
-        'color':{
-            "HIGH":colorGenerator.genColor(),
-            "LOW":colorGenerator.genColor(),
-            "OPEN":colorGenerator.genColor(),
-            "CLOSE":colorGenerator.genColor(),
-            "COMBINED":colorGenerator.genColor()
-        },
-        'graphCont':{
-            "HIGH":False,
-            "LOW":False,
-            "OPEN":False,
-            "CLOSE":False,
-            "COMBINED":False
-        }
-    },
-    'TATASTEEL':{
-        'graphDuration':'1_day',
-        'color':{
-            "HIGH":colorGenerator.genColor(),
-            "LOW":colorGenerator.genColor(),
-            "OPEN":colorGenerator.genColor(),
-            "CLOSE":colorGenerator.genColor(),
-            "COMBINED":colorGenerator.genColor()
-        },
-        'graphCont':{
-            "HIGH":False,
-            "LOW":False,
-            "OPEN":False,
-            "CLOSE":False,
-            "COMBINED":False
-        }
-    }
-}
 
 # User Model
 class Favourites_History(db.Model) :
@@ -212,63 +151,12 @@ def login():
         flash('Invalid username or password')
         return redirect(url_for('index'))
 
-
-
-#helper function which looks at all the stock names in our curGraph selection dictionary and 
-#is supposed to get the data corresponding to the data frames and all the time frames
-#like daily monthly and store it in the dataFrameDict which is refrenced in the render_tempalte() function
-def getStockDataFrameInfo():
-    dataFrameDict = {}
-    for symbolName in curGraphSelection:
-        curDict = curGraphSelection[symbolName]
-        duration_req = curDict['graphDuration']
-        df = stockData.controltime(symbolName,duration_req)
-        dataFrameDict[symbolName] = df
-    return dataFrameDict
-
-#lloks at the requested data to draw in the data frmae dictionary and draws 
-#the corresponding graphs of the symbolName such as HIGH,LOW,COMBINED
-#requested for SBIN then draws that
-
-
-
-#this function takes in curStockInfo and replaces all missing values with N/A
-def padCurStockInfo(curStockInfo):
-    keys = ['longName','open','previousClose','currentPrice','dayHigh'
-            ,'dayLow','fiftyTwoWeekLow','fiftyTwoWeekHigh','trailingPE',
-            'forwardPE','marketCap','forwardEps','trailingEps','bookValue',
-            'dividendYield','returnOnEquity']
-    for key in keys:
-        if key not in curStockInfo:
-            curStockInfo[key] = 'N/A'
-@app.route('/dashboard') 
-def dashboard():
-    global dataFrameDict
-    if 'user_id' in session:
-        try:
-            dataFrameDict = getStockDataFrameInfo()
-        except Exception as e:
-            # print("curGraphSelection is:")
-            # print(curGraphSelection)
-            raise e
-        script1,div1 = graph.drawCurGraphAndTable(dataFrameDict,curGraphSelection)
-        padCurStockInfo(curStockInfo)
-        print("here are stocks in history")
-        for stocks in stocks_in_history:
-            print(stocks.stock_name)
-        return render_template('welcome.html', username=session['username'],
-        stockList=stockList,script=script1,div=div1,curStockInfo=curStockInfo , 
-        curGraphSelection=curGraphSelection ,
-        selected_duration = selected_duration,dataFrameDict=dataFrameDict , 
-        currentlySelected = currentlySelected , mode=mode)
-    else:
-        return redirect(url_for('index'))
 @app.route('/sort_page')
 def sort_page():
     # print('gonna render')
     # print(filtered_df)
     # print(*filtered_df_columns)
-    return render_template('sort.html' , stockList = stockList ,filtered_df = filtered_df ,
+    return render_template('sort.html' , stockList = graphPage.stockList ,filtered_df = filtered_df ,
             filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
             Industries_filter=Industries_filter ,filter_lims=filter_lims)
 
@@ -298,7 +186,7 @@ def storehist() :
         user_id = session['user_id']
         user = User.query.get(user_id)
         db.session.query(Stock_History).delete()
-        stocks_viewed = list(curGraphSelection.keys())
+        stocks_viewed = list(graphPage.getCurGraphSelection().keys())
         for stock_name in stocks_viewed :
             view_history = Stock_History(stock_name=stock_name ,viewer=user)
             db.session.add(view_history)
@@ -312,7 +200,7 @@ def set_to_fav() :
         user_id = session['user_id']
         user = User.query.get(user_id)
         db.session.query(Favourites_History).delete()
-        stocks_viewed = list(curGraphSelection.keys())
+        stocks_viewed = list(graphPage.getCurGraphSelection().keys())
         for fav_name in stocks_viewed :
             fav_stock = Favourites_History(fav_name=fav_name,fav_user=user)
             db.session.add(fav_stock)
@@ -338,96 +226,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/updateList',methods=['POST'])
-def updateList():
-    stockName = request.form['search_bar']
-    if stockName not in stockList:
-        if(not stockData.stockIsValid(stockName)):
-            print("symbol Name",stockName,"is invalid directly going to dashboard")
-            flash(stockName+ " is invalid please check")
-            return redirect(url_for('dashboard'))
-        stockList.append(stockName)
-        curGraphSelection[stockName] = {
-        'graphDuration':'1_day',
-        'color':{
-            "HIGH":colorGenerator.genColor(),
-            "LOW":colorGenerator.genColor(),
-            "OPEN":colorGenerator.genColor(),
-            "CLOSE":colorGenerator.genColor(),
-            "COMBINED":colorGenerator.genColor()
-        },
-        'graphCont':{
-                "HIGH":False,
-                "LOW":False,
-                "OPEN":False,
-                "CLOSE":False,
-                "COMBINED":False
-            }
-        }
-    return redirect(url_for('dashboard'))
-
-@app.route('/selectAndRemoveStock',methods=['POST']) 
-#select stock function adds the stock symbol currently selected to the dictionary of graphs we want to draw
-def stockselected ():
-    global curStockInfo
-    global currentlySelected
-    stockName = request.form.get('selectedStock')
-    #in our current assumption when we clicked a selected stock we deselect it and 
-    #remove it fromt the list of graphs we are drawing
-    if stockName.endswith('Cross'):
-        stockName = stockName[:-5]
-        if currentlySelected == stockName:
-            currentlySelected = ''
-        stockList.remove(stockName)
-        del curGraphSelection[stockName]
-    else:
-        if stockName != currentlySelected:
-            currentlySelected = stockName
-            curStockInfo = stockData.getInfo(stockName)
-    return redirect(url_for('dashboard'))
-
-@app.route('/process_duration' , methods = ['POST'])
-#havent understood this one yet have to understand this one properly
-def process_duration_fun() :
-    global selected_duration
-    initial = 0
-    selected_duration = request.form.get('duration')
-    for x in curGraphSelection :
-        curGraphSelection[x]['graphDuration'] = selected_duration
-    return redirect(url_for('dashboard'))
-
-
-@app.route('/process_graph_options' ,methods = ['POST'])
-def process_graph_options() :
-    global curGraphSelection
-    list_of_graphs = request.form.getlist("graph_options[]")
-    graphTypeDict = curGraphSelection[currentlySelected]['graphCont']
-    for key in graphTypeDict:
-        graphTypeDict[key] = False
-    for elm in list_of_graphs:
-        graphTypeDict[elm] = True
-    return redirect(url_for('dashboard'))
-
-
-@app.route('/process_mode_change' , methods=['POST'])
-def process_mode_change() :
-    global mode
-    mode = request.form.get('graph-mode')
-    # print("came here")
-    # print(mode)
-
-    return redirect(url_for('dashboard'))
-
-@app.route('/closeStock' , methods=['POST'])
-def closeStock() :
-    to_close = request.form.get('closedStock')
-    global curGraphSelection
-    global stockList
-    del curGraphSelection[to_close]
-    stockList.remove(to_close)
-    # print(*stockList)
-    # print(to_close)
-    return redirect(url_for('dashboard'))
 # @app.route('/process_filters_market_cap' , methods=['POST'])
 # def process_filter() :
 #     global filter_market_cap
@@ -480,17 +278,7 @@ def process_filters() :
         i+=1 
     (filtered_df,filtered_df_columns)  = perform_filtering(all_stocks_df,filter_lims,checked_filter_boxes,Industries_filter)
     return(redirect(url_for('sort_page')))
-@app.route('/downloadTable',methods=['POST'])
-def downloadTable():
-    symbolName = request.form.get('DownloadButton')
-    tableDataDuration = curGraphSelection[symbolName]['graphDuration']
-    folderName = "./TableData/"
-    fileName = symbolName+"_"+tableDataDuration+".csv"
-    relPath = folderName + fileName
-    curDf = dataFrameDict[symbolName]
-    curDf.to_csv(relPath)
-    #uploads = os.path.join(current_app.root_path,app.config['UPLOAD_FOLDER'])
-    return send_file(relPath,as_attachment=True)
+
 
 
 
@@ -506,6 +294,31 @@ def sort_filters() :
     else :
         filtered_df = filtered_df.sort_values(by='Industry')
     return (redirect(url_for('sort_page')))
+
+@app.route('/dashboard',methods=['POST','GET'])
+def dashboard():
+    return graphPage.dashboard(session,stocks_in_history)
+@app.route('/updateList',methods=['POST','GET'])
+def updateList():
+    return graphPage.updateList()
+@app.route('/selectAndRemoveStock',methods=['POST','GET'])
+def stockselected():
+    return graphPage.stockselected()
+@app.route('/process_duration' , methods = ['POST','GET'])
+def process_duration_fun():
+    return graphPage.process_duration_fun()
+@app.route('/process_graph_options' ,methods = ['POST','GET'])
+def process_graph_options():
+    return graphPage.process_graph_options()
+@app.route('/closeStock' , methods=['POST'])
+def closeStock():
+    return graphPage.closeStock()
+@app.route('/process_mode_change' , methods=['POST'])
+def process_mode_change():
+    return graphPage.process_mode_change()
+@app.route('/downloadTable',methods=['POST'])
+def downloadTable():
+    return graphPage.downloadTable()
 
 if __name__ == '__main__':
 #helps ensure we don't have to restart derver on chaning code
