@@ -37,38 +37,10 @@ checked_filter_boxes = ['No' for i in range(0,12)]
 def sort_page():
     return render_template('sort.html' , stockList = graphPage.stockList ,filtered_df = filtered_df ,
             filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
-            Industries_filter=Industries_filter ,filter_lims=filter_lims)
+            Industries_filter=Industries_filter ,filter_lims=filter_lims, username = session['username'])
 
-def storehist() :
-    if 'user_id' in session: 
-        user_id = session['user_id']
-        user = User.query.get(user_id)
-        db.session.query(Stock_History).delete()
-        stocks_viewed = list(graphPage.getCurGraphSelection().keys())
-        for stock_name in stocks_viewed :
-            view_history = Stock_History(stock_name=stock_name ,viewer=user)
-            db.session.add(view_history)
-        db.session.commit()
-    return (redirect(url_for('dashboard')))
 
-def set_to_fav() :
-    if 'user_id' in session :
-        global stocks_in_fav
-        global stocks_in_fav_symbols
-        user_id = session['user_id']
-        user = User.query.get(user_id)
-        db.session.query(Favourites_History).delete()
-        stocks_viewed = list(graphPage.getCurGraphSelection().keys())
-        for fav_name in stocks_viewed :
-            fav_stock = Favourites_History(fav_name=fav_name,fav_user=user)
-            db.session.add(fav_stock)
-        db.session.commit()
-        username = session['username']
-        user = User.query.filter_by(username=username).first()
-        stocks_in_fav = user.favourites_history
-        for x in stocks_in_fav :
-            stocks_in_fav_symbols.append(x.fav_name)
-    return(redirect(url_for('dashboard')))
+
 
 def process_filters() :
     global filter_lims , checked_filter_boxes

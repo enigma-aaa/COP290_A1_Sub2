@@ -16,6 +16,22 @@ inf = math.inf
 df_temp = pd.read_csv('./Data_folder/NSE_Stock_List.csv')
 stocks_symbols_for_suggestion = df_temp['Symbol'].tolist()
 dataFrameDict = {}
+defaultgraphDuration='1_day'
+defaultcolor = {
+            "HIGH":colorGenerator.genColor(),
+            "LOW":colorGenerator.genColor(),
+            "OPEN":colorGenerator.genColor(),
+            "CLOSE":colorGenerator.genColor(),
+            "COMBINED":colorGenerator.genColor()
+        }
+defaultgraphCont = {
+            "HIGH":False,
+            "LOW":False,
+            "OPEN":False,
+            "CLOSE":False,
+            "COMBINED":False
+        }
+
 curGraphSelection = {
     'SBIN':{
         'graphDuration':'1_day' ,
@@ -207,3 +223,22 @@ def downloadTable():
 
 def getCurGraphSelection():
     return curGraphSelection
+
+def setCurGraphSelection(stocks_in_fav):
+    global curGraphSelection
+    global stockList
+    global currentlySelected
+    curGraphSelection.clear()
+    for x in stocks_in_fav : 
+        curGraphSelection[x] ={
+            'graphDuration' : '1_day' ,
+            'color' : dict(defaultcolor),
+            'graphCont' : dict(defaultgraphCont)
+        }
+        # curGraphSelection[x]['graphDuration'] = defaultgraphDuration
+        # curGraphSelection[x]['color'] = dict(defaultcolor)
+        # curGraphSelection[x]['graphCont'] = dict(defaultgraphCont)
+    stockList = list(curGraphSelection.keys())
+    if len(stockList) > 0 :
+        currentlySelected=stockList[0]
+    return 
