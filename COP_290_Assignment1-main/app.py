@@ -524,7 +524,8 @@ def login_welcome():
     print('Hereeeeeeeeeeeeeeeeeeeeeeeee')
     print(*stocks_in_fav_symbols)
     print(*stocks_in_history_symbols)
-    return render_template('loginWelcome.html',script=script,div=div,stocks_in_fav=stocks_in_fav , stocks_in_history=stocks_in_history,stocks_in_history_symbols=stocks_in_history_symbols,stocks_in_fav_symbols=stocks_in_fav_symbols)
+    return render_template('loginWelcome.html',script=script,div=div,stocks_in_fav=stocks_in_fav , stocks_in_history=stocks_in_history,stocks_in_history_symbols=stocks_in_history_symbols,stocks_in_fav_symbols=stocks_in_fav_symbols
+                           ,username=session['username'])
 @app.route('/logout')
 def logout():
 
