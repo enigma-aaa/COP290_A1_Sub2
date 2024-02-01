@@ -668,11 +668,11 @@ def process_filters() :
     i = 0 
     for x in filter_lims :
         if l_lims[i] != '' :
-            filter_lims[x][0] = int(l_lims[i])
+            filter_lims[x][0] = float(l_lims[i])
         else :
             filter_lims[x][0] = 0
         if m_lims[i] != '' :
-            filter_lims[x][1] = int(m_lims[i])
+            filter_lims[x][1] = float(m_lims[i])
         else :
             filter_lims[x][1] = inf
         i+=1 
