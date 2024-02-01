@@ -3,47 +3,9 @@ from flask import send_file
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import graph
-import pandas as pd
-import stockData
-import numpy as np
-# import sys
-import math
-import os
-import colorGenerator
+import stockData  
 import graphPage
-from filterStocks import allIndustriesList,companies_to_remove,initStockInfo,perform_filtering
-
-inf = math.inf
-##All variables corresponding to dataframe filtering
-all_stocks_df = initStockInfo()
-sort_state= {
-    'Symbol' : 0,
-    'Industry'  :0 ,
-    'Sector'  :0 ,
-    'Prev. Close'  :0 ,
-    'Open'  :0 ,
-    'Low'  :0 ,
-    'High'  :0 ,
-    'Price'  :0 ,
-    'Volume'  :0 ,
-    'PE'  :0 ,
-    'Market Cap(in Cr)'  :0 ,
-}
-filter_lims = {
-    'vol' : [0 , inf] ,
-    'pe_rat' : [0 ,  inf] ,
-    'marketCap' : [0,inf] ,
-    'price' : [0,inf]  
-}
-stocks_in_history = []
-stocks_in_fav = []
-stocks_in_history_symbols=[]
-stocks_in_fav_symbols=[]
-Industries_filter = ['Specialty Chemicals' , 'Textile Manufacturing' , 'Auto Parts' , 'Drug Manufacturers—Specialty & Generic' , 'Engineering & Construction' , 'Steel' , 'Specialty Industrial Machinery' , 'Information Technology Services' , 'Capital Markets' , 'Credit Services' , 'Others' , 'All']
-filtered_df = pd.DataFrame()
-filtered_df_columns = []
-checked_filter_boxes = ['No' for i in range(0,12)]
-
+import stockFilterPage
 
 initial = 1
 app = Flask(__name__)
@@ -153,64 +115,15 @@ def login():
 
 @app.route('/sort_page')
 def sort_page():
-    # print('gonna render')
-    # print(filtered_df)
-    # print(*filtered_df_columns)
-    return render_template('sort.html' , stockList = graphPage.stockList ,filtered_df = filtered_df ,
-            filtered_df_columns = filtered_df_columns , checked_filter_boxes=checked_filter_boxes , 
-            Industries_filter=Industries_filter ,filter_lims=filter_lims)
-
-
-# class Favourites_History(db.Model) :
-#     id = db.Column(db.Integer, primary_key=True)
-#     fav_name= db.Column(db.String(50),nullable=False)
-#     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
-
-# class Stock_History(db.Model) :
-#     id = db.Column(db.Integer, primary_key=True)
-#     stock_name = db.Column(db.String(50),nullable=False)
-#     user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
-
-# class User(db.Model):
-#     #by defualt table name lowercase class name#
-#     #explicit definiton __tablename__ = #
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(100), unique=True, nullable=False)
-#     password_hash = db.Column(db.String(200), nullable=False)
-#     stocks_history = db.relationship('Stock_History',backref='viewer',lazy=True  )
-#     favourites_history = db.relationship('Favourites_History',backref='fav_user',lazy=True)
+    return stockFilterPage.sort_page()
 
 @app.route('/storehist')
 def storehist() :
-    if 'user_id' in session: 
-        user_id = session['user_id']
-        user = User.query.get(user_id)
-        db.session.query(Stock_History).delete()
-        stocks_viewed = list(graphPage.getCurGraphSelection().keys())
-        for stock_name in stocks_viewed :
-            view_history = Stock_History(stock_name=stock_name ,viewer=user)
-            db.session.add(view_history)
-        db.session.commit()
-    return (redirect(url_for('dashboard')))
+    return stockFilterPage.storehist()
 @app.route('/set_to_fav')
 def set_to_fav() :
-    if 'user_id' in session :
-        global stocks_in_fav
-        global stocks_in_fav_symbols
-        user_id = session['user_id']
-        user = User.query.get(user_id)
-        db.session.query(Favourites_History).delete()
-        stocks_viewed = list(graphPage.getCurGraphSelection().keys())
-        for fav_name in stocks_viewed :
-            fav_stock = Favourites_History(fav_name=fav_name,fav_user=user)
-            db.session.add(fav_stock)
-        db.session.commit()
-        username = session['username']
-        user = User.query.filter_by(username=username).first()
-        stocks_in_fav = user.favourites_history
-        for x in stocks_in_fav :
-            stocks_in_fav_symbols.append(x.fav_name)
-    return(redirect(url_for('dashboard')))
+    return stockFilterPage.set_to_fav()
+
 @app.route('/login_welcome')
 def login_welcome():
     (script,div) = graph.drawStockIndicesGraph()
@@ -225,75 +138,13 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
-
-# @app.route('/process_filters_market_cap' , methods=['POST'])
-# def process_filter() :
-#     global filter_market_cap
-#     filter_market_cap = request.form.get('marketCap')
-#     process_filter()
-#     return(redirect(url_for('sort_page')))
-
-# @app.route('/process_filters_pe_rat' , methods = ['POST'])
-# def filter_market_pe_rat() :
-#     global filter_pe_rat
-#     filter_pe_rat = request.form.get('pe_ratio')
-#     process_filter()
-#     return(redirect(url_for('sort_page')))
-
-# @app.route('/process_filters_vol' , methods=['POST'])
-# def process_filters_vol() :
-#     global filter_avg_vol 
-#     filter_avg_vol = request.form.get('vol')
-#     process_filter()
-#     return(redirect(url_for('sort_page')))
-
 @app.route('/process_filters' , methods=['POST'])
-def process_filters() :
-    # global l_lim_price,m_lim_price,l_lim_marketCap,m_lim_marketCap,l_lim_pe_rat,m_lim_pe_rat,l_lim_vol,m_lim_vol
-    global filter_lims , checked_filter_boxes
-    global filtered_df,filtered_df_columns
-
-    l_lims = request.form.getlist('l_lim[]')
-    m_lims = request.form.getlist('m_lim[]')
-    list_check_status = request.form.getlist('checked_filter_boxes[]')
-    list_check_status = [int(x) for x in list_check_status]
-    # print('here')
-    # print(*list_check_status)
-    for i in range(0,12) :
-        if i in list_check_status :
-            checked_filter_boxes[i] = 'yes'
-        else :
-            checked_filter_boxes[i] = 'no'
-    
-    i = 0 
-    for x in filter_lims :
-        if l_lims[i] != '' :
-            filter_lims[x][0] = float(l_lims[i])
-        else :
-            filter_lims[x][0] = 0
-        if m_lims[i] != '' :
-            filter_lims[x][1] = float(m_lims[i])
-        else :
-            filter_lims[x][1] = inf
-        i+=1 
-    (filtered_df,filtered_df_columns)  = perform_filtering(all_stocks_df,filter_lims,checked_filter_boxes,Industries_filter)
-    return(redirect(url_for('sort_page')))
-
-
-
-
+def process_filters():
+    return stockFilterPage.process_filters()
 @app.route('/sort_filters' , methods=['POST'])
 def sort_filters() :
-    global sort_state  , filtered_df
-    to_change = request.form.get('sort')
-    sort_state[to_change] = (sort_state[to_change]+1)%3
-    if sort_state[to_change] == 1 :
-        filtered_df =  filtered_df.sort_values(by=to_change)
-    elif sort_state[to_change] == 2 :
-        filtered_df = filtered_df.sort_values(by=to_change , ascending=False)
-    else :
-        filtered_df = filtered_df.sort_values(by='Industry')
-    return (redirect(url_for('sort_page')))
+    return stockFilterPage.sort_filters()
+
 
 @app.route('/dashboard',methods=['POST','GET'])
 def dashboard():
