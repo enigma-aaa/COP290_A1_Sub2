@@ -365,6 +365,24 @@ div.StockListAndSearch {
     height: calc(100vh - 50px);
     /* display: ; */
     border-right: 3px solid #eeeded;
+    display: flex;
+    flex-direction: column;
+}
+div.set_to_fav{
+    margin-top: auto;
+    /* position: absolute; */
+    width: 100%;
+    bottom: 0;
+    display: inline-block;
+    /* height: 20%; */
+}
+.set_fav_button{
+    height : 50px ;
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    background-color: #efefef;
+
 }
 div.SideBarAndStockSummary{
     width: 100%;
