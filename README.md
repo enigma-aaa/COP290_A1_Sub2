@@ -14,12 +14,13 @@ Some screenshots showing the features described above:
 ![Couldn't load image](./COP_290_Assignment1-main/Screenshot/GraphPage.png)
 ###### The left side contatins the list of stocks currently being viewed while the right pane contains a summary of the stocks currently selected.
 ![Couldn't load image](./COP_290_Assignment1-main/Screenshot/StockWatcherTableNew.png)
-######The table pane in the grpah analysis page allows the user to download the raw data of stock prices as a CSV file.
+##### The table pane in the grpah analysis page allows the user to download the raw data of stock prices as a CSV file.
 ![Couldn't load image](./COP_290_Assignment1-main/Screenshot/StockWatcherFilter.jpeg)
 ###### The stock analysis allows the user to filter stocks based on a range of values and sort the table rows based on one of the columns. 
 
 ## Usage instructions
-Currently to run the application one can install the code from github and navigate to the folder labeled COP_290_Assignment1-main and in the terminal run the make command. 
+Currently to run the application one can install the code from github and navigate to the folder labeled COP_290_Assignment1-main and in the terminal run the make command. The application is now available on the port 127.0.0.1:5000 which can be opened through the browser. 
+Application has been tested extensively on firefox seems to work on chrome as well.
 Running make is only required on the first run to install the python packages required on later runs one can simply run the file app.py
 On linux the command for this would be 
 python3 app.py
@@ -34,4 +35,3 @@ The requirements to run this application are:
 1. [yfinance](https://github.com/ranaroussi/yfinance) (a python library we used to get historical data of stocks on NSE)
 2. [bokeh](https://github.com/bokeh/bokeh) (a python library to draw graphs has a companion javascript library to help insert graphs into html)
 3. [pandas](https://github.com/pandas-dev/pandas) (used to store the stock's historical data and store it in tabular form also to read and write csv files)
- 
