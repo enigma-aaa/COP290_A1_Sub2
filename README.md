@@ -5,6 +5,10 @@ It also contains other information about the stocks performance like their P/E r
 The application also supports multiple user accounts each with their own favourite stocks (list of stocks which are permanently saved ) and history. 
 The applicationa also keeps track of what stocks were viewed in the last session so that they can be reloaded on login, these are displayed on the welcome page.The welcome page also contains a  graph summarizing some of the stock indices on NSE.
 Some screenshots showing the features described above:
+![Couldn't load image](./COP_290_Assignment1-main/Screenshot/LoginPage.png)
+###### Login page for existing users
+![Couldn't load image](./COP_290_Assignment1-main/Screenshot/RegistrationPage.png)
+###### Registration page for new users
 ![Couldn't load image](./COP_290_Assignment1-main/Screenshot/WelcomePage.png)
 ###### The welcome page consists of a list of the stocks added to the favourite and a graph of various stock indices.
 ![Couldn't load image](./COP_290_Assignment1-main/Screenshot/GraphPage.png)
