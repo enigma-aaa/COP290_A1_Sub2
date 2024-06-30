@@ -1,5 +1,4 @@
-# COP290_A1_Sub2
-## A Stock Watcher
+# A Stock Watcher
 This project is a basic stock analysis tool build using python flask for viewing stocks on the NSE stock exchange. The application allows the user to analyze multiple stocks and draw their price trends together so one can compare them easily. 
 It also contains other information about the stocks performance like their P/E ratio and the stocks yearly high and low. One can also compare and sort different stocks based on their current prices,the volume of stocks traded their P/E ratio and more. 
 The application also supports multiple user accounts each with their own favourite stocks (list of stocks which are permanently saved ) and history. 
